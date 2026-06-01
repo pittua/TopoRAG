@@ -1,0 +1,5 @@
+__pycache__/
+*.pyc
+*.pyo
+.env
+kicad_query.json

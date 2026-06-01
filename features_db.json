@@ -1,0 +1,2466 @@
+[
+  {
+    "circuit_id": "rc_lowpass_001",
+    "circuit_name": "RCローパスフィルタ",
+    "description": "抵抗とコンデンサで構成される一次ローパスフィルタ。高周波成分を減衰し低周波を通過させる。",
+    "function_tags": [
+      "filter",
+      "lowpass",
+      "rc",
+      "passive",
+      "frequency_selective"
+    ],
+    "ports": {
+      "input": "N1",
+      "output": "N2",
+      "gnd": "GND"
+    },
+    "A_component": {
+      "component_types": [
+        "C",
+        "R"
+      ],
+      "component_counts": {
+        "R": 1,
+        "C": 1
+      },
+      "has_switch": false,
+      "has_inductor": false,
+      "has_diode": false,
+      "has_capacitor": true,
+      "has_resistor": true,
+      "has_zener": false
+    },
+    "B1_order": {
+      "sw_l_order": null,
+      "path_sequence": [
+        {
+          "type": "R",
+          "shunt": false
+        },
+        {
+          "type": "C",
+          "shunt": true
+        }
+      ],
+      "series_type_sequence": [
+        "R"
+      ],
+      "first_series_type": "R",
+      "shunt_type_sequence": [
+        "C"
+      ]
+    },
+    "B2_diode": {
+      "diode_anode_to_gnd": false,
+      "diode_cathode_to_out": false,
+      "diode_anode_to_out": false,
+      "diode_cathode_to_gnd": false
+    },
+    "B3_series_parallel": {
+      "has_parallel_components": false,
+      "parallel_pairs": {},
+      "series_chain_nodes": [
+        "N2"
+      ],
+      "series_chain_length": 1
+    },
+    "C_node": {
+      "node_count": 3,
+      "gnd_connected_parts": [
+        "C1"
+      ],
+      "high_degree_nodes": {},
+      "has_high_degree_node": false,
+      "cycle_count": 0
+    },
+    "is_hierarchical": false,
+    "n_blocks": 1,
+    "blocks": []
+  },
+  {
+    "circuit_id": "rc_highpass_001",
+    "circuit_name": "RCハイパスフィルタ",
+    "description": "抵抗とコンデンサで構成される一次ハイパスフィルタ。低周波・直流成分を遮断し高周波を通過させる。交流結合・DC除去にも用いられる。",
+    "function_tags": [
+      "filter",
+      "highpass",
+      "rc",
+      "passive",
+      "frequency_selective",
+      "ac_coupling",
+      "dc_blocking"
+    ],
+    "ports": {
+      "input": "N1",
+      "output": "N2",
+      "gnd": "GND"
+    },
+    "A_component": {
+      "component_types": [
+        "C",
+        "R"
+      ],
+      "component_counts": {
+        "C": 1,
+        "R": 1
+      },
+      "has_switch": false,
+      "has_inductor": false,
+      "has_diode": false,
+      "has_capacitor": true,
+      "has_resistor": true,
+      "has_zener": false
+    },
+    "B1_order": {
+      "sw_l_order": null,
+      "path_sequence": [
+        {
+          "type": "C",
+          "shunt": false
+        },
+        {
+          "type": "R",
+          "shunt": true
+        }
+      ],
+      "series_type_sequence": [
+        "C"
+      ],
+      "first_series_type": "C",
+      "shunt_type_sequence": [
+        "R"
+      ]
+    },
+    "B2_diode": {
+      "diode_anode_to_gnd": false,
+      "diode_cathode_to_out": false,
+      "diode_anode_to_out": false,
+      "diode_cathode_to_gnd": false
+    },
+    "B3_series_parallel": {
+      "has_parallel_components": false,
+      "parallel_pairs": {},
+      "series_chain_nodes": [
+        "N2"
+      ],
+      "series_chain_length": 1
+    },
+    "C_node": {
+      "node_count": 3,
+      "gnd_connected_parts": [
+        "R1"
+      ],
+      "high_degree_nodes": {},
+      "has_high_degree_node": false,
+      "cycle_count": 0
+    },
+    "is_hierarchical": false,
+    "n_blocks": 1,
+    "blocks": []
+  },
+  {
+    "circuit_id": "buck_001",
+    "circuit_name": "降圧チョッパ（Buck Converter）",
+    "description": "スイッチング方式のDC-DCコンバータ。入力電圧より低い電圧を出力する降圧回路。",
+    "function_tags": [
+      "converter",
+      "dc_dc",
+      "switching",
+      "step_down",
+      "power"
+    ],
+    "ports": {
+      "input": "VIN",
+      "output": "N2",
+      "gnd": "GND"
+    },
+    "A_component": {
+      "component_types": [
+        "C",
+        "D",
+        "L",
+        "SW"
+      ],
+      "component_counts": {
+        "SW": 1,
+        "D": 1,
+        "L": 1,
+        "C": 1
+      },
+      "has_switch": true,
+      "has_inductor": true,
+      "has_diode": true,
+      "has_capacitor": true,
+      "has_resistor": false,
+      "has_zener": false
+    },
+    "B1_order": {
+      "sw_l_order": "SW_before_L",
+      "path_sequence": [
+        {
+          "type": "SW",
+          "shunt": false
+        },
+        {
+          "type": "D",
+          "shunt": true
+        },
+        {
+          "type": "L",
+          "shunt": false
+        },
+        {
+          "type": "C",
+          "shunt": true
+        }
+      ],
+      "series_type_sequence": [
+        "SW",
+        "L"
+      ],
+      "first_series_type": "SW",
+      "shunt_type_sequence": [
+        "D",
+        "C"
+      ]
+    },
+    "B2_diode": {
+      "diode_anode_to_gnd": true,
+      "diode_cathode_to_out": false,
+      "diode_anode_to_out": false,
+      "diode_cathode_to_gnd": false
+    },
+    "B3_series_parallel": {
+      "has_parallel_components": false,
+      "parallel_pairs": {},
+      "series_chain_nodes": [
+        "GND",
+        "N2"
+      ],
+      "series_chain_length": 2
+    },
+    "C_node": {
+      "node_count": 4,
+      "gnd_connected_parts": [
+        "D1",
+        "C1"
+      ],
+      "high_degree_nodes": {
+        "N1": 3
+      },
+      "has_high_degree_node": true,
+      "cycle_count": 1
+    },
+    "is_hierarchical": true,
+    "n_blocks": 2,
+    "blocks": [
+      {
+        "circuit_id": "buck_001_b0",
+        "circuit_name": "降圧チョッパ（Buck Converter） [ブロック1]",
+        "description": "スイッチング方式のDC-DCコンバータ。入力電圧より低い電圧を出力する降圧回路。",
+        "function_tags": [
+          "converter",
+          "dc_dc",
+          "switching",
+          "step_down",
+          "power"
+        ],
+        "ports": {
+          "input": "VIN",
+          "output": "N1",
+          "gnd": "GND"
+        },
+        "A_component": {
+          "component_types": [
+            "D",
+            "SW"
+          ],
+          "component_counts": {
+            "SW": 1,
+            "D": 1
+          },
+          "has_switch": true,
+          "has_inductor": false,
+          "has_diode": true,
+          "has_capacitor": false,
+          "has_resistor": false,
+          "has_zener": false
+        },
+        "B1_order": {
+          "sw_l_order": null,
+          "path_sequence": [
+            {
+              "type": "SW",
+              "shunt": false
+            },
+            {
+              "type": "D",
+              "shunt": true
+            }
+          ],
+          "series_type_sequence": [
+            "SW"
+          ],
+          "first_series_type": "SW",
+          "shunt_type_sequence": [
+            "D"
+          ]
+        },
+        "B2_diode": {
+          "diode_anode_to_gnd": true,
+          "diode_cathode_to_out": true,
+          "diode_anode_to_out": false,
+          "diode_cathode_to_gnd": false
+        },
+        "B3_series_parallel": {
+          "has_parallel_components": false,
+          "parallel_pairs": {},
+          "series_chain_nodes": [
+            "N1"
+          ],
+          "series_chain_length": 1
+        },
+        "C_node": {
+          "node_count": 3,
+          "gnd_connected_parts": [
+            "D1"
+          ],
+          "high_degree_nodes": {},
+          "has_high_degree_node": false,
+          "cycle_count": 0
+        }
+      },
+      {
+        "circuit_id": "buck_001_b1",
+        "circuit_name": "降圧チョッパ（Buck Converter） [ブロック2]",
+        "description": "スイッチング方式のDC-DCコンバータ。入力電圧より低い電圧を出力する降圧回路。",
+        "function_tags": [
+          "converter",
+          "dc_dc",
+          "switching",
+          "step_down",
+          "power"
+        ],
+        "ports": {
+          "input": "N1",
+          "output": "N2",
+          "gnd": "GND"
+        },
+        "A_component": {
+          "component_types": [
+            "C",
+            "L"
+          ],
+          "component_counts": {
+            "L": 1,
+            "C": 1
+          },
+          "has_switch": false,
+          "has_inductor": true,
+          "has_diode": false,
+          "has_capacitor": true,
+          "has_resistor": false,
+          "has_zener": false
+        },
+        "B1_order": {
+          "sw_l_order": null,
+          "path_sequence": [
+            {
+              "type": "L",
+              "shunt": false
+            },
+            {
+              "type": "C",
+              "shunt": true
+            }
+          ],
+          "series_type_sequence": [
+            "L"
+          ],
+          "first_series_type": "L",
+          "shunt_type_sequence": [
+            "C"
+          ]
+        },
+        "B2_diode": {
+          "diode_anode_to_gnd": false,
+          "diode_cathode_to_out": false,
+          "diode_anode_to_out": false,
+          "diode_cathode_to_gnd": false
+        },
+        "B3_series_parallel": {
+          "has_parallel_components": false,
+          "parallel_pairs": {},
+          "series_chain_nodes": [
+            "N2"
+          ],
+          "series_chain_length": 1
+        },
+        "C_node": {
+          "node_count": 3,
+          "gnd_connected_parts": [
+            "C1"
+          ],
+          "high_degree_nodes": {},
+          "has_high_degree_node": false,
+          "cycle_count": 0
+        }
+      }
+    ]
+  },
+  {
+    "circuit_id": "boost_001",
+    "circuit_name": "昇圧チョッパ（Boost Converter）",
+    "description": "スイッチング方式のDC-DCコンバータ。入力電圧より高い電圧を出力する昇圧回路。",
+    "function_tags": [
+      "converter",
+      "dc_dc",
+      "switching",
+      "step_up",
+      "power"
+    ],
+    "ports": {
+      "input": "VIN",
+      "output": "N2",
+      "gnd": "GND"
+    },
+    "A_component": {
+      "component_types": [
+        "C",
+        "D",
+        "L",
+        "SW"
+      ],
+      "component_counts": {
+        "L": 1,
+        "SW": 1,
+        "D": 1,
+        "C": 1
+      },
+      "has_switch": true,
+      "has_inductor": true,
+      "has_diode": true,
+      "has_capacitor": true,
+      "has_resistor": false,
+      "has_zener": false
+    },
+    "B1_order": {
+      "sw_l_order": null,
+      "path_sequence": [
+        {
+          "type": "L",
+          "shunt": false
+        },
+        {
+          "type": "SW",
+          "shunt": true
+        },
+        {
+          "type": "D",
+          "shunt": false
+        },
+        {
+          "type": "C",
+          "shunt": true
+        }
+      ],
+      "series_type_sequence": [
+        "L",
+        "D"
+      ],
+      "first_series_type": "L",
+      "shunt_type_sequence": [
+        "SW",
+        "C"
+      ]
+    },
+    "B2_diode": {
+      "diode_anode_to_gnd": false,
+      "diode_cathode_to_out": true,
+      "diode_anode_to_out": false,
+      "diode_cathode_to_gnd": false
+    },
+    "B3_series_parallel": {
+      "has_parallel_components": false,
+      "parallel_pairs": {},
+      "series_chain_nodes": [
+        "GND",
+        "N2"
+      ],
+      "series_chain_length": 2
+    },
+    "C_node": {
+      "node_count": 4,
+      "gnd_connected_parts": [
+        "SW1",
+        "C1"
+      ],
+      "high_degree_nodes": {
+        "N1": 3
+      },
+      "has_high_degree_node": true,
+      "cycle_count": 1
+    },
+    "is_hierarchical": true,
+    "n_blocks": 2,
+    "blocks": [
+      {
+        "circuit_id": "boost_001_b0",
+        "circuit_name": "昇圧チョッパ（Boost Converter） [ブロック1]",
+        "description": "スイッチング方式のDC-DCコンバータ。入力電圧より高い電圧を出力する昇圧回路。",
+        "function_tags": [
+          "converter",
+          "dc_dc",
+          "switching",
+          "step_up",
+          "power"
+        ],
+        "ports": {
+          "input": "VIN",
+          "output": "N1",
+          "gnd": "GND"
+        },
+        "A_component": {
+          "component_types": [
+            "L",
+            "SW"
+          ],
+          "component_counts": {
+            "L": 1,
+            "SW": 1
+          },
+          "has_switch": true,
+          "has_inductor": true,
+          "has_diode": false,
+          "has_capacitor": false,
+          "has_resistor": false,
+          "has_zener": false
+        },
+        "B1_order": {
+          "sw_l_order": null,
+          "path_sequence": [
+            {
+              "type": "L",
+              "shunt": false
+            },
+            {
+              "type": "SW",
+              "shunt": true
+            }
+          ],
+          "series_type_sequence": [
+            "L"
+          ],
+          "first_series_type": "L",
+          "shunt_type_sequence": [
+            "SW"
+          ]
+        },
+        "B2_diode": {
+          "diode_anode_to_gnd": false,
+          "diode_cathode_to_out": false,
+          "diode_anode_to_out": false,
+          "diode_cathode_to_gnd": false
+        },
+        "B3_series_parallel": {
+          "has_parallel_components": false,
+          "parallel_pairs": {},
+          "series_chain_nodes": [
+            "N1"
+          ],
+          "series_chain_length": 1
+        },
+        "C_node": {
+          "node_count": 3,
+          "gnd_connected_parts": [
+            "SW1"
+          ],
+          "high_degree_nodes": {},
+          "has_high_degree_node": false,
+          "cycle_count": 0
+        }
+      },
+      {
+        "circuit_id": "boost_001_b1",
+        "circuit_name": "昇圧チョッパ（Boost Converter） [ブロック2]",
+        "description": "スイッチング方式のDC-DCコンバータ。入力電圧より高い電圧を出力する昇圧回路。",
+        "function_tags": [
+          "converter",
+          "dc_dc",
+          "switching",
+          "step_up",
+          "power"
+        ],
+        "ports": {
+          "input": "N1",
+          "output": "N2",
+          "gnd": "GND"
+        },
+        "A_component": {
+          "component_types": [
+            "C",
+            "D"
+          ],
+          "component_counts": {
+            "D": 1,
+            "C": 1
+          },
+          "has_switch": false,
+          "has_inductor": false,
+          "has_diode": true,
+          "has_capacitor": true,
+          "has_resistor": false,
+          "has_zener": false
+        },
+        "B1_order": {
+          "sw_l_order": null,
+          "path_sequence": [
+            {
+              "type": "D",
+              "shunt": false
+            },
+            {
+              "type": "C",
+              "shunt": true
+            }
+          ],
+          "series_type_sequence": [
+            "D"
+          ],
+          "first_series_type": "D",
+          "shunt_type_sequence": [
+            "C"
+          ]
+        },
+        "B2_diode": {
+          "diode_anode_to_gnd": false,
+          "diode_cathode_to_out": true,
+          "diode_anode_to_out": false,
+          "diode_cathode_to_gnd": false
+        },
+        "B3_series_parallel": {
+          "has_parallel_components": false,
+          "parallel_pairs": {},
+          "series_chain_nodes": [
+            "N2"
+          ],
+          "series_chain_length": 1
+        },
+        "C_node": {
+          "node_count": 3,
+          "gnd_connected_parts": [
+            "C1"
+          ],
+          "high_degree_nodes": {},
+          "has_high_degree_node": false,
+          "cycle_count": 0
+        }
+      }
+    ]
+  },
+  {
+    "circuit_id": "lc_lowpass_001",
+    "circuit_name": "LCローパスフィルタ",
+    "description": "インダクタとコンデンサで構成されるローパスフィルタ。抵抗による損失がなく、急峻な遮断特性を持つ。電源ラインのノイズ除去にも使用される。",
+    "function_tags": [
+      "filter",
+      "lowpass",
+      "lc",
+      "passive",
+      "frequency_selective",
+      "noise_reduction"
+    ],
+    "ports": {
+      "input": "VIN",
+      "output": "N1",
+      "gnd": "GND"
+    },
+    "A_component": {
+      "component_types": [
+        "C",
+        "L"
+      ],
+      "component_counts": {
+        "L": 1,
+        "C": 1
+      },
+      "has_switch": false,
+      "has_inductor": true,
+      "has_diode": false,
+      "has_capacitor": true,
+      "has_resistor": false,
+      "has_zener": false
+    },
+    "B1_order": {
+      "sw_l_order": null,
+      "path_sequence": [
+        {
+          "type": "L",
+          "shunt": false
+        },
+        {
+          "type": "C",
+          "shunt": true
+        }
+      ],
+      "series_type_sequence": [
+        "L"
+      ],
+      "first_series_type": "L",
+      "shunt_type_sequence": [
+        "C"
+      ]
+    },
+    "B2_diode": {
+      "diode_anode_to_gnd": false,
+      "diode_cathode_to_out": false,
+      "diode_anode_to_out": false,
+      "diode_cathode_to_gnd": false
+    },
+    "B3_series_parallel": {
+      "has_parallel_components": false,
+      "parallel_pairs": {},
+      "series_chain_nodes": [
+        "N1"
+      ],
+      "series_chain_length": 1
+    },
+    "C_node": {
+      "node_count": 3,
+      "gnd_connected_parts": [
+        "C1"
+      ],
+      "high_degree_nodes": {},
+      "has_high_degree_node": false,
+      "cycle_count": 0
+    },
+    "is_hierarchical": false,
+    "n_blocks": 1,
+    "blocks": []
+  },
+  {
+    "circuit_id": "lc_highpass_001",
+    "circuit_name": "LCハイパスフィルタ",
+    "description": "コンデンサとインダクタで構成されるハイパスフィルタ。損失が少なく高周波帯域を効率よく通過させる。",
+    "function_tags": [
+      "filter",
+      "highpass",
+      "lc",
+      "passive",
+      "frequency_selective",
+      "dc_blocking"
+    ],
+    "ports": {
+      "input": "VIN",
+      "output": "N1",
+      "gnd": "GND"
+    },
+    "A_component": {
+      "component_types": [
+        "C",
+        "L"
+      ],
+      "component_counts": {
+        "C": 1,
+        "L": 1
+      },
+      "has_switch": false,
+      "has_inductor": true,
+      "has_diode": false,
+      "has_capacitor": true,
+      "has_resistor": false,
+      "has_zener": false
+    },
+    "B1_order": {
+      "sw_l_order": null,
+      "path_sequence": [
+        {
+          "type": "C",
+          "shunt": false
+        },
+        {
+          "type": "L",
+          "shunt": true
+        }
+      ],
+      "series_type_sequence": [
+        "C"
+      ],
+      "first_series_type": "C",
+      "shunt_type_sequence": [
+        "L"
+      ]
+    },
+    "B2_diode": {
+      "diode_anode_to_gnd": false,
+      "diode_cathode_to_out": false,
+      "diode_anode_to_out": false,
+      "diode_cathode_to_gnd": false
+    },
+    "B3_series_parallel": {
+      "has_parallel_components": false,
+      "parallel_pairs": {},
+      "series_chain_nodes": [
+        "N1"
+      ],
+      "series_chain_length": 1
+    },
+    "C_node": {
+      "node_count": 3,
+      "gnd_connected_parts": [
+        "L1"
+      ],
+      "high_degree_nodes": {},
+      "has_high_degree_node": false,
+      "cycle_count": 0
+    },
+    "is_hierarchical": false,
+    "n_blocks": 1,
+    "blocks": []
+  },
+  {
+    "circuit_id": "rlc_bandpass_001",
+    "circuit_name": "RLCバンドパスフィルタ",
+    "description": "抵抗・インダクタ・コンデンサで構成される直列共振型バンドパスフィルタ。共振周波数付近の信号のみを通過させる。",
+    "function_tags": [
+      "filter",
+      "bandpass",
+      "rlc",
+      "passive",
+      "frequency_selective",
+      "resonant"
+    ],
+    "ports": {
+      "input": "VIN",
+      "output": "N2",
+      "gnd": "GND"
+    },
+    "A_component": {
+      "component_types": [
+        "C",
+        "L",
+        "R"
+      ],
+      "component_counts": {
+        "L": 1,
+        "C": 1,
+        "R": 1
+      },
+      "has_switch": false,
+      "has_inductor": true,
+      "has_diode": false,
+      "has_capacitor": true,
+      "has_resistor": true,
+      "has_zener": false
+    },
+    "B1_order": {
+      "sw_l_order": null,
+      "path_sequence": [
+        {
+          "type": "L",
+          "shunt": false
+        },
+        {
+          "type": "C",
+          "shunt": false
+        },
+        {
+          "type": "R",
+          "shunt": true
+        }
+      ],
+      "series_type_sequence": [
+        "L",
+        "C"
+      ],
+      "first_series_type": "L",
+      "shunt_type_sequence": [
+        "R"
+      ]
+    },
+    "B2_diode": {
+      "diode_anode_to_gnd": false,
+      "diode_cathode_to_out": false,
+      "diode_anode_to_out": false,
+      "diode_cathode_to_gnd": false
+    },
+    "B3_series_parallel": {
+      "has_parallel_components": false,
+      "parallel_pairs": {},
+      "series_chain_nodes": [
+        "N1",
+        "N2"
+      ],
+      "series_chain_length": 2
+    },
+    "C_node": {
+      "node_count": 4,
+      "gnd_connected_parts": [
+        "R1"
+      ],
+      "high_degree_nodes": {},
+      "has_high_degree_node": false,
+      "cycle_count": 0
+    },
+    "is_hierarchical": false,
+    "n_blocks": 1,
+    "blocks": []
+  },
+  {
+    "circuit_id": "rlc_notch_001",
+    "circuit_name": "RLCノッチフィルタ",
+    "description": "抵抗・インダクタ・コンデンサで構成されるノッチ（帯域除去）フィルタ。特定周波数を選択的に除去する。ハム除去や妨害波除去に使用される。",
+    "function_tags": [
+      "filter",
+      "notch",
+      "bandstop",
+      "rlc",
+      "passive",
+      "frequency_selective",
+      "resonant",
+      "noise_reduction"
+    ],
+    "ports": {
+      "input": "VIN",
+      "output": "N1",
+      "gnd": "GND"
+    },
+    "A_component": {
+      "component_types": [
+        "C",
+        "L",
+        "R"
+      ],
+      "component_counts": {
+        "R": 1,
+        "L": 1,
+        "C": 1
+      },
+      "has_switch": false,
+      "has_inductor": true,
+      "has_diode": false,
+      "has_capacitor": true,
+      "has_resistor": true,
+      "has_zener": false
+    },
+    "B1_order": {
+      "sw_l_order": null,
+      "path_sequence": [
+        {
+          "type": "R",
+          "shunt": false
+        }
+      ],
+      "series_type_sequence": [
+        "R"
+      ],
+      "first_series_type": "R",
+      "shunt_type_sequence": []
+    },
+    "B2_diode": {
+      "diode_anode_to_gnd": false,
+      "diode_cathode_to_out": false,
+      "diode_anode_to_out": false,
+      "diode_cathode_to_gnd": false
+    },
+    "B3_series_parallel": {
+      "has_parallel_components": false,
+      "parallel_pairs": {},
+      "series_chain_nodes": [
+        "N1",
+        "N2"
+      ],
+      "series_chain_length": 2
+    },
+    "C_node": {
+      "node_count": 4,
+      "gnd_connected_parts": [
+        "C1"
+      ],
+      "high_degree_nodes": {},
+      "has_high_degree_node": false,
+      "cycle_count": 0
+    },
+    "is_hierarchical": false,
+    "n_blocks": 1,
+    "blocks": []
+  },
+  {
+    "circuit_id": "lc_pi_filter_001",
+    "circuit_name": "π型LCフィルタ（ローパス）",
+    "description": "入出力にシャントコンデンサ、中央に直列インダクタを配置したπ型ローパスフィルタ。電源ラインのリップル除去や高周波ノイズ対策に広く使用される。",
+    "function_tags": [
+      "filter",
+      "lowpass",
+      "lc",
+      "passive",
+      "pi_filter",
+      "frequency_selective",
+      "noise_reduction",
+      "power"
+    ],
+    "ports": {
+      "input": "IN",
+      "output": "OUT",
+      "gnd": "GND"
+    },
+    "A_component": {
+      "component_types": [
+        "C",
+        "L"
+      ],
+      "component_counts": {
+        "C": 2,
+        "L": 1
+      },
+      "has_switch": false,
+      "has_inductor": true,
+      "has_diode": false,
+      "has_capacitor": true,
+      "has_resistor": false,
+      "has_zener": false
+    },
+    "B1_order": {
+      "sw_l_order": null,
+      "path_sequence": [
+        {
+          "type": "C",
+          "shunt": true
+        },
+        {
+          "type": "L",
+          "shunt": false
+        },
+        {
+          "type": "C",
+          "shunt": true
+        }
+      ],
+      "series_type_sequence": [
+        "L"
+      ],
+      "first_series_type": "L",
+      "shunt_type_sequence": [
+        "C",
+        "C"
+      ]
+    },
+    "B2_diode": {
+      "diode_anode_to_gnd": false,
+      "diode_cathode_to_out": false,
+      "diode_anode_to_out": false,
+      "diode_cathode_to_gnd": false
+    },
+    "B3_series_parallel": {
+      "has_parallel_components": false,
+      "parallel_pairs": {},
+      "series_chain_nodes": [
+        "IN",
+        "GND",
+        "OUT"
+      ],
+      "series_chain_length": 3
+    },
+    "C_node": {
+      "node_count": 3,
+      "gnd_connected_parts": [
+        "C1",
+        "C2"
+      ],
+      "high_degree_nodes": {},
+      "has_high_degree_node": false,
+      "cycle_count": 1
+    },
+    "is_hierarchical": false,
+    "n_blocks": 1,
+    "blocks": []
+  },
+  {
+    "circuit_id": "lc_t_filter_001",
+    "circuit_name": "T型LCフィルタ（ローパス）",
+    "description": "入出力に直列インダクタ、中央にシャントコンデンサを配置したT型ローパスフィルタ。インピーダンス整合が必要な用途に使用される。",
+    "function_tags": [
+      "filter",
+      "lowpass",
+      "lc",
+      "passive",
+      "t_filter",
+      "frequency_selective",
+      "noise_reduction"
+    ],
+    "ports": {
+      "input": "IN",
+      "output": "OUT",
+      "gnd": "GND"
+    },
+    "A_component": {
+      "component_types": [
+        "C",
+        "L"
+      ],
+      "component_counts": {
+        "L": 2,
+        "C": 1
+      },
+      "has_switch": false,
+      "has_inductor": true,
+      "has_diode": false,
+      "has_capacitor": true,
+      "has_resistor": false,
+      "has_zener": false
+    },
+    "B1_order": {
+      "sw_l_order": null,
+      "path_sequence": [
+        {
+          "type": "L",
+          "shunt": false
+        },
+        {
+          "type": "C",
+          "shunt": true
+        },
+        {
+          "type": "L",
+          "shunt": false
+        }
+      ],
+      "series_type_sequence": [
+        "L",
+        "L"
+      ],
+      "first_series_type": "L",
+      "shunt_type_sequence": [
+        "C"
+      ]
+    },
+    "B2_diode": {
+      "diode_anode_to_gnd": false,
+      "diode_cathode_to_out": false,
+      "diode_anode_to_out": false,
+      "diode_cathode_to_gnd": false
+    },
+    "B3_series_parallel": {
+      "has_parallel_components": false,
+      "parallel_pairs": {},
+      "series_chain_nodes": [],
+      "series_chain_length": 0
+    },
+    "C_node": {
+      "node_count": 4,
+      "gnd_connected_parts": [
+        "C1"
+      ],
+      "high_degree_nodes": {
+        "N1": 3
+      },
+      "has_high_degree_node": true,
+      "cycle_count": 0
+    },
+    "is_hierarchical": true,
+    "n_blocks": 2,
+    "blocks": [
+      {
+        "circuit_id": "lc_t_filter_001_b0",
+        "circuit_name": "T型LCフィルタ（ローパス） [ブロック1]",
+        "description": "入出力に直列インダクタ、中央にシャントコンデンサを配置したT型ローパスフィルタ。インピーダンス整合が必要な用途に使用される。",
+        "function_tags": [
+          "filter",
+          "lowpass",
+          "lc",
+          "passive",
+          "t_filter",
+          "frequency_selective",
+          "noise_reduction"
+        ],
+        "ports": {
+          "input": "IN",
+          "output": "N1",
+          "gnd": "GND"
+        },
+        "A_component": {
+          "component_types": [
+            "C",
+            "L"
+          ],
+          "component_counts": {
+            "L": 1,
+            "C": 1
+          },
+          "has_switch": false,
+          "has_inductor": true,
+          "has_diode": false,
+          "has_capacitor": true,
+          "has_resistor": false,
+          "has_zener": false
+        },
+        "B1_order": {
+          "sw_l_order": null,
+          "path_sequence": [
+            {
+              "type": "L",
+              "shunt": false
+            },
+            {
+              "type": "C",
+              "shunt": true
+            }
+          ],
+          "series_type_sequence": [
+            "L"
+          ],
+          "first_series_type": "L",
+          "shunt_type_sequence": [
+            "C"
+          ]
+        },
+        "B2_diode": {
+          "diode_anode_to_gnd": false,
+          "diode_cathode_to_out": false,
+          "diode_anode_to_out": false,
+          "diode_cathode_to_gnd": false
+        },
+        "B3_series_parallel": {
+          "has_parallel_components": false,
+          "parallel_pairs": {},
+          "series_chain_nodes": [
+            "N1"
+          ],
+          "series_chain_length": 1
+        },
+        "C_node": {
+          "node_count": 3,
+          "gnd_connected_parts": [
+            "C1"
+          ],
+          "high_degree_nodes": {},
+          "has_high_degree_node": false,
+          "cycle_count": 0
+        }
+      },
+      {
+        "circuit_id": "lc_t_filter_001_b1",
+        "circuit_name": "T型LCフィルタ（ローパス） [ブロック2]",
+        "description": "入出力に直列インダクタ、中央にシャントコンデンサを配置したT型ローパスフィルタ。インピーダンス整合が必要な用途に使用される。",
+        "function_tags": [
+          "filter",
+          "lowpass",
+          "lc",
+          "passive",
+          "t_filter",
+          "frequency_selective",
+          "noise_reduction"
+        ],
+        "ports": {
+          "input": "N1",
+          "output": "OUT",
+          "gnd": "GND"
+        },
+        "A_component": {
+          "component_types": [
+            "L"
+          ],
+          "component_counts": {
+            "L": 1
+          },
+          "has_switch": false,
+          "has_inductor": true,
+          "has_diode": false,
+          "has_capacitor": false,
+          "has_resistor": false,
+          "has_zener": false
+        },
+        "B1_order": {
+          "sw_l_order": null,
+          "path_sequence": [
+            {
+              "type": "L",
+              "shunt": false
+            }
+          ],
+          "series_type_sequence": [
+            "L"
+          ],
+          "first_series_type": "L",
+          "shunt_type_sequence": []
+        },
+        "B2_diode": {
+          "diode_anode_to_gnd": false,
+          "diode_cathode_to_out": false,
+          "diode_anode_to_out": false,
+          "diode_cathode_to_gnd": false
+        },
+        "B3_series_parallel": {
+          "has_parallel_components": false,
+          "parallel_pairs": {},
+          "series_chain_nodes": [],
+          "series_chain_length": 0
+        },
+        "C_node": {
+          "node_count": 2,
+          "gnd_connected_parts": [],
+          "high_degree_nodes": {},
+          "has_high_degree_node": false,
+          "cycle_count": 0
+        }
+      }
+    ]
+  },
+  {
+    "circuit_id": "halfwave_rect_001",
+    "circuit_name": "半波整流回路",
+    "description": "ダイオード1本で交流の半サイクルのみを整流する回路。最も単純なAC-DC変換回路。",
+    "function_tags": [
+      "rectifier",
+      "halfwave",
+      "ac_dc",
+      "diode",
+      "power"
+    ],
+    "ports": {
+      "input": "IN",
+      "output": "N1",
+      "gnd": "GND"
+    },
+    "A_component": {
+      "component_types": [
+        "D",
+        "R"
+      ],
+      "component_counts": {
+        "D": 1,
+        "R": 1
+      },
+      "has_switch": false,
+      "has_inductor": false,
+      "has_diode": true,
+      "has_capacitor": false,
+      "has_resistor": true,
+      "has_zener": false
+    },
+    "B1_order": {
+      "sw_l_order": null,
+      "path_sequence": [
+        {
+          "type": "D",
+          "shunt": false
+        },
+        {
+          "type": "R",
+          "shunt": true
+        }
+      ],
+      "series_type_sequence": [
+        "D"
+      ],
+      "first_series_type": "D",
+      "shunt_type_sequence": [
+        "R"
+      ]
+    },
+    "B2_diode": {
+      "diode_anode_to_gnd": false,
+      "diode_cathode_to_out": true,
+      "diode_anode_to_out": false,
+      "diode_cathode_to_gnd": false
+    },
+    "B3_series_parallel": {
+      "has_parallel_components": false,
+      "parallel_pairs": {},
+      "series_chain_nodes": [
+        "N1"
+      ],
+      "series_chain_length": 1
+    },
+    "C_node": {
+      "node_count": 3,
+      "gnd_connected_parts": [
+        "R1"
+      ],
+      "high_degree_nodes": {},
+      "has_high_degree_node": false,
+      "cycle_count": 0
+    },
+    "is_hierarchical": false,
+    "n_blocks": 1,
+    "blocks": []
+  },
+  {
+    "circuit_id": "positive_clipper_001",
+    "circuit_name": "正クリッパ回路",
+    "description": "信号の正側ピークをクリップ（切り取る）する波形整形回路。ダイオードが正方向に導通したときに出力をクランプする。",
+    "function_tags": [
+      "clipper",
+      "waveform_shaping",
+      "diode",
+      "positive_clip",
+      "protection"
+    ],
+    "ports": {
+      "input": "IN",
+      "output": "N1",
+      "gnd": "GND"
+    },
+    "A_component": {
+      "component_types": [
+        "D",
+        "R"
+      ],
+      "component_counts": {
+        "R": 1,
+        "D": 1
+      },
+      "has_switch": false,
+      "has_inductor": false,
+      "has_diode": true,
+      "has_capacitor": false,
+      "has_resistor": true,
+      "has_zener": false
+    },
+    "B1_order": {
+      "sw_l_order": null,
+      "path_sequence": [
+        {
+          "type": "R",
+          "shunt": false
+        },
+        {
+          "type": "D",
+          "shunt": true
+        }
+      ],
+      "series_type_sequence": [
+        "R"
+      ],
+      "first_series_type": "R",
+      "shunt_type_sequence": [
+        "D"
+      ]
+    },
+    "B2_diode": {
+      "diode_anode_to_gnd": false,
+      "diode_cathode_to_out": false,
+      "diode_anode_to_out": true,
+      "diode_cathode_to_gnd": true
+    },
+    "B3_series_parallel": {
+      "has_parallel_components": false,
+      "parallel_pairs": {},
+      "series_chain_nodes": [
+        "N1"
+      ],
+      "series_chain_length": 1
+    },
+    "C_node": {
+      "node_count": 3,
+      "gnd_connected_parts": [
+        "D1"
+      ],
+      "high_degree_nodes": {},
+      "has_high_degree_node": false,
+      "cycle_count": 0
+    },
+    "is_hierarchical": false,
+    "n_blocks": 1,
+    "blocks": []
+  },
+  {
+    "circuit_id": "negative_clipper_001",
+    "circuit_name": "負クリッパ回路",
+    "description": "信号の負側ピークをクリップ（切り取る）する波形整形回路。ダイオードが負方向に導通したときに出力をクランプする。",
+    "function_tags": [
+      "clipper",
+      "waveform_shaping",
+      "diode",
+      "negative_clip",
+      "protection"
+    ],
+    "ports": {
+      "input": "IN",
+      "output": "N1",
+      "gnd": "GND"
+    },
+    "A_component": {
+      "component_types": [
+        "D",
+        "R"
+      ],
+      "component_counts": {
+        "R": 1,
+        "D": 1
+      },
+      "has_switch": false,
+      "has_inductor": false,
+      "has_diode": true,
+      "has_capacitor": false,
+      "has_resistor": true,
+      "has_zener": false
+    },
+    "B1_order": {
+      "sw_l_order": null,
+      "path_sequence": [
+        {
+          "type": "R",
+          "shunt": false
+        },
+        {
+          "type": "D",
+          "shunt": true
+        }
+      ],
+      "series_type_sequence": [
+        "R"
+      ],
+      "first_series_type": "R",
+      "shunt_type_sequence": [
+        "D"
+      ]
+    },
+    "B2_diode": {
+      "diode_anode_to_gnd": true,
+      "diode_cathode_to_out": true,
+      "diode_anode_to_out": false,
+      "diode_cathode_to_gnd": false
+    },
+    "B3_series_parallel": {
+      "has_parallel_components": false,
+      "parallel_pairs": {},
+      "series_chain_nodes": [
+        "N1"
+      ],
+      "series_chain_length": 1
+    },
+    "C_node": {
+      "node_count": 3,
+      "gnd_connected_parts": [
+        "D1"
+      ],
+      "high_degree_nodes": {},
+      "has_high_degree_node": false,
+      "cycle_count": 0
+    },
+    "is_hierarchical": false,
+    "n_blocks": 1,
+    "blocks": []
+  },
+  {
+    "circuit_id": "zener_regulator_001",
+    "circuit_name": "ツェナー定電圧回路",
+    "description": "ツェナーダイオードの降伏電圧を利用した定電圧回路。入力電圧が変動しても出力電圧を一定に保つ。電圧リファレンスや保護回路として使用される。",
+    "function_tags": [
+      "regulator",
+      "voltage_reference",
+      "zener",
+      "passive",
+      "protection",
+      "dc"
+    ],
+    "ports": {
+      "input": "IN",
+      "output": "N1",
+      "gnd": "GND"
+    },
+    "A_component": {
+      "component_types": [
+        "DZ",
+        "R"
+      ],
+      "component_counts": {
+        "R": 1,
+        "DZ": 1
+      },
+      "has_switch": false,
+      "has_inductor": false,
+      "has_diode": true,
+      "has_capacitor": false,
+      "has_resistor": true,
+      "has_zener": true
+    },
+    "B1_order": {
+      "sw_l_order": null,
+      "path_sequence": [
+        {
+          "type": "R",
+          "shunt": false
+        },
+        {
+          "type": "DZ",
+          "shunt": true
+        }
+      ],
+      "series_type_sequence": [
+        "R"
+      ],
+      "first_series_type": "R",
+      "shunt_type_sequence": [
+        "DZ"
+      ]
+    },
+    "B2_diode": {
+      "diode_anode_to_gnd": true,
+      "diode_cathode_to_out": true,
+      "diode_anode_to_out": false,
+      "diode_cathode_to_gnd": false
+    },
+    "B3_series_parallel": {
+      "has_parallel_components": false,
+      "parallel_pairs": {},
+      "series_chain_nodes": [
+        "N1"
+      ],
+      "series_chain_length": 1
+    },
+    "C_node": {
+      "node_count": 3,
+      "gnd_connected_parts": [
+        "DZ1"
+      ],
+      "high_degree_nodes": {},
+      "has_high_degree_node": false,
+      "cycle_count": 0
+    },
+    "is_hierarchical": false,
+    "n_blocks": 1,
+    "blocks": []
+  },
+  {
+    "circuit_id": "buck_lc_filter_001",
+    "circuit_name": "降圧チョッパ + LC出力フィルタ",
+    "description": "BuckコンバータにLC低域通過フィルタを追加した複合回路。スイッチング周波数成分をさらに低減し、出力リップルを抑える。[ブロック1: 降圧チョッパ本体（SW+D+L+C）、ブロック2: 追加LCフィルタ段]",
+    "function_tags": [
+      "converter",
+      "dc_dc",
+      "switching",
+      "step_down",
+      "power",
+      "filter",
+      "lowpass",
+      "lc",
+      "noise_reduction"
+    ],
+    "ports": {
+      "input": "VIN",
+      "output": "N3",
+      "gnd": "GND"
+    },
+    "A_component": {
+      "component_types": [
+        "C",
+        "D",
+        "L",
+        "SW"
+      ],
+      "component_counts": {
+        "SW": 1,
+        "D": 1,
+        "L": 2,
+        "C": 2
+      },
+      "has_switch": true,
+      "has_inductor": true,
+      "has_diode": true,
+      "has_capacitor": true,
+      "has_resistor": false,
+      "has_zener": false
+    },
+    "B1_order": {
+      "sw_l_order": "SW_before_L",
+      "path_sequence": [
+        {
+          "type": "SW",
+          "shunt": false
+        },
+        {
+          "type": "D",
+          "shunt": true
+        },
+        {
+          "type": "L",
+          "shunt": false
+        },
+        {
+          "type": "C",
+          "shunt": true
+        },
+        {
+          "type": "L",
+          "shunt": false
+        },
+        {
+          "type": "C",
+          "shunt": true
+        }
+      ],
+      "series_type_sequence": [
+        "SW",
+        "L",
+        "L"
+      ],
+      "first_series_type": "SW",
+      "shunt_type_sequence": [
+        "D",
+        "C",
+        "C"
+      ]
+    },
+    "B2_diode": {
+      "diode_anode_to_gnd": true,
+      "diode_cathode_to_out": false,
+      "diode_anode_to_out": false,
+      "diode_cathode_to_gnd": false
+    },
+    "B3_series_parallel": {
+      "has_parallel_components": false,
+      "parallel_pairs": {},
+      "series_chain_nodes": [
+        "N3"
+      ],
+      "series_chain_length": 1
+    },
+    "C_node": {
+      "node_count": 5,
+      "gnd_connected_parts": [
+        "D1",
+        "C1",
+        "C2"
+      ],
+      "high_degree_nodes": {
+        "N1": 3,
+        "GND": 3,
+        "N2": 3
+      },
+      "has_high_degree_node": true,
+      "cycle_count": 2
+    },
+    "is_hierarchical": true,
+    "n_blocks": 3,
+    "blocks": [
+      {
+        "circuit_id": "buck_lc_filter_001_b0",
+        "circuit_name": "降圧チョッパ + LC出力フィルタ [ブロック1]",
+        "description": "BuckコンバータにLC低域通過フィルタを追加した複合回路。スイッチング周波数成分をさらに低減し、出力リップルを抑える。[ブロック1: 降圧チョッパ本体（SW+D+L+C）、ブロック2: 追加LCフィルタ段]",
+        "function_tags": [
+          "converter",
+          "dc_dc",
+          "switching",
+          "step_down",
+          "power",
+          "filter",
+          "lowpass",
+          "lc",
+          "noise_reduction"
+        ],
+        "ports": {
+          "input": "VIN",
+          "output": "N1",
+          "gnd": "GND"
+        },
+        "A_component": {
+          "component_types": [
+            "D",
+            "SW"
+          ],
+          "component_counts": {
+            "SW": 1,
+            "D": 1
+          },
+          "has_switch": true,
+          "has_inductor": false,
+          "has_diode": true,
+          "has_capacitor": false,
+          "has_resistor": false,
+          "has_zener": false
+        },
+        "B1_order": {
+          "sw_l_order": null,
+          "path_sequence": [
+            {
+              "type": "SW",
+              "shunt": false
+            },
+            {
+              "type": "D",
+              "shunt": true
+            }
+          ],
+          "series_type_sequence": [
+            "SW"
+          ],
+          "first_series_type": "SW",
+          "shunt_type_sequence": [
+            "D"
+          ]
+        },
+        "B2_diode": {
+          "diode_anode_to_gnd": true,
+          "diode_cathode_to_out": true,
+          "diode_anode_to_out": false,
+          "diode_cathode_to_gnd": false
+        },
+        "B3_series_parallel": {
+          "has_parallel_components": false,
+          "parallel_pairs": {},
+          "series_chain_nodes": [
+            "N1"
+          ],
+          "series_chain_length": 1
+        },
+        "C_node": {
+          "node_count": 3,
+          "gnd_connected_parts": [
+            "D1"
+          ],
+          "high_degree_nodes": {},
+          "has_high_degree_node": false,
+          "cycle_count": 0
+        }
+      },
+      {
+        "circuit_id": "buck_lc_filter_001_b1",
+        "circuit_name": "降圧チョッパ + LC出力フィルタ [ブロック2]",
+        "description": "BuckコンバータにLC低域通過フィルタを追加した複合回路。スイッチング周波数成分をさらに低減し、出力リップルを抑える。[ブロック1: 降圧チョッパ本体（SW+D+L+C）、ブロック2: 追加LCフィルタ段]",
+        "function_tags": [
+          "converter",
+          "dc_dc",
+          "switching",
+          "step_down",
+          "power",
+          "filter",
+          "lowpass",
+          "lc",
+          "noise_reduction"
+        ],
+        "ports": {
+          "input": "N1",
+          "output": "N2",
+          "gnd": "GND"
+        },
+        "A_component": {
+          "component_types": [
+            "C",
+            "L"
+          ],
+          "component_counts": {
+            "L": 1,
+            "C": 1
+          },
+          "has_switch": false,
+          "has_inductor": true,
+          "has_diode": false,
+          "has_capacitor": true,
+          "has_resistor": false,
+          "has_zener": false
+        },
+        "B1_order": {
+          "sw_l_order": null,
+          "path_sequence": [
+            {
+              "type": "L",
+              "shunt": false
+            },
+            {
+              "type": "C",
+              "shunt": true
+            }
+          ],
+          "series_type_sequence": [
+            "L"
+          ],
+          "first_series_type": "L",
+          "shunt_type_sequence": [
+            "C"
+          ]
+        },
+        "B2_diode": {
+          "diode_anode_to_gnd": false,
+          "diode_cathode_to_out": false,
+          "diode_anode_to_out": false,
+          "diode_cathode_to_gnd": false
+        },
+        "B3_series_parallel": {
+          "has_parallel_components": false,
+          "parallel_pairs": {},
+          "series_chain_nodes": [
+            "N2"
+          ],
+          "series_chain_length": 1
+        },
+        "C_node": {
+          "node_count": 3,
+          "gnd_connected_parts": [
+            "C1"
+          ],
+          "high_degree_nodes": {},
+          "has_high_degree_node": false,
+          "cycle_count": 0
+        }
+      },
+      {
+        "circuit_id": "buck_lc_filter_001_b2",
+        "circuit_name": "降圧チョッパ + LC出力フィルタ [ブロック3]",
+        "description": "BuckコンバータにLC低域通過フィルタを追加した複合回路。スイッチング周波数成分をさらに低減し、出力リップルを抑える。[ブロック1: 降圧チョッパ本体（SW+D+L+C）、ブロック2: 追加LCフィルタ段]",
+        "function_tags": [
+          "converter",
+          "dc_dc",
+          "switching",
+          "step_down",
+          "power",
+          "filter",
+          "lowpass",
+          "lc",
+          "noise_reduction"
+        ],
+        "ports": {
+          "input": "N2",
+          "output": "N3",
+          "gnd": "GND"
+        },
+        "A_component": {
+          "component_types": [
+            "C",
+            "L"
+          ],
+          "component_counts": {
+            "L": 1,
+            "C": 1
+          },
+          "has_switch": false,
+          "has_inductor": true,
+          "has_diode": false,
+          "has_capacitor": true,
+          "has_resistor": false,
+          "has_zener": false
+        },
+        "B1_order": {
+          "sw_l_order": null,
+          "path_sequence": [
+            {
+              "type": "L",
+              "shunt": false
+            },
+            {
+              "type": "C",
+              "shunt": true
+            }
+          ],
+          "series_type_sequence": [
+            "L"
+          ],
+          "first_series_type": "L",
+          "shunt_type_sequence": [
+            "C"
+          ]
+        },
+        "B2_diode": {
+          "diode_anode_to_gnd": false,
+          "diode_cathode_to_out": false,
+          "diode_anode_to_out": false,
+          "diode_cathode_to_gnd": false
+        },
+        "B3_series_parallel": {
+          "has_parallel_components": false,
+          "parallel_pairs": {},
+          "series_chain_nodes": [
+            "N3"
+          ],
+          "series_chain_length": 1
+        },
+        "C_node": {
+          "node_count": 3,
+          "gnd_connected_parts": [
+            "C2"
+          ],
+          "high_degree_nodes": {},
+          "has_high_degree_node": false,
+          "cycle_count": 0
+        }
+      }
+    ]
+  },
+  {
+    "circuit_id": "rc_cascade_lpf_001",
+    "circuit_name": "RC 2段カスケードローパスフィルタ",
+    "description": "RCローパスフィルタを2段縦続接続した2次フィルタ。単段より急峻な減衰特性を持つ。[ブロック1: 1段目RC、ブロック2: 2段目RC]",
+    "function_tags": [
+      "filter",
+      "lowpass",
+      "rc",
+      "passive",
+      "frequency_selective",
+      "second_order",
+      "cascade"
+    ],
+    "ports": {
+      "input": "IN",
+      "output": "OUT",
+      "gnd": "GND"
+    },
+    "A_component": {
+      "component_types": [
+        "C",
+        "R"
+      ],
+      "component_counts": {
+        "R": 2,
+        "C": 2
+      },
+      "has_switch": false,
+      "has_inductor": false,
+      "has_diode": false,
+      "has_capacitor": true,
+      "has_resistor": true,
+      "has_zener": false
+    },
+    "B1_order": {
+      "sw_l_order": null,
+      "path_sequence": [
+        {
+          "type": "R",
+          "shunt": false
+        },
+        {
+          "type": "C",
+          "shunt": true
+        },
+        {
+          "type": "R",
+          "shunt": false
+        },
+        {
+          "type": "C",
+          "shunt": true
+        }
+      ],
+      "series_type_sequence": [
+        "R",
+        "R"
+      ],
+      "first_series_type": "R",
+      "shunt_type_sequence": [
+        "C",
+        "C"
+      ]
+    },
+    "B2_diode": {
+      "diode_anode_to_gnd": false,
+      "diode_cathode_to_out": false,
+      "diode_anode_to_out": false,
+      "diode_cathode_to_gnd": false
+    },
+    "B3_series_parallel": {
+      "has_parallel_components": false,
+      "parallel_pairs": {},
+      "series_chain_nodes": [
+        "GND",
+        "OUT"
+      ],
+      "series_chain_length": 2
+    },
+    "C_node": {
+      "node_count": 4,
+      "gnd_connected_parts": [
+        "C1",
+        "C2"
+      ],
+      "high_degree_nodes": {
+        "N1": 3
+      },
+      "has_high_degree_node": true,
+      "cycle_count": 1
+    },
+    "is_hierarchical": true,
+    "n_blocks": 2,
+    "blocks": [
+      {
+        "circuit_id": "rc_cascade_lpf_001_b0",
+        "circuit_name": "RC 2段カスケードローパスフィルタ [ブロック1]",
+        "description": "RCローパスフィルタを2段縦続接続した2次フィルタ。単段より急峻な減衰特性を持つ。[ブロック1: 1段目RC、ブロック2: 2段目RC]",
+        "function_tags": [
+          "filter",
+          "lowpass",
+          "rc",
+          "passive",
+          "frequency_selective",
+          "second_order",
+          "cascade"
+        ],
+        "ports": {
+          "input": "IN",
+          "output": "N1",
+          "gnd": "GND"
+        },
+        "A_component": {
+          "component_types": [
+            "C",
+            "R"
+          ],
+          "component_counts": {
+            "R": 1,
+            "C": 1
+          },
+          "has_switch": false,
+          "has_inductor": false,
+          "has_diode": false,
+          "has_capacitor": true,
+          "has_resistor": true,
+          "has_zener": false
+        },
+        "B1_order": {
+          "sw_l_order": null,
+          "path_sequence": [
+            {
+              "type": "R",
+              "shunt": false
+            },
+            {
+              "type": "C",
+              "shunt": true
+            }
+          ],
+          "series_type_sequence": [
+            "R"
+          ],
+          "first_series_type": "R",
+          "shunt_type_sequence": [
+            "C"
+          ]
+        },
+        "B2_diode": {
+          "diode_anode_to_gnd": false,
+          "diode_cathode_to_out": false,
+          "diode_anode_to_out": false,
+          "diode_cathode_to_gnd": false
+        },
+        "B3_series_parallel": {
+          "has_parallel_components": false,
+          "parallel_pairs": {},
+          "series_chain_nodes": [
+            "N1"
+          ],
+          "series_chain_length": 1
+        },
+        "C_node": {
+          "node_count": 3,
+          "gnd_connected_parts": [
+            "C1"
+          ],
+          "high_degree_nodes": {},
+          "has_high_degree_node": false,
+          "cycle_count": 0
+        }
+      },
+      {
+        "circuit_id": "rc_cascade_lpf_001_b1",
+        "circuit_name": "RC 2段カスケードローパスフィルタ [ブロック2]",
+        "description": "RCローパスフィルタを2段縦続接続した2次フィルタ。単段より急峻な減衰特性を持つ。[ブロック1: 1段目RC、ブロック2: 2段目RC]",
+        "function_tags": [
+          "filter",
+          "lowpass",
+          "rc",
+          "passive",
+          "frequency_selective",
+          "second_order",
+          "cascade"
+        ],
+        "ports": {
+          "input": "N1",
+          "output": "OUT",
+          "gnd": "GND"
+        },
+        "A_component": {
+          "component_types": [
+            "C",
+            "R"
+          ],
+          "component_counts": {
+            "R": 1,
+            "C": 1
+          },
+          "has_switch": false,
+          "has_inductor": false,
+          "has_diode": false,
+          "has_capacitor": true,
+          "has_resistor": true,
+          "has_zener": false
+        },
+        "B1_order": {
+          "sw_l_order": null,
+          "path_sequence": [
+            {
+              "type": "R",
+              "shunt": false
+            },
+            {
+              "type": "C",
+              "shunt": true
+            }
+          ],
+          "series_type_sequence": [
+            "R"
+          ],
+          "first_series_type": "R",
+          "shunt_type_sequence": [
+            "C"
+          ]
+        },
+        "B2_diode": {
+          "diode_anode_to_gnd": false,
+          "diode_cathode_to_out": false,
+          "diode_anode_to_out": false,
+          "diode_cathode_to_gnd": false
+        },
+        "B3_series_parallel": {
+          "has_parallel_components": false,
+          "parallel_pairs": {},
+          "series_chain_nodes": [
+            "OUT"
+          ],
+          "series_chain_length": 1
+        },
+        "C_node": {
+          "node_count": 3,
+          "gnd_connected_parts": [
+            "C2"
+          ],
+          "high_degree_nodes": {},
+          "has_high_degree_node": false,
+          "cycle_count": 0
+        }
+      }
+    ]
+  },
+  {
+    "circuit_id": "sw_freewheel_001",
+    "circuit_name": "スイッチング段（SW＋フリーホイールD）",
+    "description": "降圧チョッパの入力スイッチング段。直列スイッチとフリーホイールダイオードで構成される最小スイッチング単位。",
+    "function_tags": [
+      "switching",
+      "power",
+      "dc_dc"
+    ],
+    "ports": {
+      "input": "IN",
+      "output": "OUT",
+      "gnd": "GND"
+    },
+    "A_component": {
+      "component_types": [
+        "D",
+        "SW"
+      ],
+      "component_counts": {
+        "SW": 1,
+        "D": 1
+      },
+      "has_switch": true,
+      "has_inductor": false,
+      "has_diode": true,
+      "has_capacitor": false,
+      "has_resistor": false,
+      "has_zener": false
+    },
+    "B1_order": {
+      "sw_l_order": null,
+      "path_sequence": [
+        {
+          "type": "SW",
+          "shunt": false
+        },
+        {
+          "type": "D",
+          "shunt": true
+        }
+      ],
+      "series_type_sequence": [
+        "SW"
+      ],
+      "first_series_type": "SW",
+      "shunt_type_sequence": [
+        "D"
+      ]
+    },
+    "B2_diode": {
+      "diode_anode_to_gnd": true,
+      "diode_cathode_to_out": true,
+      "diode_anode_to_out": false,
+      "diode_cathode_to_gnd": false
+    },
+    "B3_series_parallel": {
+      "has_parallel_components": false,
+      "parallel_pairs": {},
+      "series_chain_nodes": [
+        "OUT"
+      ],
+      "series_chain_length": 1
+    },
+    "C_node": {
+      "node_count": 3,
+      "gnd_connected_parts": [
+        "D1"
+      ],
+      "high_degree_nodes": {},
+      "has_high_degree_node": false,
+      "cycle_count": 0
+    },
+    "is_hierarchical": false,
+    "n_blocks": 1,
+    "blocks": []
+  },
+  {
+    "circuit_id": "boost_input_stage_001",
+    "circuit_name": "昇圧入力段（L＋SW）",
+    "description": "昇圧チョッパの入力エネルギー蓄積段。直列インダクタとシャントスイッチで構成。スイッチONでインダクタにエネルギーを蓄積し、スイッチOFFで放出する。",
+    "function_tags": [
+      "switching",
+      "power",
+      "dc_dc",
+      "energy_storage"
+    ],
+    "ports": {
+      "input": "IN",
+      "output": "OUT",
+      "gnd": "GND"
+    },
+    "A_component": {
+      "component_types": [
+        "L",
+        "SW"
+      ],
+      "component_counts": {
+        "L": 1,
+        "SW": 1
+      },
+      "has_switch": true,
+      "has_inductor": true,
+      "has_diode": false,
+      "has_capacitor": false,
+      "has_resistor": false,
+      "has_zener": false
+    },
+    "B1_order": {
+      "sw_l_order": null,
+      "path_sequence": [
+        {
+          "type": "L",
+          "shunt": false
+        },
+        {
+          "type": "SW",
+          "shunt": true
+        }
+      ],
+      "series_type_sequence": [
+        "L"
+      ],
+      "first_series_type": "L",
+      "shunt_type_sequence": [
+        "SW"
+      ]
+    },
+    "B2_diode": {
+      "diode_anode_to_gnd": false,
+      "diode_cathode_to_out": false,
+      "diode_anode_to_out": false,
+      "diode_cathode_to_gnd": false
+    },
+    "B3_series_parallel": {
+      "has_parallel_components": false,
+      "parallel_pairs": {},
+      "series_chain_nodes": [
+        "OUT"
+      ],
+      "series_chain_length": 1
+    },
+    "C_node": {
+      "node_count": 3,
+      "gnd_connected_parts": [
+        "SW1"
+      ],
+      "high_degree_nodes": {},
+      "has_high_degree_node": false,
+      "cycle_count": 0
+    },
+    "is_hierarchical": false,
+    "n_blocks": 1,
+    "blocks": []
+  },
+  {
+    "circuit_id": "rectifier_cap_stage_001",
+    "circuit_name": "整流・平滑段（D＋C）",
+    "description": "昇圧チョッパの出力整流・平滑段。順方向ダイオードで整流し、平滑コンデンサで出力電圧を保持する。",
+    "function_tags": [
+      "rectifier",
+      "smoothing",
+      "power",
+      "diode"
+    ],
+    "ports": {
+      "input": "IN",
+      "output": "OUT",
+      "gnd": "GND"
+    },
+    "A_component": {
+      "component_types": [
+        "C",
+        "D"
+      ],
+      "component_counts": {
+        "D": 1,
+        "C": 1
+      },
+      "has_switch": false,
+      "has_inductor": false,
+      "has_diode": true,
+      "has_capacitor": true,
+      "has_resistor": false,
+      "has_zener": false
+    },
+    "B1_order": {
+      "sw_l_order": null,
+      "path_sequence": [
+        {
+          "type": "D",
+          "shunt": false
+        },
+        {
+          "type": "C",
+          "shunt": true
+        }
+      ],
+      "series_type_sequence": [
+        "D"
+      ],
+      "first_series_type": "D",
+      "shunt_type_sequence": [
+        "C"
+      ]
+    },
+    "B2_diode": {
+      "diode_anode_to_gnd": false,
+      "diode_cathode_to_out": true,
+      "diode_anode_to_out": false,
+      "diode_cathode_to_gnd": false
+    },
+    "B3_series_parallel": {
+      "has_parallel_components": false,
+      "parallel_pairs": {},
+      "series_chain_nodes": [
+        "OUT"
+      ],
+      "series_chain_length": 1
+    },
+    "C_node": {
+      "node_count": 3,
+      "gnd_connected_parts": [
+        "C1"
+      ],
+      "high_degree_nodes": {},
+      "has_high_degree_node": false,
+      "cycle_count": 0
+    },
+    "is_hierarchical": false,
+    "n_blocks": 1,
+    "blocks": []
+  }
+]
