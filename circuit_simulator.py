@@ -106,18 +106,35 @@ def parse_value(v) -> float | None:
 # ngspice パス解決（環境非依存・グレースフルフォールバック）
 # ─────────────────────────────────────────────────────────
 
+# ngspice の実体は環境により実行ファイルか共有ライブラリのいずれか。
+#   - 単体インストール: ngspice / ngspice.exe（実行ファイル）
+#   - KiCad 同梱: ngspice.dll / libngspice.so / libngspice.dylib（共有ライブラリ）
+# PySpice は共有ライブラリ（NgSpiceShared）でも動作するため、両方を検出対象にする。
+_NGSPICE_FILENAMES = (
+    "ngspice.exe", "ngspice",
+    "ngspice.dll", "libngspice.dll",
+    "libngspice.so", "libngspice.dylib",
+)
+
+
 def resolve_ngspice_path() -> str | None:
     """
-    ngspice 実行ファイルの場所を以下の優先順で探索する。
-      1. 環境変数 NGSPICE_PATH（最優先）
-      2. PATH 上の ngspice
-      3. KiCad 同梱の既知パス候補（バージョン非依存にグロブ探索）
+    ngspice（実行ファイル or 共有ライブラリ）の場所を以下の優先順で探索する。
+      1. 環境変数 NGSPICE_PATH（最優先。ファイルパス or それを含むディレクトリ）
+      2. PATH 上の ngspice 実行ファイル
+      3. KiCad 同梱を含む既知パス候補（バージョン非依存にグロブ探索）
     見つからない場合は None を返す（呼び出し側で skipped_no_ngspice にする）。
     開発環境固有の絶対パスはハードコードしない。
     """
     env = os.environ.get("NGSPICE_PATH")
-    if env and os.path.exists(env):
-        return env
+    if env:
+        if os.path.isfile(env):
+            return env
+        if os.path.isdir(env):
+            for fn in _NGSPICE_FILENAMES:
+                cand = os.path.join(env, fn)
+                if os.path.isfile(cand):
+                    return cand
 
     found = shutil.which("ngspice") or shutil.which("ngspice.exe")
     if found:
@@ -128,12 +145,15 @@ def resolve_ngspice_path() -> str | None:
         os.path.expandvars(r"%LOCALAPPDATA%\Programs\KiCad"),
         "/usr/bin",
         "/usr/local/bin",
+        "/usr/lib",
+        "/Applications/KiCad/KiCad.app/Contents/Frameworks",
     ]
     patterns = []
     for base in candidates_base:
-        patterns.append(os.path.join(base, "*", "bin", "ngspice.exe"))
-        patterns.append(os.path.join(base, "ngspice.exe"))
-        patterns.append(os.path.join(base, "ngspice"))
+        for fn in _NGSPICE_FILENAMES:
+            patterns.append(os.path.join(base, "*", "bin", fn))  # KiCad/<ver>/bin/
+            patterns.append(os.path.join(base, "bin", fn))
+            patterns.append(os.path.join(base, fn))
     for pat in patterns:
         for hit in sorted(glob.glob(pat)):
             return hit
@@ -315,8 +335,35 @@ class CircuitSimulator:
         PySpice で AC 解析を実行し、(freqs, gains) を返す。
         PySpice 未インストール時は ImportError を送出（呼び出し側で捕捉）。
         """
+        # KiCad 同梱の ngspice 共有ライブラリ（ngspice.dll 等）を PySpice の
+        # NgSpiceShared が読み込めるよう環境を整える。
+        ng = resolve_ngspice_path()
+        is_shared = ng and os.path.splitext(ng)[1].lower() in (".dll", ".so", ".dylib")
+        if is_shared:
+            ng_dir = os.path.dirname(ng)
+            # PySpice に共有ライブラリの場所を明示
+            os.environ.setdefault("NGSPICE_LIBRARY_PATH", ng)
+            # SPICE_LIB_DIR 未設定だと PySpice が NGSPICE_PATH(None) を参照して落ちるため、
+            # ngspice のコードモデル/スクリプト相当ディレクトリを与えておく。
+            if "SPICE_LIB_DIR" not in os.environ:
+                root = os.path.dirname(ng_dir)            # <root>/bin → <root>
+                lib_ng = os.path.join(root, "lib", "ngspice")
+                os.environ["SPICE_LIB_DIR"] = lib_ng if os.path.isdir(lib_ng) else ng_dir
+            # 依存 DLL を解決できるよう所在ディレクトリを検索パスへ追加
+            os.environ["PATH"] = ng_dir + os.pathsep + os.environ.get("PATH", "")
+            if hasattr(os, "add_dll_directory"):
+                try:
+                    os.add_dll_directory(ng_dir)
+                except OSError:
+                    pass
+
         from PySpice.Spice.Netlist import Circuit
         from PySpice.Unit import u_V
+
+        if is_shared:
+            # 共有ライブラリの所在を環境変数から確定させる（NGSPICE_LIBRARY_PATH を反映）
+            from PySpice.Spice.NgSpice.Shared import NgSpiceShared
+            NgSpiceShared.setup_platform()
 
         c = self.circuit
         gnd = c["ports"]["gnd"]

@@ -88,28 +88,45 @@ ngspice の場所はハードコードせず、以下の順で探索する。最
 **例外を投げずにシミュレーションをスキップ**し、`simulation_type="skipped_no_ngspice"`
 を返してトポロジーのみで判定を継続する（環境構築の失敗で全体が止まらないようにする）。
 
+**重要（実機検証で判明）：KiCad は ngspice を実行ファイル（`ngspice.exe`）ではなく
+共有ライブラリ（Windows: `ngspice.dll` / Linux: `libngspice.so` / macOS: `libngspice.dylib`）
+として同梱する。** PySpice の `NgSpiceShared` はこの共有ライブラリで動作するため、
+パス解決は実行ファイルと共有ライブラリの両方を検出対象にする。
+
 ```python
+_NGSPICE_FILENAMES = (
+    "ngspice.exe", "ngspice",                 # 単体インストール（実行ファイル）
+    "ngspice.dll", "libngspice.dll",          # KiCad 同梱（Windows 共有ライブラリ）
+    "libngspice.so", "libngspice.dylib",      # Linux / macOS 共有ライブラリ
+)
+
 def resolve_ngspice_path() -> str | None:
-    # 1. 環境変数による明示指定（最優先）
-    if env := os.environ.get("NGSPICE_PATH"):
-        if os.path.exists(env):
-            return env
-    # 2. PATH 上の ngspice
-    if found := shutil.which("ngspice"):
-        return found
-    # 3. KiCad 同梱の既知パス候補（バージョン非依存にグロブ探索）
-    for base in (
-        r"C:\Program Files\KiCad",
-        os.path.expandvars(r"%LOCALAPPDATA%\Programs\KiCad"),
-    ):
-        for hit in glob.glob(os.path.join(base, "*", "bin", "ngspice.exe")):
-            return hit
+    # 1. 環境変数 NGSPICE_PATH（ファイル or ディレクトリ）
+    # 2. PATH 上の ngspice 実行ファイル
+    # 3. KiCad 同梱を含む既知パス候補（バージョン非依存にグロブ探索、上記6種を対象）
+    ...
     return None   # → 呼び出し側で skipped_no_ngspice にフォールバック
 ```
 
 > 優先順位：`NGSPICE_PATH`（環境変数）→ `PATH` → KiCad 同梱パスのグロブ探索。
-> 開発環境固有の絶対パスを設計・コードに埋め込まない。README には
-> `NGSPICE_PATH` の設定方法と ngspice 単体インストール手順を記載する。
+> 開発環境固有の絶対パスを設計・コードに埋め込まない。
+
+#### 共有ライブラリ（KiCad 同梱 ngspice.dll）で PySpice を動かす
+
+実行ファイルではなく共有ライブラリを使う場合、`_run_ac()` は PySpice が DLL を
+読み込めるよう以下を自動設定する（いずれも未設定時のみ）。
+
+- `NGSPICE_LIBRARY_PATH` … 解決した共有ライブラリのフルパス。
+- `SPICE_LIB_DIR` … `<KiCad>/lib/ngspice`（無ければ DLL のディレクトリ）。
+  PySpice 1.5 は `SPICE_LIB_DIR` 未設定時に内部の `NGSPICE_PATH(None)` を参照して
+  例外を出すため、これを与えて回避する。
+- DLL のディレクトリを `PATH` と `os.add_dll_directory()` に追加し、依存 DLL を解決する。
+- `NgSpiceShared.setup_platform()` を呼んで `NGSPICE_LIBRARY_PATH` を反映する。
+
+> 検証実績：KiCad 10.0 同梱の ngspice-46 を PySpice 1.5 経由で読み込み、
+> オープンソースの RC ローパス（R=100Ω, C=1µF）で AC 解析が成功。
+> `is_lowpass=True`・`cutoff≈1622Hz`（理論 1592Hz に対し誤差約 2%、許容 ±5% 以内）。
+> なお PySpice 1.5 は ngspice-46 を "Unsupported version" と警告するが動作する。
 
 ---
 
