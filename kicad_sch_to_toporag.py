@@ -18,28 +18,53 @@ KiCad .kicad_sch → TopoRAG query_netlists.json コンバータ
 import sys
 import os
 import re
+import glob
 import json
 import tempfile
 import subprocess
 import shutil
 from pathlib import Path
 
+from circuit_simulator import parse_value
+
 
 # ─── kicad-cli の場所 ───────────────────────────────────────
 
-_KICAD_CLI_FALLBACK = (
-    r"C:\Users\fukui\AppData\Local\Programs\KiCad\10.0\bin\kicad-cli.exe"
-)
+# KiCad 標準インストール先（バージョン非依存にグロブ探索する。環境固有パスは埋め込まない）
+_KICAD_CLI_BASES = [
+    r"C:\Program Files\KiCad",
+    os.path.expandvars(r"%LOCALAPPDATA%\Programs\KiCad"),
+    "/usr/bin",
+    "/usr/local/bin",
+    "/Applications/KiCad/KiCad.app/Contents/MacOS",
+]
 
 
 def _find_kicad_cli() -> str:
+    """
+    kicad-cli の場所を以下の順で解決する。
+      1. 環境変数 KICAD_CLI_PATH
+      2. PATH 上の kicad-cli
+      3. KiCad 標準インストール先のグロブ探索
+    """
+    env = os.environ.get("KICAD_CLI_PATH")
+    if env and os.path.exists(env):
+        return env
+
     cmd = shutil.which("kicad-cli") or shutil.which("kicad-cli.exe")
     if cmd:
         return cmd
-    if os.path.exists(_KICAD_CLI_FALLBACK):
-        return _KICAD_CLI_FALLBACK
+
+    for base in _KICAD_CLI_BASES:
+        for pat in (os.path.join(base, "*", "bin", "kicad-cli.exe"),
+                    os.path.join(base, "kicad-cli.exe"),
+                    os.path.join(base, "kicad-cli")):
+            for hit in sorted(glob.glob(pat)):
+                return hit
+
     raise FileNotFoundError(
-        "kicad-cli が見つかりません。KiCad がインストールされているか確認してください。"
+        "kicad-cli が見つかりません。KiCad がインストールされているか、"
+        "環境変数 KICAD_CLI_PATH を確認してください。"
     )
 
 
@@ -187,10 +212,14 @@ def _parse_netlist(net_path: str) -> dict:
                 for m in re.finditer(r"(\d+)=(\S+)", sim_pins):
                     pin_role.setdefault(m.group(1), m.group(2).upper())
 
+            raw_value = props.get("Value", "")
+
             components.append({
                 "ref": ref, "lib": lib, "part": part,
                 "sim_device": sim_device,
                 "pin_role": pin_role,
+                "value":     parse_value(raw_value),   # SI接頭辞を解釈した float / None
+                "value_raw": raw_value,                 # デバッグ用の元文字列
             })
 
     return {"components": components, "pin_to_net": pin_to_net}
@@ -368,7 +397,12 @@ def convert_kicad_sch(sch_path: str,
             skipped.append(f"{comp['ref']}(端子解決失敗)")
             continue
 
-        toporag_comps.append({"id": ref, "type": ttype, "terminals": terminals})
+        toporag_comps.append({
+            "id":        ref,
+            "type":      ttype,
+            "value":     comp.get("value"),   # KiCad Value プロパティ由来（None 可）
+            "terminals": terminals,
+        })
 
     if not toporag_comps:
         return None

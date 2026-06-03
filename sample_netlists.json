@@ -6,8 +6,8 @@
       "description": "抵抗とコンデンサで構成される一次ローパスフィルタ。高周波成分を減衰し低周波を通過させる。",
       "function_tags": ["filter", "lowpass", "rc", "passive", "frequency_selective"],
       "components": [
-        {"id": "R1", "type": "R", "terminals": {"p": "N1", "n": "N2"}},
-        {"id": "C1", "type": "C", "terminals": {"p": "N2", "n": "GND"}}
+        {"id": "R1", "type": "R", "value": "1k", "terminals": {"p": "N1", "n": "N2"}},
+        {"id": "C1", "type": "C", "value": "100n", "terminals": {"p": "N2", "n": "GND"}}
       ],
       "ports": {"input": "N1", "output": "N2", "gnd": "GND"}
     },
@@ -17,8 +17,8 @@
       "description": "抵抗とコンデンサで構成される一次ハイパスフィルタ。低周波・直流成分を遮断し高周波を通過させる。交流結合・DC除去にも用いられる。",
       "function_tags": ["filter", "highpass", "rc", "passive", "frequency_selective", "ac_coupling", "dc_blocking"],
       "components": [
-        {"id": "C1", "type": "C", "terminals": {"p": "N1", "n": "N2"}},
-        {"id": "R1", "type": "R", "terminals": {"p": "N2", "n": "GND"}}
+        {"id": "C1", "type": "C", "value": "100n", "terminals": {"p": "N1", "n": "N2"}},
+        {"id": "R1", "type": "R", "value": "1k", "terminals": {"p": "N2", "n": "GND"}}
       ],
       "ports": {"input": "N1", "output": "N2", "gnd": "GND"}
     },
@@ -30,8 +30,8 @@
       "components": [
         {"id": "SW1", "type": "SW", "terminals": {"p": "VIN",  "n": "N1"}},
         {"id": "D1",  "type": "D",  "terminals": {"anode": "GND", "cathode": "N1"}},
-        {"id": "L1",  "type": "L",  "terminals": {"p": "N1",  "n": "N2"}},
-        {"id": "C1",  "type": "C",  "terminals": {"p": "N2",  "n": "GND"}}
+        {"id": "L1",  "type": "L",  "value": "10u", "terminals": {"p": "N1",  "n": "N2"}},
+        {"id": "C1",  "type": "C",  "value": "100u", "terminals": {"p": "N2",  "n": "GND"}}
       ],
       "ports": {"input": "VIN", "output": "N2", "gnd": "GND"}
     },
@@ -41,10 +41,10 @@
       "description": "スイッチング方式のDC-DCコンバータ。入力電圧より高い電圧を出力する昇圧回路。",
       "function_tags": ["converter", "dc_dc", "switching", "step_up", "power"],
       "components": [
-        {"id": "L1",  "type": "L",  "terminals": {"p": "VIN", "n": "N1"}},
+        {"id": "L1",  "type": "L",  "value": "10u", "terminals": {"p": "VIN", "n": "N1"}},
         {"id": "SW1", "type": "SW", "terminals": {"p": "N1",  "n": "GND"}},
         {"id": "D1",  "type": "D",  "terminals": {"anode": "N1", "cathode": "N2"}},
-        {"id": "C1",  "type": "C",  "terminals": {"p": "N2",  "n": "GND"}}
+        {"id": "C1",  "type": "C",  "value": "100u", "terminals": {"p": "N2",  "n": "GND"}}
       ],
       "ports": {"input": "VIN", "output": "N2", "gnd": "GND"}
     },
@@ -54,8 +54,8 @@
       "description": "インダクタとコンデンサで構成されるローパスフィルタ。抵抗による損失がなく、急峻な遮断特性を持つ。電源ラインのノイズ除去にも使用される。",
       "function_tags": ["filter", "lowpass", "lc", "passive", "frequency_selective", "noise_reduction"],
       "components": [
-        {"id": "L1", "type": "L", "terminals": {"p": "VIN", "n": "N1"}},
-        {"id": "C1", "type": "C", "terminals": {"p": "N1", "n": "GND"}}
+        {"id": "L1", "type": "L", "value": "1m", "terminals": {"p": "VIN", "n": "N1"}},
+        {"id": "C1", "type": "C", "value": "100n", "terminals": {"p": "N1", "n": "GND"}}
       ],
       "ports": {"input": "VIN", "output": "N1", "gnd": "GND"}
     },
@@ -65,8 +65,8 @@
       "description": "コンデンサとインダクタで構成されるハイパスフィルタ。損失が少なく高周波帯域を効率よく通過させる。",
       "function_tags": ["filter", "highpass", "lc", "passive", "frequency_selective", "dc_blocking"],
       "components": [
-        {"id": "C1", "type": "C", "terminals": {"p": "VIN", "n": "N1"}},
-        {"id": "L1", "type": "L", "terminals": {"p": "N1", "n": "GND"}}
+        {"id": "C1", "type": "C", "value": "100n", "terminals": {"p": "VIN", "n": "N1"}},
+        {"id": "L1", "type": "L", "value": "1m", "terminals": {"p": "N1", "n": "GND"}}
       ],
       "ports": {"input": "VIN", "output": "N1", "gnd": "GND"}
     },
@@ -76,9 +76,9 @@
       "description": "抵抗・インダクタ・コンデンサで構成される直列共振型バンドパスフィルタ。共振周波数付近の信号のみを通過させる。",
       "function_tags": ["filter", "bandpass", "rlc", "passive", "frequency_selective", "resonant"],
       "components": [
-        {"id": "L1", "type": "L", "terminals": {"p": "VIN", "n": "N1"}},
-        {"id": "C1", "type": "C", "terminals": {"p": "N1", "n": "N2"}},
-        {"id": "R1", "type": "R", "terminals": {"p": "N2", "n": "GND"}}
+        {"id": "L1", "type": "L", "value": "1m", "terminals": {"p": "VIN", "n": "N1"}},
+        {"id": "C1", "type": "C", "value": "100n", "terminals": {"p": "N1", "n": "N2"}},
+        {"id": "R1", "type": "R", "value": "100", "terminals": {"p": "N2", "n": "GND"}}
       ],
       "ports": {"input": "VIN", "output": "N2", "gnd": "GND"}
     },
@@ -88,9 +88,9 @@
       "description": "抵抗・インダクタ・コンデンサで構成されるノッチ（帯域除去）フィルタ。特定周波数を選択的に除去する。ハム除去や妨害波除去に使用される。",
       "function_tags": ["filter", "notch", "bandstop", "rlc", "passive", "frequency_selective", "resonant", "noise_reduction"],
       "components": [
-        {"id": "R1", "type": "R", "terminals": {"p": "VIN", "n": "N1"}},
-        {"id": "L1", "type": "L", "terminals": {"p": "N1", "n": "N2"}},
-        {"id": "C1", "type": "C", "terminals": {"p": "N2", "n": "GND"}}
+        {"id": "R1", "type": "R", "value": "100", "terminals": {"p": "VIN", "n": "N1"}},
+        {"id": "L1", "type": "L", "value": "1m", "terminals": {"p": "N1", "n": "N2"}},
+        {"id": "C1", "type": "C", "value": "100n", "terminals": {"p": "N2", "n": "GND"}}
       ],
       "ports": {"input": "VIN", "output": "N1", "gnd": "GND"}
     },
@@ -100,9 +100,9 @@
       "description": "入出力にシャントコンデンサ、中央に直列インダクタを配置したπ型ローパスフィルタ。電源ラインのリップル除去や高周波ノイズ対策に広く使用される。",
       "function_tags": ["filter", "lowpass", "lc", "passive", "pi_filter", "frequency_selective", "noise_reduction", "power"],
       "components": [
-        {"id": "C1", "type": "C", "terminals": {"p": "IN", "n": "GND"}},
-        {"id": "L1", "type": "L", "terminals": {"p": "IN", "n": "OUT"}},
-        {"id": "C2", "type": "C", "terminals": {"p": "OUT", "n": "GND"}}
+        {"id": "C1", "type": "C", "value": "100n", "terminals": {"p": "IN", "n": "GND"}},
+        {"id": "L1", "type": "L", "value": "1m", "terminals": {"p": "IN", "n": "OUT"}},
+        {"id": "C2", "type": "C", "value": "100n", "terminals": {"p": "OUT", "n": "GND"}}
       ],
       "ports": {"input": "IN", "output": "OUT", "gnd": "GND"}
     },
@@ -112,9 +112,9 @@
       "description": "入出力に直列インダクタ、中央にシャントコンデンサを配置したT型ローパスフィルタ。インピーダンス整合が必要な用途に使用される。",
       "function_tags": ["filter", "lowpass", "lc", "passive", "t_filter", "frequency_selective", "noise_reduction"],
       "components": [
-        {"id": "L1", "type": "L", "terminals": {"p": "IN", "n": "N1"}},
-        {"id": "C1", "type": "C", "terminals": {"p": "N1", "n": "GND"}},
-        {"id": "L2", "type": "L", "terminals": {"p": "N1", "n": "OUT"}}
+        {"id": "L1", "type": "L", "value": "1m", "terminals": {"p": "IN", "n": "N1"}},
+        {"id": "C1", "type": "C", "value": "100n", "terminals": {"p": "N1", "n": "GND"}},
+        {"id": "L2", "type": "L", "value": "1m", "terminals": {"p": "N1", "n": "OUT"}}
       ],
       "ports": {"input": "IN", "output": "OUT", "gnd": "GND"}
     },
@@ -125,7 +125,7 @@
       "function_tags": ["rectifier", "halfwave", "ac_dc", "diode", "power"],
       "components": [
         {"id": "D1", "type": "D", "terminals": {"anode": "IN", "cathode": "N1"}},
-        {"id": "R1", "type": "R", "terminals": {"p": "N1", "n": "GND"}}
+        {"id": "R1", "type": "R", "value": "1k", "terminals": {"p": "N1", "n": "GND"}}
       ],
       "ports": {"input": "IN", "output": "N1", "gnd": "GND"}
     },
@@ -135,7 +135,7 @@
       "description": "信号の正側ピークをクリップ（切り取る）する波形整形回路。ダイオードが正方向に導通したときに出力をクランプする。",
       "function_tags": ["clipper", "waveform_shaping", "diode", "positive_clip", "protection"],
       "components": [
-        {"id": "R1", "type": "R", "terminals": {"p": "IN", "n": "N1"}},
+        {"id": "R1", "type": "R", "value": "1k", "terminals": {"p": "IN", "n": "N1"}},
         {"id": "D1", "type": "D", "terminals": {"anode": "N1", "cathode": "GND"}}
       ],
       "ports": {"input": "IN", "output": "N1", "gnd": "GND"}
@@ -146,7 +146,7 @@
       "description": "信号の負側ピークをクリップ（切り取る）する波形整形回路。ダイオードが負方向に導通したときに出力をクランプする。",
       "function_tags": ["clipper", "waveform_shaping", "diode", "negative_clip", "protection"],
       "components": [
-        {"id": "R1", "type": "R", "terminals": {"p": "IN", "n": "N1"}},
+        {"id": "R1", "type": "R", "value": "1k", "terminals": {"p": "IN", "n": "N1"}},
         {"id": "D1", "type": "D", "terminals": {"anode": "GND", "cathode": "N1"}}
       ],
       "ports": {"input": "IN", "output": "N1", "gnd": "GND"}
@@ -157,7 +157,7 @@
       "description": "ツェナーダイオードの降伏電圧を利用した定電圧回路。入力電圧が変動しても出力電圧を一定に保つ。電圧リファレンスや保護回路として使用される。",
       "function_tags": ["regulator", "voltage_reference", "zener", "passive", "protection", "dc"],
       "components": [
-        {"id": "R1",  "type": "R",  "terminals": {"p": "IN", "n": "N1"}},
+        {"id": "R1",  "type": "R",  "value": "1k", "terminals": {"p": "IN", "n": "N1"}},
         {"id": "DZ1", "type": "DZ", "terminals": {"anode": "GND", "cathode": "N1"}}
       ],
       "ports": {"input": "IN", "output": "N1", "gnd": "GND"}
@@ -170,10 +170,10 @@
       "components": [
         {"id": "SW1", "type": "SW", "terminals": {"p": "VIN", "n": "N1"}},
         {"id": "D1",  "type": "D",  "terminals": {"anode": "GND", "cathode": "N1"}},
-        {"id": "L1",  "type": "L",  "terminals": {"p": "N1",  "n": "N2"}},
-        {"id": "C1",  "type": "C",  "terminals": {"p": "N2",  "n": "GND"}},
-        {"id": "L2",  "type": "L",  "terminals": {"p": "N2",  "n": "N3"}},
-        {"id": "C2",  "type": "C",  "terminals": {"p": "N3",  "n": "GND"}}
+        {"id": "L1",  "type": "L",  "value": "10u", "terminals": {"p": "N1",  "n": "N2"}},
+        {"id": "C1",  "type": "C",  "value": "100u", "terminals": {"p": "N2",  "n": "GND"}},
+        {"id": "L2",  "type": "L",  "value": "10u", "terminals": {"p": "N2",  "n": "N3"}},
+        {"id": "C2",  "type": "C",  "value": "100u", "terminals": {"p": "N3",  "n": "GND"}}
       ],
       "ports": {"input": "VIN", "output": "N3", "gnd": "GND"}
     },
@@ -183,10 +183,10 @@
       "description": "RCローパスフィルタを2段縦続接続した2次フィルタ。単段より急峻な減衰特性を持つ。[ブロック1: 1段目RC、ブロック2: 2段目RC]",
       "function_tags": ["filter", "lowpass", "rc", "passive", "frequency_selective", "second_order", "cascade"],
       "components": [
-        {"id": "R1", "type": "R", "terminals": {"p": "IN",  "n": "N1"}},
-        {"id": "C1", "type": "C", "terminals": {"p": "N1",  "n": "GND"}},
-        {"id": "R2", "type": "R", "terminals": {"p": "N1",  "n": "OUT"}},
-        {"id": "C2", "type": "C", "terminals": {"p": "OUT", "n": "GND"}}
+        {"id": "R1", "type": "R", "value": "1k", "terminals": {"p": "IN",  "n": "N1"}},
+        {"id": "C1", "type": "C", "value": "100n", "terminals": {"p": "N1",  "n": "GND"}},
+        {"id": "R2", "type": "R", "value": "1k", "terminals": {"p": "N1",  "n": "OUT"}},
+        {"id": "C2", "type": "C", "value": "100n", "terminals": {"p": "OUT", "n": "GND"}}
       ],
       "ports": {"input": "IN", "output": "OUT", "gnd": "GND"}
     },
@@ -207,7 +207,7 @@
       "description": "昇圧チョッパの入力エネルギー蓄積段。直列インダクタとシャントスイッチで構成。スイッチONでインダクタにエネルギーを蓄積し、スイッチOFFで放出する。",
       "function_tags": ["switching", "power", "dc_dc", "energy_storage"],
       "components": [
-        {"id": "L1",  "type": "L",  "terminals": {"p": "IN",  "n": "OUT"}},
+        {"id": "L1",  "type": "L",  "value": "10u", "terminals": {"p": "IN",  "n": "OUT"}},
         {"id": "SW1", "type": "SW", "terminals": {"p": "OUT", "n": "GND"}}
       ],
       "ports": {"input": "IN", "output": "OUT", "gnd": "GND"}
@@ -219,7 +219,7 @@
       "function_tags": ["rectifier", "smoothing", "power", "diode"],
       "components": [
         {"id": "D1", "type": "D", "terminals": {"anode": "IN",  "cathode": "OUT"}},
-        {"id": "C1", "type": "C", "terminals": {"p": "OUT", "n": "GND"}}
+        {"id": "C1", "type": "C", "value": "100u", "terminals": {"p": "OUT", "n": "GND"}}
       ],
       "ports": {"input": "IN", "output": "OUT", "gnd": "GND"}
     }

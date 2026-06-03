@@ -6,12 +6,12 @@
       "description": "Boostコンバータの出力段に追加のLC低域通過フィルタを接続した複合回路。リップル低減が目的。",
       "function_tags": ["converter", "dc_dc", "switching", "step_up", "power", "filter", "lowpass", "lc"],
       "components": [
-        {"id": "L1",  "type": "L",  "terminals": {"p": "VIN", "n": "N1"}},
+        {"id": "L1",  "type": "L",  "value": "10u", "terminals": {"p": "VIN", "n": "N1"}},
         {"id": "SW1", "type": "SW", "terminals": {"p": "N1",  "n": "GND"}},
         {"id": "D1",  "type": "D",  "terminals": {"anode": "N1", "cathode": "N2"}},
-        {"id": "C1",  "type": "C",  "terminals": {"p": "N2",  "n": "GND"}},
-        {"id": "L2",  "type": "L",  "terminals": {"p": "N2",  "n": "N3"}},
-        {"id": "C2",  "type": "C",  "terminals": {"p": "N3",  "n": "GND"}}
+        {"id": "C1",  "type": "C",  "value": "100u", "terminals": {"p": "N2",  "n": "GND"}},
+        {"id": "L2",  "type": "L",  "value": "10u", "terminals": {"p": "N2",  "n": "N3"}},
+        {"id": "C2",  "type": "C",  "value": "100u", "terminals": {"p": "N3",  "n": "GND"}}
       ],
       "ports": {"input": "VIN", "output": "N3", "gnd": "GND"}
     },
@@ -21,10 +21,10 @@
       "description": "RCハイパスフィルタを2段縦続接続した2次ハイパスフィルタ。直流・低周波成分をより強く遮断する。",
       "function_tags": ["filter", "highpass", "rc", "passive", "frequency_selective", "second_order", "cascade", "dc_blocking"],
       "components": [
-        {"id": "C1", "type": "C", "terminals": {"p": "IN",  "n": "N1"}},
-        {"id": "R1", "type": "R", "terminals": {"p": "N1",  "n": "GND"}},
-        {"id": "C2", "type": "C", "terminals": {"p": "N1",  "n": "OUT"}},
-        {"id": "R2", "type": "R", "terminals": {"p": "OUT", "n": "GND"}}
+        {"id": "C1", "type": "C", "value": "100n", "terminals": {"p": "IN",  "n": "N1"}},
+        {"id": "R1", "type": "R", "value": "1k", "terminals": {"p": "N1",  "n": "GND"}},
+        {"id": "C2", "type": "C", "value": "100n", "terminals": {"p": "N1",  "n": "OUT"}},
+        {"id": "R2", "type": "R", "value": "1k", "terminals": {"p": "OUT", "n": "GND"}}
       ],
       "ports": {"input": "IN", "output": "OUT", "gnd": "GND"}
     },
@@ -34,9 +34,9 @@
       "description": "RCローパスフィルタで高周波ノイズを除去した後、ツェナーダイオードで出力電圧をクランプする複合回路。ノイズフィルタリングと過電圧保護を兼ねる。",
       "function_tags": ["filter", "lowpass", "rc", "passive", "regulator", "zener", "protection", "dc"],
       "components": [
-        {"id": "R1",  "type": "R",  "terminals": {"p": "IN", "n": "N1"}},
-        {"id": "C1",  "type": "C",  "terminals": {"p": "N1", "n": "GND"}},
-        {"id": "R2",  "type": "R",  "terminals": {"p": "N1", "n": "OUT"}},
+        {"id": "R1",  "type": "R",  "value": "1k", "terminals": {"p": "IN", "n": "N1"}},
+        {"id": "C1",  "type": "C",  "value": "100n", "terminals": {"p": "N1", "n": "GND"}},
+        {"id": "R2",  "type": "R",  "value": "1k", "terminals": {"p": "N1", "n": "OUT"}},
         {"id": "DZ1", "type": "DZ", "terminals": {"anode": "GND", "cathode": "OUT"}}
       ],
       "ports": {"input": "IN", "output": "OUT", "gnd": "GND"}

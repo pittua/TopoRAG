@@ -70,11 +70,11 @@ TopoRAG/
 ├── feature_extractor.py   特徴量抽出（グラフ解析）→ features_db.json を生成
 ├── block_decomposer.py    ブロック分解（T分岐点分割）
 ├── llm_client.py          LLM呼び出しラッパー（SDK / CLI / Mock）
+├── circuit_simulator.py    ngspice/PySpice によるAC解析（フィルタ特性の定量化・任意）
 ├── circuit_rag.py         ベクトル化・類似検索・LLM判定のメインスクリプト
 ├── sample_netlists.json   DB登録済み回路のネットリスト定義（19回路）
 ├── features_db.json       抽出済み特徴量DB（RAGの検索対象）
-├── query_netlists.json    判定したい回路のネットリスト（入力ファイル）
-└── vector_db.json         特徴量の数値ベクトル（20次元）
+└── query_netlists.json    判定したい回路のネットリスト（入力ファイル）
 ```
 
 ---
@@ -302,6 +302,24 @@ result = client.chat(system="システムプロンプト", user="ユーザーメ
 pip install numpy networkx anthropic      # Anthropic SDKを使う場合
 pip install numpy networkx google-genai   # Gemini SDKを使う場合
 pip install numpy networkx                # CLI / Mock のみなら最小構成
+pip install PySpice                        # シミュレーション解析を使う場合（任意）
+```
+
+### シミュレーション解析（任意）
+
+部品に `value`（部品値）を付けると、`circuit_rag.py` は LLM 判定の前に ngspice で
+AC 解析を行い、フィルタ特性・カットオフ周波数などをプロンプトに添えます（詳細は
+`SIMULATION_DESIGN.md`）。シミュレーション結果は RAG の類似検索には影響しません。
+
+- 必要なもの: `PySpice` と `ngspice`（KiCad に同梱）。
+- ngspice の場所は次の順で解決します: `NGSPICE_PATH`（環境変数）→ `PATH` → KiCad 同梱パス。
+- いずれも見つからない / 部品値が無い / SW・ダイオードを含む場合は**シミュレーションをスキップ**し、
+  トポロジー情報のみで判定を継続します（実行は止まりません）。
+
+```bash
+# ngspice の場所を明示する場合（PATH 上に無いとき）
+$env:NGSPICE_PATH = "C:\Program Files\KiCad\10.0\bin\ngspice.exe"   # PowerShell
+export NGSPICE_PATH=/usr/bin/ngspice                                # bash
 ```
 
 ### 基本的な実行フロー

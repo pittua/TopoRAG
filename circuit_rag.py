@@ -8,10 +8,97 @@ import json
 import numpy as np
 from feature_extractor import extract_all_features, extract_hierarchical_features
 from llm_client import LLMClient, CLILLMClient, MockLLMClient
+from circuit_simulator import CircuitSimulator
 
 
 # ─────────────────────────────────────────────────────────
-# ベクトル化（20次元）
+# シミュレーション結果のフォーマット
+# ─────────────────────────────────────────────────────────
+
+_SIM_TYPE_LABEL = {
+    "ac_passive":             "AC解析（パッシブ）",
+    "tran_nonlinear":         "過渡解析（大信号）",
+    "skipped_switch":         "スキップ（スイッチング回路）",
+    "skipped_nonlinear":      "スキップ（ダイオード/非線形・過渡解析未実装）",
+    "skipped_missing_values": "スキップ（部品値欠落）",
+    "skipped_no_ngspice":     "スキップ（ngspice/PySpice 未検出）",
+    "skipped_error":          "スキップ（解析失敗）",
+}
+
+
+def _sim_filter_label(sim: dict) -> str:
+    for flag, label in (
+        ("is_lowpass", "ローパス"), ("is_highpass", "ハイパス"),
+        ("is_bandpass", "バンドパス"), ("is_bandstop", "ノッチ/バンドストップ"),
+    ):
+        if sim.get(flag):
+            return label
+    return "特定なし"
+
+
+def _format_sim_summary(sim: dict | None) -> str:
+    """人が読めるシミュレーション要約。"""
+    if not sim:
+        return "【シミュレーション解析】\n  実行なし"
+    stype = sim.get("simulation_type", "")
+    label = _SIM_TYPE_LABEL.get(stype, stype)
+
+    if stype.startswith("skipped"):
+        reason = (sim.get("warnings") or [""])[0]
+        return f"【シミュレーション解析】\n  解析種別 : {label}\n  理由     : {reason}"
+
+    lines = [
+        "【シミュレーション解析】",
+        f"  解析種別          : {label}",
+        f"  DC 利得           : {sim.get('dc_gain_db')} dB",
+        f"  高周波利得         : {sim.get('hf_gain_db')} dB",
+        f"  フィルタ特性       : {_sim_filter_label(sim)}",
+        f"  カットオフ周波数    : {sim.get('cutoff_freq_hz')} Hz",
+        f"  共振              : {'あり' if sim.get('has_resonance') else 'なし'}",
+        f"  信頼度            : {sim.get('confidence')}",
+    ]
+    if sim.get("warnings"):
+        lines.append(f"  注意              : {', '.join(sim['warnings'])}")
+    return "\n".join(lines)
+
+
+def _format_sim_for_prompt(sim: dict | None) -> str:
+    """LLM プロンプトに挿入するシミュレーション解析セクション。"""
+    if not sim:
+        return ""
+    stype = sim.get("simulation_type", "")
+    label = _SIM_TYPE_LABEL.get(stype, stype)
+
+    if stype.startswith("skipped"):
+        reason = (sim.get("warnings") or [""])[0]
+        return (
+            "\n\n## シミュレーション解析結果\n"
+            f"  解析種別      : {label}\n"
+            f"  理由          : {reason}\n"
+            "  ※ シミュレーション値は得られていません。トポロジー情報のみで判定してください。"
+        )
+
+    lines = [
+        "\n\n## シミュレーション解析結果",
+        f"  解析種別      : {label}",
+        f"  フィルタ特性  : {_sim_filter_label(sim)}",
+        f"  DC 利得       : {sim.get('dc_gain_db')} dB",
+        f"  高周波利得    : {sim.get('hf_gain_db')} dB",
+        f"  カットオフ    : {sim.get('cutoff_freq_hz')} Hz",
+        f"  共振          : {'あり' if sim.get('has_resonance') else 'なし'}",
+        f"  信頼度        : {sim.get('confidence')}",
+    ]
+    if sim.get("warnings"):
+        lines.append(f"  注意          : {', '.join(sim['warnings'])}")
+    if sim.get("confidence") == "low":
+        lines.append(
+            "  ※ この結果は信頼度が低い（近似・境界ケース等）。"
+            "フィルタ特性フラグは参考値として扱ってください。")
+    return "\n".join(lines)
+
+
+# ─────────────────────────────────────────────────────────
+# ベクトル化（19次元）
 # ─────────────────────────────────────────────────────────
 
 def vectorize(features: dict) -> np.ndarray:
@@ -23,7 +110,6 @@ def vectorize(features: dict) -> np.ndarray:
 
     order_map = {"SW_before_L": 1.0, "L_before_SW": -1.0, None: 0.0}
     first = B1.get("first_series_type")
-    total = sum(A["component_counts"].values())
 
     return np.array([
         float(A["has_resistor"]),           # 0
@@ -31,21 +117,20 @@ def vectorize(features: dict) -> np.ndarray:
         float(A["has_inductor"]),           # 2
         float(A["has_switch"]),             # 3
         float(A["has_diode"]),              # 4
-        min(total / 10.0, 1.0),            # 5
-        order_map.get(B1["sw_l_order"], 0.0),  # 6
-        float(first == "R"),               # 7
-        float(first == "C"),               # 8
-        float(first == "L"),               # 9
-        float(B2["diode_anode_to_gnd"]),   # 10
-        float(B2["diode_cathode_to_out"]), # 11
-        float(B2["diode_anode_to_out"]),   # 12
-        float(B2["diode_cathode_to_gnd"]), # 13
-        float(B3["has_parallel_components"]),      # 14
-        min(B3["series_chain_length"] / 5.0, 1.0), # 15
-        min(C["node_count"] / 10.0, 1.0), # 16
-        float(C["has_high_degree_node"]),  # 17
-        min(C["cycle_count"] / 5.0, 1.0), # 18
-        float(A.get("has_zener", False)),  # 19
+        order_map.get(B1["sw_l_order"], 0.0),  # 5
+        float(first == "R"),               # 6
+        float(first == "C"),               # 7
+        float(first == "L"),               # 8
+        float(B2["diode_anode_to_gnd"]),   # 9
+        float(B2["diode_cathode_to_out"]), # 10
+        float(B2["diode_anode_to_out"]),   # 11
+        float(B2["diode_cathode_to_gnd"]), # 12
+        float(B3["has_parallel_components"]),      # 13
+        min(B3["series_chain_length"] / 5.0, 1.0), # 14
+        min(C["node_count"] / 10.0, 1.0), # 15
+        float(C["has_high_degree_node"]),  # 16
+        min(C["cycle_count"] / 5.0, 1.0), # 17
+        float(A.get("has_zener", False)),  # 18
     ], dtype=float)
 
 
@@ -194,24 +279,28 @@ class CircuitRAG:
                 )
         return "\n".join(lines)
 
-    def build_prompt(self, query_circuit: dict, top_k: int = 3,
-                     alpha: float = 0.7) -> tuple[str, str]:
+    def build_prompt(self, query_circuit: dict, hits: list[dict] | None = None,
+                     sim_result: dict | None = None,
+                     top_k: int = 3, alpha: float = 0.7) -> tuple[str, str]:
         q_feat = extract_hierarchical_features(query_circuit)
 
         # 複合回路はブロック単位 RAG に切り替え
         if q_feat.get("is_hierarchical") and q_feat.get("blocks"):
-            return self._build_hierarchical_prompt(q_feat, top_k=top_k, alpha=alpha)
+            return self._build_hierarchical_prompt(
+                q_feat, sim_result=sim_result, top_k=top_k, alpha=alpha)
 
-        # 単一ブロック：従来の全体照合
-        hits = self.search(q_feat, top_k=top_k, alpha=alpha)
+        # 単一ブロック：従来の全体照合（hits 未指定なら検索。二重検索を避ける）
+        if hits is None:
+            hits = self.search(q_feat, top_k=top_k, alpha=alpha)
 
         system = (
             "あなたは電子回路の専門家です。\n"
-            "与えられたネットリストの特徴量と、検索された類似回路の情報をもとに、"
+            "与えられたネットリストの特徴量、検索された類似回路の情報、"
+            "およびシミュレーション解析結果（あれば）をもとに、"
             "入力回路のトポロジー（回路種別）を判定してください。\n"
             "回答は必ず以下の形式で出力してください：\n"
             "【判定】<回路名>\n"
-            "【根拠】<接続構造に基づく理由を2〜3文>\n"
+            "【根拠】<接続構造とシミュレーション特性に基づく理由を2〜3文>\n"
             "【類似度の解釈】<検索結果との比較コメント>"
         )
 
@@ -224,11 +313,14 @@ class CircuitRAG:
         user = (
             "## 参照：類似回路（RAG検索結果）\n\n" + refs
             + "\n\n## 判定対象回路の特徴量\n\n" + self._fmt(q_feat)
+            + _format_sim_for_prompt(sim_result)
             + "\n\n上記をもとに回路のトポロジーを判定してください。"
         )
         return system, user
 
-    def _build_hierarchical_prompt(self, q_feat: dict, top_k: int = 2,
+    def _build_hierarchical_prompt(self, q_feat: dict,
+                                   sim_result: dict | None = None,
+                                   top_k: int = 2,
                                    alpha: float = 0.7) -> tuple[str, str]:
         """
         複合回路向けプロンプト。
@@ -272,20 +364,57 @@ class CircuitRAG:
             + "\n\n".join(block_sections)
             + "\n\n## 回路全体の特徴量\n\n"
             + self._fmt(q_feat)
+            + _format_sim_for_prompt(sim_result)
             + "\n\n上記ブロック照合結果から、全体回路の種別と構成を特定してください。"
         )
         return system, user
 
     # ── LLM判定 ──────────────────────────────────────────
 
-    def judge(self, circuit: dict, top_k: int = 3, alpha: float = 0.7) -> str:
+    def judge(self, circuit: dict, hits: list[dict] | None = None,
+              sim_result: dict | None = None,
+              top_k: int = 3, alpha: float = 0.7) -> str:
         if self.llm is None:
             raise RuntimeError(
                 "LLMが設定されていません。\n"
                 "CircuitRAG(llm=LLMClient('anthropic')) のように渡してください。"
             )
-        system, user = self.build_prompt(circuit, top_k=top_k, alpha=alpha)
+        system, user = self.build_prompt(
+            circuit, hits=hits, sim_result=sim_result, top_k=top_k, alpha=alpha)
         return self.llm.chat(system=system, user=user)
+
+    # ── シミュレーション統合判定 ──────────────────────────
+
+    def analyze(self, circuit: dict, top_k: int = 3, alpha: float = 0.7) -> dict:
+        """
+        シミュレーション解析 → RAG 検索 → LLM 判定 の順に実行し、結果を統合して返す。
+        RAG 検索は 1 回だけ実行し、その結果を judge() に渡す（二重検索を避ける）。
+
+        Returns:
+            {
+                "identification":     str,         # LLM による識別結果テキスト
+                "top_hits":           list[dict],  # RAG 検索上位結果
+                "simulation":         dict,        # シミュレーション特徴量
+                "simulation_summary": str,         # 人が読める要約
+            }
+        """
+        # Step 1: シミュレーション（LLM より先に実行）
+        sim_result = CircuitSimulator(circuit).extract_simulation_features()
+
+        # Step 2: RAG 検索（ここで 1 回だけ実行）
+        q_feat = extract_hierarchical_features(circuit)
+        hits = self.search(q_feat, top_k=top_k, alpha=alpha)
+
+        # Step 3: LLM 判定（検索結果とシミュレーション結果を渡す。再検索しない）
+        identification = self.judge(circuit, hits=hits, sim_result=sim_result,
+                                    top_k=top_k, alpha=alpha)
+
+        return {
+            "identification":     identification,
+            "top_hits":           hits,
+            "simulation":         sim_result,
+            "simulation_summary": _format_sim_summary(sim_result),
+        }
 
 
 # ─────────────────────────────────────────────────────────
@@ -365,8 +494,10 @@ if __name__ == "__main__":
             db_label = f"({db_blk}B)" if h["features"].get("is_hierarchical") else ""
             print(f"    [{h['rank']}位] score={h['score']:.4f}  {h['features']['circuit_name']} {db_label}")
 
-    # ── LLM判定 ──────────────────────────────────────────
-    print("\n--- LLM判定 ---")
+    # ── LLM判定（シミュレーション統合）──────────────────
+    print("\n--- LLM判定（トポロジー ＋ シミュレーション）---")
     for t in queries:
         print(f"\n{'='*55}\n入力: {t['name']}\n{'='*55}")
-        print(rag.judge(t, top_k=args.top_k, alpha=args.alpha))
+        result = rag.analyze(t, top_k=args.top_k, alpha=args.alpha)
+        print(result["identification"])
+        print("\n" + result["simulation_summary"])
