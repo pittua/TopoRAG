@@ -212,7 +212,9 @@ def _parse_netlist(net_path: str) -> dict:
                 for m in re.finditer(r"(\d+)=(\S+)", sim_pins):
                     pin_role.setdefault(m.group(1), m.group(2).upper())
 
-            raw_value = props.get("Value", "")
+            # 部品値は comp 直下の (value "...") に入る（例: "100n" / "1k" / "1N4148"）。
+            # property "Value" は古い形式向けのフォールバック。
+            raw_value = _text(comp, "value") or props.get("Value", "")
 
             components.append({
                 "ref": ref, "lib": lib, "part": part,
@@ -410,6 +412,15 @@ def convert_kicad_sch(sch_path: str,
     all_nets = set(pin_to_net.values())
     ports = _infer_ports(all_nets, pin_to_net, orig_comps)
     if ports is None:
+        return None
+
+    # 推定した入出力ポートが、残した部品の接続ノード上に存在するか検証する。
+    # （OpAmp 等をスキップした結果、ポートが能動素子側にしか繋がっていない場合は
+    #   パッシブ部品グラフと不整合になるため、変換不能として扱う）
+    comp_nodes: set[str] = set()
+    for c in toporag_comps:
+        comp_nodes.update(c["terminals"].values())
+    if ports["input"] not in comp_nodes or ports["output"] not in comp_nodes:
         return None
 
     stem = Path(sch_path).stem

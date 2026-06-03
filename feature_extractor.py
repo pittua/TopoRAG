@@ -60,9 +60,14 @@ def extract_b1_component_order(circuit: dict, G: nx.Graph) -> dict:
         "shunt_type_sequence":   [],   # GND並列部品の型リスト
     }
 
+    # ポートノードがグラフに存在しない場合（例: OpAmp 等をスキップした変換回路で
+    # 入出力が能動素子側にしか繋がっていない）は経路解析を諦めて空結果を返す。
+    if inp not in G or out not in G:
+        return result
+
     try:
         paths = list(nx.all_simple_paths(G, inp, out, cutoff=10))
-    except nx.NetworkXNoPath:
+    except (nx.NetworkXNoPath, nx.NodeNotFound):
         return result
 
     # GND を経由しないパスを優先（等長の GND 経由パスが選ばれるのを防ぐ）

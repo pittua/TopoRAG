@@ -86,6 +86,10 @@ def parse_value(v) -> float | None:
     if not s:
         return None
 
+    # ngspice 流の "名前=値" 形式（KiCad の Value 例: "c=100u", "r=5"）に対応
+    if "=" in s:
+        s = s.rsplit("=", 1)[-1].strip()
+
     m = _VALUE_RE.match(s)
     if not m:
         try:
