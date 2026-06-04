@@ -1096,6 +1096,783 @@
         "output": "/out",
         "gnd": "GND"
       }
+    },
+    {
+      "id": "class-d",
+      "name": "Class-D",
+      "description": "",
+      "components": [
+        {
+          "id": "C1",
+          "type": "C",
+          "value": 2.2e-10,
+          "terminals": {
+            "p": "/Vs",
+            "n": "Net-(C1-Pad2)"
+          }
+        },
+        {
+          "id": "C2",
+          "type": "C",
+          "value": 2.2e-06,
+          "terminals": {
+            "p": "Net-(Q3-C)",
+            "n": "/B-"
+          }
+        },
+        {
+          "id": "C3",
+          "type": "C",
+          "value": 2.2e-06,
+          "terminals": {
+            "p": "Net-(Q1-C)",
+            "n": "/Vs"
+          }
+        },
+        {
+          "id": "C4",
+          "type": "C",
+          "value": 2.2e-10,
+          "terminals": {
+            "p": "/B+",
+            "n": "Net-(C4-Pad2)"
+          }
+        },
+        {
+          "id": "C5",
+          "type": "C",
+          "value": 6.800000000000001e-07,
+          "terminals": {
+            "p": "/out",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "C6",
+          "type": "C",
+          "value": 4.4000000000000005e-09,
+          "terminals": {
+            "p": "/out",
+            "n": "/Fb2"
+          }
+        },
+        {
+          "id": "C7",
+          "type": "C",
+          "value": 1.0000000000000001e-07,
+          "terminals": {
+            "p": "Net-(C7-Pad1)",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "D1",
+          "type": "D",
+          "value": null,
+          "terminals": {
+            "anode": "/out",
+            "cathode": "/B+"
+          }
+        },
+        {
+          "id": "D2",
+          "type": "D",
+          "value": null,
+          "terminals": {
+            "anode": "Net-(D2-A)",
+            "cathode": "Net-(D2-K)"
+          }
+        },
+        {
+          "id": "D3",
+          "type": "D",
+          "value": null,
+          "terminals": {
+            "anode": "/B-",
+            "cathode": "/out"
+          }
+        },
+        {
+          "id": "D5",
+          "type": "D",
+          "value": null,
+          "terminals": {
+            "anode": "Net-(D5-A)",
+            "cathode": "Net-(D5-K)"
+          }
+        },
+        {
+          "id": "L1",
+          "type": "L",
+          "value": 1.6e-05,
+          "terminals": {
+            "p": "/Vs",
+            "n": "/out"
+          }
+        },
+        {
+          "id": "Q1",
+          "type": "NPN",
+          "value": null,
+          "terminals": {
+            "emitter": "Net-(D2-K)",
+            "base": "Net-(Q1-B)",
+            "collector": "Net-(Q1-C)"
+          }
+        },
+        {
+          "id": "Q2",
+          "type": "NMOS",
+          "value": null,
+          "terminals": {
+            "drain": "/B+",
+            "source": "/Vs",
+            "gate": "Net-(D2-A)"
+          }
+        },
+        {
+          "id": "Q3",
+          "type": "NPN",
+          "value": null,
+          "terminals": {
+            "emitter": "Net-(D5-K)",
+            "base": "Net-(Q3-B)",
+            "collector": "Net-(Q3-C)"
+          }
+        },
+        {
+          "id": "Q4",
+          "type": "PNP",
+          "value": null,
+          "terminals": {
+            "collector": "/B-",
+            "emitter": "Net-(D5-K)",
+            "base": "Net-(Q3-B)"
+          }
+        },
+        {
+          "id": "Q5",
+          "type": "PNP",
+          "value": null,
+          "terminals": {
+            "collector": "/Vs",
+            "emitter": "Net-(D2-K)",
+            "base": "Net-(Q1-B)"
+          }
+        },
+        {
+          "id": "Q6",
+          "type": "NMOS",
+          "value": null,
+          "terminals": {
+            "source": "/B-",
+            "drain": "/Vs",
+            "gate": "Net-(D5-A)"
+          }
+        },
+        {
+          "id": "R1",
+          "type": "R",
+          "value": 10.0,
+          "terminals": {
+            "p": "Net-(Q3-C)",
+            "n": "/Vcc"
+          }
+        },
+        {
+          "id": "R2",
+          "type": "R",
+          "value": 10.0,
+          "terminals": {
+            "p": "Net-(Q1-C)",
+            "n": "/Vb"
+          }
+        },
+        {
+          "id": "R3",
+          "type": "R",
+          "value": 10.0,
+          "terminals": {
+            "p": "Net-(D5-A)",
+            "n": "Net-(D5-K)"
+          }
+        },
+        {
+          "id": "R4",
+          "type": "R",
+          "value": 10.0,
+          "terminals": {
+            "p": "Net-(Q3-B)",
+            "n": "/LO"
+          }
+        },
+        {
+          "id": "R5",
+          "type": "R",
+          "value": 10.0,
+          "terminals": {
+            "p": "Net-(D5-K)",
+            "n": "Net-(Q3-B)"
+          }
+        },
+        {
+          "id": "R6",
+          "type": "R",
+          "value": 10.0,
+          "terminals": {
+            "p": "/B-",
+            "n": "Net-(C1-Pad2)"
+          }
+        },
+        {
+          "id": "R7",
+          "type": "R",
+          "value": 10.0,
+          "terminals": {
+            "p": "Net-(Q1-B)",
+            "n": "/HO"
+          }
+        },
+        {
+          "id": "R8",
+          "type": "R",
+          "value": 10.0,
+          "terminals": {
+            "p": "Net-(D2-K)",
+            "n": "Net-(Q1-B)"
+          }
+        },
+        {
+          "id": "R9",
+          "type": "R",
+          "value": 10.0,
+          "terminals": {
+            "p": "Net-(D2-A)",
+            "n": "Net-(D2-K)"
+          }
+        },
+        {
+          "id": "R10",
+          "type": "R",
+          "value": 10.0,
+          "terminals": {
+            "p": "/Vs",
+            "n": "Net-(C4-Pad2)"
+          }
+        },
+        {
+          "id": "R11",
+          "type": "R",
+          "value": 1000.0,
+          "terminals": {
+            "p": "GND",
+            "n": "/Fb2"
+          }
+        },
+        {
+          "id": "R12",
+          "type": "R",
+          "value": 10.0,
+          "terminals": {
+            "p": "Net-(C7-Pad1)",
+            "n": "/out"
+          }
+        },
+        {
+          "id": "R13",
+          "type": "R",
+          "value": 10000.0,
+          "terminals": {
+            "p": "GND",
+            "n": "/out"
+          }
+        },
+        {
+          "id": "R14",
+          "type": "R",
+          "value": 10000.0,
+          "terminals": {
+            "p": "/Vs",
+            "n": "/Fb1"
+          }
+        },
+        {
+          "id": "R15",
+          "type": "R",
+          "value": 2.0,
+          "terminals": {
+            "p": "GND",
+            "n": "/out"
+          }
+        }
+      ],
+      "ports": {
+        "input": "/B+",
+        "output": "/out",
+        "gnd": "GND"
+      }
+    },
+    {
+      "id": "hv_converter",
+      "name": "hv_converter",
+      "description": "",
+      "components": [
+        {
+          "id": "C1",
+          "type": "C",
+          "value": 1e-06,
+          "terminals": {
+            "p": "/d1",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "C2",
+          "type": "C",
+          "value": 1e-06,
+          "terminals": {
+            "p": "/d",
+            "n": "/d2"
+          }
+        },
+        {
+          "id": "C3",
+          "type": "C",
+          "value": 1e-06,
+          "terminals": {
+            "p": "/d1",
+            "n": "/d3"
+          }
+        },
+        {
+          "id": "C4",
+          "type": "C",
+          "value": 1e-06,
+          "terminals": {
+            "p": "/d2",
+            "n": "/d4"
+          }
+        },
+        {
+          "id": "C5",
+          "type": "C",
+          "value": 1e-06,
+          "terminals": {
+            "p": "/d3",
+            "n": "/d5"
+          }
+        },
+        {
+          "id": "C6",
+          "type": "C",
+          "value": 1e-06,
+          "terminals": {
+            "p": "/d4",
+            "n": "/d6"
+          }
+        },
+        {
+          "id": "C7",
+          "type": "C",
+          "value": 1e-06,
+          "terminals": {
+            "p": "/d5",
+            "n": "/d7"
+          }
+        },
+        {
+          "id": "C8",
+          "type": "C",
+          "value": 1e-06,
+          "terminals": {
+            "p": "/d6",
+            "n": "/d8"
+          }
+        },
+        {
+          "id": "C9",
+          "type": "C",
+          "value": 1e-06,
+          "terminals": {
+            "p": "/d7",
+            "n": "/out"
+          }
+        },
+        {
+          "id": "C10",
+          "type": "C",
+          "value": 1e-06,
+          "terminals": {
+            "p": "/out",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "D1",
+          "type": "D",
+          "value": null,
+          "terminals": {
+            "anode": "/d",
+            "cathode": "/d1"
+          }
+        },
+        {
+          "id": "D2",
+          "type": "D",
+          "value": null,
+          "terminals": {
+            "anode": "/d1",
+            "cathode": "/d2"
+          }
+        },
+        {
+          "id": "D3",
+          "type": "D",
+          "value": null,
+          "terminals": {
+            "anode": "/d2",
+            "cathode": "/d3"
+          }
+        },
+        {
+          "id": "D4",
+          "type": "D",
+          "value": null,
+          "terminals": {
+            "anode": "/d3",
+            "cathode": "/d4"
+          }
+        },
+        {
+          "id": "D5",
+          "type": "D",
+          "value": null,
+          "terminals": {
+            "anode": "/d4",
+            "cathode": "/d5"
+          }
+        },
+        {
+          "id": "D6",
+          "type": "D",
+          "value": null,
+          "terminals": {
+            "anode": "/d5",
+            "cathode": "/d6"
+          }
+        },
+        {
+          "id": "D7",
+          "type": "D",
+          "value": null,
+          "terminals": {
+            "anode": "/d6",
+            "cathode": "/d7"
+          }
+        },
+        {
+          "id": "D8",
+          "type": "D",
+          "value": null,
+          "terminals": {
+            "anode": "/d7",
+            "cathode": "/d8"
+          }
+        },
+        {
+          "id": "D9",
+          "type": "D",
+          "value": null,
+          "terminals": {
+            "anode": "/d8",
+            "cathode": "/out"
+          }
+        },
+        {
+          "id": "L1",
+          "type": "L",
+          "value": 2.2e-05,
+          "terminals": {
+            "p": "/pwr",
+            "n": "Net-(L1-Pad2)"
+          }
+        },
+        {
+          "id": "Q1",
+          "type": "NMOS",
+          "value": null,
+          "terminals": {
+            "drain": "/d",
+            "gate": "/g",
+            "source": "GND"
+          }
+        },
+        {
+          "id": "R1",
+          "type": "R",
+          "value": null,
+          "terminals": {
+            "p": "/out",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "RESR1",
+          "type": "R",
+          "value": 0.23,
+          "terminals": {
+            "p": "Net-(L1-Pad2)",
+            "n": "/d"
+          }
+        }
+      ],
+      "ports": {
+        "input": "/pwr",
+        "output": "/out",
+        "gnd": "GND"
+      }
+    },
+    {
+      "id": "laser_driver",
+      "name": "laser_driver",
+      "description": "",
+      "components": [
+        {
+          "id": "C1",
+          "type": "C",
+          "value": 1e-12,
+          "terminals": {
+            "p": "Net-(U1--)",
+            "n": "Net-(Q1-E)"
+          }
+        },
+        {
+          "id": "C2",
+          "type": "C",
+          "value": 1e-12,
+          "terminals": {
+            "p": "/out",
+            "n": "Net-(Q1-E)"
+          }
+        },
+        {
+          "id": "D1",
+          "type": "D",
+          "value": null,
+          "terminals": {
+            "anode": "/out",
+            "cathode": "GND"
+          }
+        },
+        {
+          "id": "Q1",
+          "type": "NPN",
+          "value": null,
+          "terminals": {
+            "base": "Net-(Q1-B)",
+            "emitter": "Net-(Q1-E)",
+            "collector": "VDD"
+          }
+        },
+        {
+          "id": "R1",
+          "type": "R",
+          "value": 220.0,
+          "terminals": {
+            "p": "Net-(U1--)",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "R2",
+          "type": "R",
+          "value": 160.0,
+          "terminals": {
+            "p": "Net-(U1-+)",
+            "n": "/in"
+          }
+        },
+        {
+          "id": "R3",
+          "type": "R",
+          "value": 220.0,
+          "terminals": {
+            "p": "Net-(Q1-E)",
+            "n": "Net-(U1--)"
+          }
+        },
+        {
+          "id": "R4",
+          "type": "R",
+          "value": 220.0,
+          "terminals": {
+            "p": "/out",
+            "n": "Net-(U1-+)"
+          }
+        },
+        {
+          "id": "R5",
+          "type": "R",
+          "value": 2.5,
+          "terminals": {
+            "p": "/out",
+            "n": "Net-(Q1-E)"
+          }
+        },
+        {
+          "id": "U1",
+          "type": "OPAMP",
+          "value": null,
+          "terminals": {
+            "in_p": "Net-(U1-+)",
+            "in_n": "Net-(U1--)",
+            "out": "Net-(Q1-B)"
+          }
+        }
+      ],
+      "ports": {
+        "input": "/in",
+        "output": "/out",
+        "gnd": "VSS"
+      }
+    },
+    {
+      "id": "royer1",
+      "name": "royer1",
+      "description": "",
+      "components": [
+        {
+          "id": "C1",
+          "type": "C",
+          "value": 3.3000000000000004e-08,
+          "terminals": {
+            "p": "/c2",
+            "n": "/c1"
+          }
+        },
+        {
+          "id": "C2",
+          "type": "C",
+          "value": 9.999999999999999e-05,
+          "terminals": {
+            "p": "+12V",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "C3",
+          "type": "C",
+          "value": 5.6e-05,
+          "terminals": {
+            "p": "GND",
+            "n": "out"
+          }
+        },
+        {
+          "id": "D1",
+          "type": "D",
+          "value": null,
+          "terminals": {
+            "anode": "GND",
+            "cathode": "Net-(D1-K)"
+          }
+        },
+        {
+          "id": "D2",
+          "type": "D",
+          "value": null,
+          "terminals": {
+            "anode": "GND",
+            "cathode": "Net-(D2-K)"
+          }
+        },
+        {
+          "id": "D3",
+          "type": "D",
+          "value": null,
+          "terminals": {
+            "anode": "Net-(D2-K)",
+            "cathode": "out"
+          }
+        },
+        {
+          "id": "D4",
+          "type": "D",
+          "value": null,
+          "terminals": {
+            "anode": "Net-(D1-K)",
+            "cathode": "out"
+          }
+        },
+        {
+          "id": "L1",
+          "type": "L",
+          "value": 1e-08,
+          "terminals": {
+            "p": "/b1",
+            "n": "/b2"
+          }
+        },
+        {
+          "id": "L2",
+          "type": "L",
+          "value": 7e-05,
+          "terminals": {
+            "p": "/c2",
+            "n": "Net-(L2-Pad2)"
+          }
+        },
+        {
+          "id": "L3",
+          "type": "L",
+          "value": 7e-05,
+          "terminals": {
+            "p": "Net-(L2-Pad2)",
+            "n": "/c1"
+          }
+        },
+        {
+          "id": "L4",
+          "type": "L",
+          "value": 2.3e-05,
+          "terminals": {
+            "p": "Net-(D2-K)",
+            "n": "Net-(D1-K)"
+          }
+        },
+        {
+          "id": "L5",
+          "type": "L",
+          "value": 0.00033,
+          "terminals": {
+            "p": "+12V",
+            "n": "Net-(L2-Pad2)"
+          }
+        },
+        {
+          "id": "R1",
+          "type": "R",
+          "value": 2200.0,
+          "terminals": {
+            "p": "+12V",
+            "n": "/b2"
+          }
+        },
+        {
+          "id": "R2",
+          "type": "R",
+          "value": 22.0,
+          "terminals": {
+            "p": "out",
+            "n": "GND"
+          }
+        }
+      ],
+      "ports": {
+        "input": "+12V",
+        "output": "out",
+        "gnd": "GND"
+      }
     }
   ]
 }

@@ -237,7 +237,11 @@ def section4_threshold(circuits: list[dict], alpha: float,
         print("  ⚠ 未知スコアが既知スコアを上回るペアがある（分離不能）。")
         print("    閾値だけでは棄却できない。特徴量の識別性能を要確認。")
     print(f"  → 推奨閾値 θ = {theta:.4f}  (中点)")
-    print(f"    circuit_rag.py の search_with_threshold(threshold={theta:.4f}) に反映可能")
+    print("  ⚠ 注意: この θ は『素のDB』の自己類似(スコア≈1.0)を基準にした LOO 近似で、")
+    print("    タグ無しの実機クエリ(トポロジーのみ ≤ alpha)には過大で全件誤棄却になる。")
+    print("    実運用の棄却閾値は reject_eval.py で実機コーパスに対し校正すること")
+    print("    （現行の校正値は circuit_rag.RECOMMENDED_REJECT_THRESHOLD、")
+    print("     CircuitRAG.search_with_rejection が使用）。")
     return theta
 
 

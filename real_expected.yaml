@@ -77,3 +77,15 @@ sallen_key:
 generic_opamp_bip:
   scope: out
   note: OpAmp の内部トランジスタ・マクロモデル試験回路。単一機能カテゴリに非該当。
+class-d:
+  scope: out
+  note: Class-D オーディオアンプ。33部品の複合回路。DB 未収録。
+hv_converter:
+  scope: out
+  note: 高電圧コンバータ（多段ダイオード倍電圧＋スイッチング）。DB 未収録。
+laser_driver:
+  scope: out
+  note: レーザドライバ（OpAmp＋NPN 定電流）。DB 未収録。
+royer1:
+  scope: out
+  note: Royer 自励発振コンバータ（SUBCKT トランジスタ）。DB 未収録。

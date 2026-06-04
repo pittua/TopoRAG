@@ -174,6 +174,12 @@ def tag_similarity(tags_a: list, tags_b: list) -> float:
     return len(a & b) / len(a | b)
 
 
+# 棄却閾値: 実機20回路(in14/out6)を reject_eval.py で校正した値（balanced acc 最大、
+# AUC 0.893）。トポロジーのみ(alpha=1.0)の top-1 スコアに対して適用する。
+# 旧 LOO 校正値(0.9786)は「素のDB」基準で実機を全棄却するため使用しない。
+RECOMMENDED_REJECT_THRESHOLD = 0.83
+
+
 # ─────────────────────────────────────────────────────────
 # CircuitRAG
 # ─────────────────────────────────────────────────────────
@@ -274,6 +280,28 @@ class CircuitRAG:
             {"rank": r + 1, "score": round(scores[i], 4), "features": self.db[i]}
             for r, (i, _) in enumerate(ranked[:top_k])
         ]
+
+    def search_with_rejection(self, query_features: dict, top_k: int = 3,
+                              alpha: float = 0.7,
+                              reject_threshold: float = RECOMMENDED_REJECT_THRESHOLD
+                              ) -> tuple[list[dict], bool, float]:
+        """
+        未知（DB 未収録）回路を棄却する検索。
+
+        棄却判定は **トポロジーのみ(alpha=1.0) の top-1 スコア** で行う。
+        これは reject_eval.py の比較で最も分離性能が高かったシグナルで（AUC 0.893）、
+        margin/ratio は実機ではほぼ無力だったため採用しない。タグ非依存にするのは、
+        実機クエリがタグを持たず、タグ込み絶対スコアが校正用DBと実機で別分布になるため。
+
+        返り値:
+          hits        : 受理時は通常検索(指定 alpha)の上位 top_k。棄却時は []（識別不能）。
+          accepted    : 受理されたか。
+          topo_conf   : 判定に用いたトポロジーのみ top-1 スコア（信頼度）。
+        """
+        topo_conf = self.search(query_features, top_k=1, alpha=1.0)[0]["score"]
+        accepted = topo_conf >= reject_threshold
+        hits = self.search(query_features, top_k=top_k, alpha=alpha) if accepted else []
+        return hits, accepted, topo_conf
 
     # ── プロンプト生成 ────────────────────────────────────
 
