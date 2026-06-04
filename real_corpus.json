@@ -944,8 +944,8 @@
       ],
       "ports": {
         "input": "Net-(R1-Pad2)",
-        "output": "GND",
-        "gnd": "VSS"
+        "output": "/lowpass",
+        "gnd": "GND"
       }
     },
     {
@@ -1733,7 +1733,7 @@
       "ports": {
         "input": "/in",
         "output": "/out",
-        "gnd": "VSS"
+        "gnd": "GND"
       }
     },
     {

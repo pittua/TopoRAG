@@ -364,19 +364,33 @@ def _build_terminals(ttype: str, pin_role: dict[str, str],
 
 # ─── ポート推定 ────────────────────────────────────────────
 
+def _gnd_priority(net: str) -> tuple:
+    """代表 GND を決定的に選ぶための優先度。GND/0 を VSS/AGND 等より優先する。"""
+    s = net.lstrip("/").upper()
+    if s in ("GND", "0"):
+        return (0, net)
+    if s in ("AGND", "DGND"):
+        return (1, net)
+    return (2, net)          # VSS など（負電源とも解釈されうるエイリアス）
+
+
 def _infer_ports(all_nets: set[str],
                  pin_to_net: dict,
                  orig_comps: list[dict]) -> dict | None:
 
-    # GND
-    gnd = next((n for n in all_nets if GND_RE.match(n)), None)
-    if not gnd:
+    # GND: GND/0/VSS/AGND/DGND 等の「接地系ネット」をすべて把握し、
+    # 代表を決定的に選ぶ（集合の反復順に依存して VSS を GND より先に選ぶと、
+    # 残った GND が出力ポートに誤って漏れる問題を防ぐ）。
+    gnd_nets = {n for n in all_nets if GND_RE.match(n)}
+    if not gnd_nets:
         return None
+    gnd = sorted(gnd_nets, key=_gnd_priority)[0]
 
-    # 電源レール（VCC/VDD/V+/V-/Vdc 等）は入出力ポート候補から除外する。
+    # 電源レール（VCC/VDD/V+/V-/Vdc 等）。接地系と合わせて入出力候補から除外する。
     rails = {n for n in all_nets if POWER_RAIL_RE.search(n)}
+    excluded = gnd_nets | rails        # 入出力ポートになり得ないネット集合
 
-    # 電圧源の + 端子ネット（信号源候補）。電源レールは除く。
+    # 電圧源の + 端子ネット（信号源候補）。接地系・電源レールは除く。
     vsrc_pos: list[str] = []
     for comp in orig_comps:
         if comp["sim_device"] == "V":
@@ -384,27 +398,28 @@ def _infer_ports(all_nets: set[str],
             role_to_pin = {v: k for k, v in comp["pin_role"].items()}
             pos_pin = role_to_pin.get("+") or role_to_pin.get("1") or "1"
             net = pin_to_net.get((ref, pos_pin))
-            if net and net != gnd and net not in rails:
+            if net and net not in excluded:
                 vsrc_pos.append(net)
 
-    # 入力: 信号名にマッチ かつ 電源レールでないネットを優先
+    # 入力: 信号名にマッチ かつ 接地系/電源レールでないネットを優先
     inp = next((n for n in sorted(all_nets)
-                if IN_RE.search(n) and n != gnd and n not in rails), None)
+                if IN_RE.search(n) and n not in excluded), None)
     if not inp:
         inp = vsrc_pos[0] if vsrc_pos else None
 
-    # 出力: 出力名にマッチ かつ GND/入力/電源レール以外
+    # 出力: 出力名にマッチ かつ 接地系/入力/電源レール以外
     out = next((n for n in sorted(all_nets)
-                if OUT_RE.search(n) and n not in (gnd, inp) and n not in rails), None)
+                if OUT_RE.search(n) and n not in excluded and n != inp), None)
 
-    # 出力が見つからない → 最多ノード接続の非 GND/入力/電源レールのネット
+    # 出力が見つからない → 最多ノード接続の非 接地系/入力/電源レールのネット
     if not out:
         degree: dict[str, int] = {}
         for net in pin_to_net.values():
-            if net not in (gnd, inp) and net not in rails:
+            if net not in excluded and net != inp:
                 degree[net] = degree.get(net, 0) + 1
         if degree:
-            out = max(degree, key=lambda n: degree[n])
+            # 次数が同点の場合に備え、名前順で決定的に選ぶ
+            out = max(sorted(degree), key=lambda n: degree[n])
 
     if inp and out and gnd and inp != out:
         return {"input": inp, "output": out, "gnd": gnd}
