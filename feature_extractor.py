@@ -162,11 +162,17 @@ def extract_b1_component_order(circuit: dict, G: nx.Graph) -> dict:
 def extract_b2_diode_orientation(circuit: dict) -> dict:
     gnd = circuit["ports"]["gnd"]
     out = circuit["ports"]["output"]
+    inp = circuit["ports"].get("input")
     result = {
         "diode_anode_to_gnd":   False,
         "diode_cathode_to_out": False,
         "diode_anode_to_out":   False,
         "diode_cathode_to_gnd": False,
+        # ── 役割ベース（整流/クリッパ/平滑の識別用）──────────
+        "diode_series":     False,  # 信号経路上の直列ダイオード（両端とも非GND）
+        "diode_anode_at_input": False,  # アノードが入力ポート（真の整流段）
+        "diode_shunt":      False,  # 片端のみGND（クリッパ/ツェナー型のシャント）
+        "rectifier_smoothing": False,  # 直列D ＋ 出力→GND の平滑コンデンサ
     }
     for comp in circuit["components"]:
         if comp["type"] not in ("D", "DZ"):
@@ -177,6 +183,25 @@ def extract_b2_diode_orientation(circuit: dict) -> dict:
         if cathode == out: result["diode_cathode_to_out"]  = True
         if anode   == out: result["diode_anode_to_out"]    = True
         if cathode == gnd: result["diode_cathode_to_gnd"]  = True
+
+        at_gnd = (anode == gnd) + (cathode == gnd)
+        if at_gnd == 0:
+            result["diode_series"] = True
+        elif at_gnd == 1:
+            result["diode_shunt"] = True
+        if anode == inp:
+            result["diode_anode_at_input"] = True
+
+    # 平滑コンデンサ: 直列ダイオードがある場合に限り、出力→GND の C を検出する。
+    # （直列D を条件にすることで素の RC ローパス等への誤発火を防ぐ＝非ダイオード回路は不変）
+    if result["diode_series"]:
+        for comp in circuit["components"]:
+            if comp["type"] != "C":
+                continue
+            nets = set(comp["terminals"].values())
+            if out in nets and gnd in nets:
+                result["rectifier_smoothing"] = True
+                break
     return result
 
 

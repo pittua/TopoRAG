@@ -154,6 +154,10 @@ def vectorize(features: dict) -> np.ndarray:
         float(D.get("has_diode_connected", False)), # 31  ダイオード接続（カレントミラー）
         float(D.get("has_coupled_pair", False)),    # 32  結合ペア（差動/ロングテール）
         float(D.get("is_differential", False)),     # 33  差動（2入力）
+        float(B2.get("diode_series", False)),         # 34  直列ダイオード（整流/昇圧の本線）
+        float(B2.get("diode_anode_at_input", False)), # 35  アノード＝入力（真の整流段）
+        float(B2.get("diode_shunt", False)),          # 36  シャントダイオード（クリッパ/ツェナー）
+        float(B2.get("rectifier_smoothing", False)),  # 37  整流＋出力平滑コンデンサ
     ], dtype=float)
 
 

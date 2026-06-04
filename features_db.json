@@ -59,7 +59,11 @@
       "diode_anode_to_gnd": false,
       "diode_cathode_to_out": false,
       "diode_anode_to_out": false,
-      "diode_cathode_to_gnd": false
+      "diode_cathode_to_gnd": false,
+      "diode_series": false,
+      "diode_anode_at_input": false,
+      "diode_shunt": false,
+      "rectifier_smoothing": false
     },
     "B3_series_parallel": {
       "has_parallel_components": false,
@@ -160,7 +164,11 @@
       "diode_anode_to_gnd": false,
       "diode_cathode_to_out": false,
       "diode_anode_to_out": false,
-      "diode_cathode_to_gnd": false
+      "diode_cathode_to_gnd": false,
+      "diode_series": false,
+      "diode_anode_at_input": false,
+      "diode_shunt": false,
+      "rectifier_smoothing": false
     },
     "B3_series_parallel": {
       "has_parallel_components": false,
@@ -273,7 +281,11 @@
       "diode_anode_to_gnd": true,
       "diode_cathode_to_out": false,
       "diode_anode_to_out": false,
-      "diode_cathode_to_gnd": false
+      "diode_cathode_to_gnd": false,
+      "diode_series": false,
+      "diode_anode_at_input": false,
+      "diode_shunt": true,
+      "rectifier_smoothing": false
     },
     "B3_series_parallel": {
       "has_parallel_components": false,
@@ -375,7 +387,11 @@
           "diode_anode_to_gnd": true,
           "diode_cathode_to_out": true,
           "diode_anode_to_out": false,
-          "diode_cathode_to_gnd": false
+          "diode_cathode_to_gnd": false,
+          "diode_series": false,
+          "diode_anode_at_input": false,
+          "diode_shunt": true,
+          "rectifier_smoothing": false
         },
         "B3_series_parallel": {
           "has_parallel_components": false,
@@ -471,7 +487,11 @@
           "diode_anode_to_gnd": false,
           "diode_cathode_to_out": false,
           "diode_anode_to_out": false,
-          "diode_cathode_to_gnd": false
+          "diode_cathode_to_gnd": false,
+          "diode_series": false,
+          "diode_anode_at_input": false,
+          "diode_shunt": false,
+          "rectifier_smoothing": false
         },
         "B3_series_parallel": {
           "has_parallel_components": false,
@@ -583,7 +603,11 @@
       "diode_anode_to_gnd": false,
       "diode_cathode_to_out": true,
       "diode_anode_to_out": false,
-      "diode_cathode_to_gnd": false
+      "diode_cathode_to_gnd": false,
+      "diode_series": true,
+      "diode_anode_at_input": false,
+      "diode_shunt": false,
+      "rectifier_smoothing": true
     },
     "B3_series_parallel": {
       "has_parallel_components": false,
@@ -685,7 +709,11 @@
           "diode_anode_to_gnd": false,
           "diode_cathode_to_out": false,
           "diode_anode_to_out": false,
-          "diode_cathode_to_gnd": false
+          "diode_cathode_to_gnd": false,
+          "diode_series": false,
+          "diode_anode_at_input": false,
+          "diode_shunt": false,
+          "rectifier_smoothing": false
         },
         "B3_series_parallel": {
           "has_parallel_components": false,
@@ -781,7 +809,11 @@
           "diode_anode_to_gnd": false,
           "diode_cathode_to_out": true,
           "diode_anode_to_out": false,
-          "diode_cathode_to_gnd": false
+          "diode_cathode_to_gnd": false,
+          "diode_series": true,
+          "diode_anode_at_input": true,
+          "diode_shunt": false,
+          "rectifier_smoothing": true
         },
         "B3_series_parallel": {
           "has_parallel_components": false,
@@ -880,7 +912,11 @@
       "diode_anode_to_gnd": false,
       "diode_cathode_to_out": false,
       "diode_anode_to_out": false,
-      "diode_cathode_to_gnd": false
+      "diode_cathode_to_gnd": false,
+      "diode_series": false,
+      "diode_anode_at_input": false,
+      "diode_shunt": false,
+      "rectifier_smoothing": false
     },
     "B3_series_parallel": {
       "has_parallel_components": false,
@@ -980,7 +1016,11 @@
       "diode_anode_to_gnd": false,
       "diode_cathode_to_out": false,
       "diode_anode_to_out": false,
-      "diode_cathode_to_gnd": false
+      "diode_cathode_to_gnd": false,
+      "diode_series": false,
+      "diode_anode_at_input": false,
+      "diode_shunt": false,
+      "rectifier_smoothing": false
     },
     "B3_series_parallel": {
       "has_parallel_components": false,
@@ -1087,7 +1127,11 @@
       "diode_anode_to_gnd": false,
       "diode_cathode_to_out": false,
       "diode_anode_to_out": false,
-      "diode_cathode_to_gnd": false
+      "diode_cathode_to_gnd": false,
+      "diode_series": false,
+      "diode_anode_at_input": false,
+      "diode_shunt": false,
+      "rectifier_smoothing": false
     },
     "B3_series_parallel": {
       "has_parallel_components": false,
@@ -1186,7 +1230,11 @@
       "diode_anode_to_gnd": false,
       "diode_cathode_to_out": false,
       "diode_anode_to_out": false,
-      "diode_cathode_to_gnd": false
+      "diode_cathode_to_gnd": false,
+      "diode_series": false,
+      "diode_anode_at_input": false,
+      "diode_shunt": false,
+      "rectifier_smoothing": false
     },
     "B3_series_parallel": {
       "has_parallel_components": false,
@@ -1294,7 +1342,11 @@
       "diode_anode_to_gnd": false,
       "diode_cathode_to_out": false,
       "diode_anode_to_out": false,
-      "diode_cathode_to_gnd": false
+      "diode_cathode_to_gnd": false,
+      "diode_series": false,
+      "diode_anode_at_input": false,
+      "diode_shunt": false,
+      "rectifier_smoothing": false
     },
     "B3_series_parallel": {
       "has_parallel_components": false,
@@ -1403,7 +1455,11 @@
       "diode_anode_to_gnd": false,
       "diode_cathode_to_out": false,
       "diode_anode_to_out": false,
-      "diode_cathode_to_gnd": false
+      "diode_cathode_to_gnd": false,
+      "diode_series": false,
+      "diode_anode_at_input": false,
+      "diode_shunt": false,
+      "rectifier_smoothing": false
     },
     "B3_series_parallel": {
       "has_parallel_components": false,
@@ -1503,7 +1559,11 @@
           "diode_anode_to_gnd": false,
           "diode_cathode_to_out": false,
           "diode_anode_to_out": false,
-          "diode_cathode_to_gnd": false
+          "diode_cathode_to_gnd": false,
+          "diode_series": false,
+          "diode_anode_at_input": false,
+          "diode_shunt": false,
+          "rectifier_smoothing": false
         },
         "B3_series_parallel": {
           "has_parallel_components": false,
@@ -1593,7 +1653,11 @@
           "diode_anode_to_gnd": false,
           "diode_cathode_to_out": false,
           "diode_anode_to_out": false,
-          "diode_cathode_to_gnd": false
+          "diode_cathode_to_gnd": false,
+          "diode_series": false,
+          "diode_anode_at_input": false,
+          "diode_shunt": false,
+          "rectifier_smoothing": false
         },
         "B3_series_parallel": {
           "has_parallel_components": false,
@@ -1687,7 +1751,11 @@
       "diode_anode_to_gnd": false,
       "diode_cathode_to_out": true,
       "diode_anode_to_out": false,
-      "diode_cathode_to_gnd": false
+      "diode_cathode_to_gnd": false,
+      "diode_series": true,
+      "diode_anode_at_input": true,
+      "diode_shunt": false,
+      "rectifier_smoothing": false
     },
     "B3_series_parallel": {
       "has_parallel_components": false,
@@ -1786,7 +1854,11 @@
       "diode_anode_to_gnd": false,
       "diode_cathode_to_out": false,
       "diode_anode_to_out": true,
-      "diode_cathode_to_gnd": true
+      "diode_cathode_to_gnd": true,
+      "diode_series": false,
+      "diode_anode_at_input": false,
+      "diode_shunt": true,
+      "rectifier_smoothing": false
     },
     "B3_series_parallel": {
       "has_parallel_components": false,
@@ -1885,7 +1957,11 @@
       "diode_anode_to_gnd": true,
       "diode_cathode_to_out": true,
       "diode_anode_to_out": false,
-      "diode_cathode_to_gnd": false
+      "diode_cathode_to_gnd": false,
+      "diode_series": false,
+      "diode_anode_at_input": false,
+      "diode_shunt": true,
+      "rectifier_smoothing": false
     },
     "B3_series_parallel": {
       "has_parallel_components": false,
@@ -1985,7 +2061,11 @@
       "diode_anode_to_gnd": true,
       "diode_cathode_to_out": true,
       "diode_anode_to_out": false,
-      "diode_cathode_to_gnd": false
+      "diode_cathode_to_gnd": false,
+      "diode_series": false,
+      "diode_anode_at_input": false,
+      "diode_shunt": true,
+      "rectifier_smoothing": false
     },
     "B3_series_parallel": {
       "has_parallel_components": false,
@@ -2112,7 +2192,11 @@
       "diode_anode_to_gnd": true,
       "diode_cathode_to_out": false,
       "diode_anode_to_out": false,
-      "diode_cathode_to_gnd": false
+      "diode_cathode_to_gnd": false,
+      "diode_series": false,
+      "diode_anode_at_input": false,
+      "diode_shunt": true,
+      "rectifier_smoothing": false
     },
     "B3_series_parallel": {
       "has_parallel_components": false,
@@ -2220,7 +2304,11 @@
           "diode_anode_to_gnd": true,
           "diode_cathode_to_out": true,
           "diode_anode_to_out": false,
-          "diode_cathode_to_gnd": false
+          "diode_cathode_to_gnd": false,
+          "diode_series": false,
+          "diode_anode_at_input": false,
+          "diode_shunt": true,
+          "rectifier_smoothing": false
         },
         "B3_series_parallel": {
           "has_parallel_components": false,
@@ -2320,7 +2408,11 @@
           "diode_anode_to_gnd": false,
           "diode_cathode_to_out": false,
           "diode_anode_to_out": false,
-          "diode_cathode_to_gnd": false
+          "diode_cathode_to_gnd": false,
+          "diode_series": false,
+          "diode_anode_at_input": false,
+          "diode_shunt": false,
+          "rectifier_smoothing": false
         },
         "B3_series_parallel": {
           "has_parallel_components": false,
@@ -2420,7 +2512,11 @@
           "diode_anode_to_gnd": false,
           "diode_cathode_to_out": false,
           "diode_anode_to_out": false,
-          "diode_cathode_to_gnd": false
+          "diode_cathode_to_gnd": false,
+          "diode_series": false,
+          "diode_anode_at_input": false,
+          "diode_shunt": false,
+          "rectifier_smoothing": false
         },
         "B3_series_parallel": {
           "has_parallel_components": false,
@@ -2530,7 +2626,11 @@
       "diode_anode_to_gnd": false,
       "diode_cathode_to_out": false,
       "diode_anode_to_out": false,
-      "diode_cathode_to_gnd": false
+      "diode_cathode_to_gnd": false,
+      "diode_series": false,
+      "diode_anode_at_input": false,
+      "diode_shunt": false,
+      "rectifier_smoothing": false
     },
     "B3_series_parallel": {
       "has_parallel_components": false,
@@ -2634,7 +2734,11 @@
           "diode_anode_to_gnd": false,
           "diode_cathode_to_out": false,
           "diode_anode_to_out": false,
-          "diode_cathode_to_gnd": false
+          "diode_cathode_to_gnd": false,
+          "diode_series": false,
+          "diode_anode_at_input": false,
+          "diode_shunt": false,
+          "rectifier_smoothing": false
         },
         "B3_series_parallel": {
           "has_parallel_components": false,
@@ -2732,7 +2836,11 @@
           "diode_anode_to_gnd": false,
           "diode_cathode_to_out": false,
           "diode_anode_to_out": false,
-          "diode_cathode_to_gnd": false
+          "diode_cathode_to_gnd": false,
+          "diode_series": false,
+          "diode_anode_at_input": false,
+          "diode_shunt": false,
+          "rectifier_smoothing": false
         },
         "B3_series_parallel": {
           "has_parallel_components": false,
@@ -2828,7 +2936,11 @@
       "diode_anode_to_gnd": true,
       "diode_cathode_to_out": true,
       "diode_anode_to_out": false,
-      "diode_cathode_to_gnd": false
+      "diode_cathode_to_gnd": false,
+      "diode_series": false,
+      "diode_anode_at_input": false,
+      "diode_shunt": true,
+      "rectifier_smoothing": false
     },
     "B3_series_parallel": {
       "has_parallel_components": false,
@@ -2926,7 +3038,11 @@
       "diode_anode_to_gnd": false,
       "diode_cathode_to_out": false,
       "diode_anode_to_out": false,
-      "diode_cathode_to_gnd": false
+      "diode_cathode_to_gnd": false,
+      "diode_series": false,
+      "diode_anode_at_input": false,
+      "diode_shunt": false,
+      "rectifier_smoothing": false
     },
     "B3_series_parallel": {
       "has_parallel_components": false,
@@ -3024,7 +3140,11 @@
       "diode_anode_to_gnd": false,
       "diode_cathode_to_out": true,
       "diode_anode_to_out": false,
-      "diode_cathode_to_gnd": false
+      "diode_cathode_to_gnd": false,
+      "diode_series": true,
+      "diode_anode_at_input": true,
+      "diode_shunt": false,
+      "rectifier_smoothing": true
     },
     "B3_series_parallel": {
       "has_parallel_components": false,
@@ -3136,7 +3256,11 @@
       "diode_anode_to_gnd": false,
       "diode_cathode_to_out": false,
       "diode_anode_to_out": false,
-      "diode_cathode_to_gnd": false
+      "diode_cathode_to_gnd": false,
+      "diode_series": false,
+      "diode_anode_at_input": false,
+      "diode_shunt": false,
+      "rectifier_smoothing": false
     },
     "B3_series_parallel": {
       "has_parallel_components": false,
@@ -3260,7 +3384,11 @@
       "diode_anode_to_gnd": false,
       "diode_cathode_to_out": false,
       "diode_anode_to_out": false,
-      "diode_cathode_to_gnd": false
+      "diode_cathode_to_gnd": false,
+      "diode_series": false,
+      "diode_anode_at_input": false,
+      "diode_shunt": false,
+      "rectifier_smoothing": false
     },
     "B3_series_parallel": {
       "has_parallel_components": false,
@@ -3386,7 +3514,11 @@
       "diode_anode_to_gnd": false,
       "diode_cathode_to_out": false,
       "diode_anode_to_out": false,
-      "diode_cathode_to_gnd": false
+      "diode_cathode_to_gnd": false,
+      "diode_series": false,
+      "diode_anode_at_input": false,
+      "diode_shunt": false,
+      "rectifier_smoothing": false
     },
     "B3_series_parallel": {
       "has_parallel_components": false,
@@ -3504,7 +3636,11 @@
       "diode_anode_to_gnd": false,
       "diode_cathode_to_out": false,
       "diode_anode_to_out": false,
-      "diode_cathode_to_gnd": false
+      "diode_cathode_to_gnd": false,
+      "diode_series": false,
+      "diode_anode_at_input": false,
+      "diode_shunt": false,
+      "rectifier_smoothing": false
     },
     "B3_series_parallel": {
       "has_parallel_components": false,
@@ -3630,7 +3766,11 @@
       "diode_anode_to_gnd": false,
       "diode_cathode_to_out": false,
       "diode_anode_to_out": false,
-      "diode_cathode_to_gnd": false
+      "diode_cathode_to_gnd": false,
+      "diode_series": false,
+      "diode_anode_at_input": false,
+      "diode_shunt": false,
+      "rectifier_smoothing": false
     },
     "B3_series_parallel": {
       "has_parallel_components": false,
@@ -3734,7 +3874,11 @@
       "diode_anode_to_gnd": false,
       "diode_cathode_to_out": false,
       "diode_anode_to_out": false,
-      "diode_cathode_to_gnd": false
+      "diode_cathode_to_gnd": false,
+      "diode_series": false,
+      "diode_anode_at_input": false,
+      "diode_shunt": false,
+      "rectifier_smoothing": false
     },
     "B3_series_parallel": {
       "has_parallel_components": false,
@@ -3836,7 +3980,11 @@
       "diode_anode_to_gnd": false,
       "diode_cathode_to_out": false,
       "diode_anode_to_out": false,
-      "diode_cathode_to_gnd": false
+      "diode_cathode_to_gnd": false,
+      "diode_series": false,
+      "diode_anode_at_input": false,
+      "diode_shunt": false,
+      "rectifier_smoothing": false
     },
     "B3_series_parallel": {
       "has_parallel_components": false,
@@ -3936,7 +4084,11 @@
       "diode_anode_to_gnd": false,
       "diode_cathode_to_out": false,
       "diode_anode_to_out": false,
-      "diode_cathode_to_gnd": false
+      "diode_cathode_to_gnd": false,
+      "diode_series": false,
+      "diode_anode_at_input": false,
+      "diode_shunt": false,
+      "rectifier_smoothing": false
     },
     "B3_series_parallel": {
       "has_parallel_components": false,
@@ -4048,7 +4200,11 @@
       "diode_anode_to_gnd": false,
       "diode_cathode_to_out": false,
       "diode_anode_to_out": false,
-      "diode_cathode_to_gnd": false
+      "diode_cathode_to_gnd": false,
+      "diode_series": false,
+      "diode_anode_at_input": false,
+      "diode_shunt": false,
+      "rectifier_smoothing": false
     },
     "B3_series_parallel": {
       "has_parallel_components": false,
@@ -4187,7 +4343,11 @@
       "diode_anode_to_gnd": false,
       "diode_cathode_to_out": false,
       "diode_anode_to_out": false,
-      "diode_cathode_to_gnd": false
+      "diode_cathode_to_gnd": false,
+      "diode_series": false,
+      "diode_anode_at_input": false,
+      "diode_shunt": false,
+      "rectifier_smoothing": false
     },
     "B3_series_parallel": {
       "has_parallel_components": false,
@@ -4298,7 +4458,11 @@
       "diode_anode_to_gnd": false,
       "diode_cathode_to_out": false,
       "diode_anode_to_out": false,
-      "diode_cathode_to_gnd": false
+      "diode_cathode_to_gnd": false,
+      "diode_series": false,
+      "diode_anode_at_input": false,
+      "diode_shunt": false,
+      "rectifier_smoothing": false
     },
     "B3_series_parallel": {
       "has_parallel_components": false,
@@ -4405,7 +4569,11 @@
       "diode_anode_to_gnd": false,
       "diode_cathode_to_out": false,
       "diode_anode_to_out": false,
-      "diode_cathode_to_gnd": false
+      "diode_cathode_to_gnd": false,
+      "diode_series": false,
+      "diode_anode_at_input": false,
+      "diode_shunt": false,
+      "rectifier_smoothing": false
     },
     "B3_series_parallel": {
       "has_parallel_components": false,
