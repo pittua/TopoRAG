@@ -52,6 +52,40 @@ def build_graph(circuit: dict) -> nx.Graph:
     return G
 
 
+# ── スイッチング素子の正規化 ─────────────────────────────
+
+def switch_mosfet_ids(circuit: dict) -> set:
+    """
+    スイッチング・コンバータの開閉素子として使われている MOSFET の id 集合を返す。
+
+    増幅用 MOSFET（バイアス網で動作）と区別するため、以下を満たす場合のみ
+    「スイッチ＝SW 相当」とみなす（保守的）:
+      - 回路が L と D を含む（フリーホイール付き変換器の文脈）、かつ
+      - その MOSFET の drain か source がインダクタ端子（＝スイッチ節点）に接する。
+
+    これにより、SW でモデル化した DB コンバータと、実 MOSFET を使う実機コンバータが
+    同一の構造ベクトルに正規化される（buck/boost の表現ミスマッチを解消）。
+    増幅段の MOSFET（L/D を伴わない）や DB の SW コンバータ（FET 無し）は不変。
+    """
+    comps = circuit["components"]
+    has_L = any(c["type"] == "L" for c in comps)
+    has_D = any(c["type"] in ("D", "DZ") for c in comps)
+    if not (has_L and has_D):
+        return set()
+    ind_nets = set()
+    for c in comps:
+        if c["type"] == "L":
+            ind_nets.update(c["terminals"].values())
+    ids = set()
+    for c in comps:
+        if c["type"] not in FET_TYPES:
+            continue
+        ds = {c["terminals"].get("drain"), c["terminals"].get("source")}
+        if ds & ind_nets:
+            ids.add(c["id"])
+    return ids
+
+
 # ── A. 部品特徴 ──────────────────────────────────────────
 
 def extract_component_features(circuit: dict) -> dict:
@@ -60,19 +94,27 @@ def extract_component_features(circuit: dict) -> dict:
     for t in types:
         count[t] += 1
     type_set = set(types)
+
+    # スイッチ用途の MOSFET は「増幅用 MOSFET」ではなく「スイッチ(SW相当)」として扱う
+    sw_ids = switch_mosfet_ids(circuit)
+    amp_fets = {c["id"] for c in circuit["components"]
+                if c["type"] in FET_TYPES and c["id"] not in sw_ids}
+    has_amp_mosfet = bool(amp_fets)
+    has_other_active = bool(type_set & (ACTIVE_TYPES - FET_TYPES))
+
     return {
         "component_types":  sorted(type_set),
         "component_counts": dict(count),
-        "has_switch":    "SW" in count,
+        "has_switch":    ("SW" in count) or bool(sw_ids),
         "has_inductor":  "L"  in count,
         "has_diode":     "D"  in count or "DZ" in count,
         "has_capacitor": "C"  in count,
         "has_resistor":  "R"  in count,
         "has_zener":     "DZ" in count,
         "has_bjt":       bool(type_set & BJT_TYPES),
-        "has_mosfet":    bool(type_set & FET_TYPES),
+        "has_mosfet":    has_amp_mosfet,
         "has_opamp":     "OPAMP" in count,
-        "has_active":    bool(type_set & ACTIVE_TYPES),
+        "has_active":    has_other_active or has_amp_mosfet,
     }
 
 
@@ -393,11 +435,14 @@ def extract_active_features(circuit: dict) -> dict:
 
     transistors = []
     common_groups: dict = defaultdict(list)   # 共通端子ネット → 素子リスト
+    sw_ids = switch_mosfet_ids(circuit)        # スイッチ用途 MOSFET は能動素子に数えない
 
     for c in circuit["components"]:
         t = c["type"]
         if t not in ACTIVE_TYPES:
             continue
+        if t in FET_TYPES and c["id"] in sw_ids:
+            continue  # SW 相当（スイッチング変換器の開閉素子）→ 能動扱いしない
         result["has_active"] = True
         result["n_active"] += 1
         if t in PTYPE_TYPES:
