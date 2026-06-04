@@ -29,7 +29,11 @@
       "has_diode": false,
       "has_capacitor": true,
       "has_resistor": true,
-      "has_zener": false
+      "has_zener": false,
+      "has_bjt": false,
+      "has_mosfet": false,
+      "has_opamp": false,
+      "has_active": false
     },
     "B1_order": {
       "sw_l_order": null,
@@ -74,6 +78,22 @@
       "has_high_degree_node": false,
       "cycle_count": 0
     },
+    "D_active": {
+      "has_bjt": false,
+      "has_mosfet": false,
+      "has_opamp": false,
+      "has_active": false,
+      "n_active": 0,
+      "p_type": false,
+      "transistor_config": null,
+      "opamp_config": null,
+      "has_feedback": false,
+      "is_inverting": false,
+      "is_follower": false,
+      "has_diode_connected": false,
+      "has_coupled_pair": false,
+      "is_differential": false
+    },
     "is_hierarchical": false,
     "n_blocks": 1,
     "blocks": []
@@ -110,7 +130,11 @@
       "has_diode": false,
       "has_capacitor": true,
       "has_resistor": true,
-      "has_zener": false
+      "has_zener": false,
+      "has_bjt": false,
+      "has_mosfet": false,
+      "has_opamp": false,
+      "has_active": false
     },
     "B1_order": {
       "sw_l_order": null,
@@ -155,6 +179,22 @@
       "has_high_degree_node": false,
       "cycle_count": 0
     },
+    "D_active": {
+      "has_bjt": false,
+      "has_mosfet": false,
+      "has_opamp": false,
+      "has_active": false,
+      "n_active": 0,
+      "p_type": false,
+      "transistor_config": null,
+      "opamp_config": null,
+      "has_feedback": false,
+      "is_inverting": false,
+      "is_follower": false,
+      "has_diode_connected": false,
+      "has_coupled_pair": false,
+      "is_differential": false
+    },
     "is_hierarchical": false,
     "n_blocks": 1,
     "blocks": []
@@ -193,7 +233,11 @@
       "has_diode": true,
       "has_capacitor": true,
       "has_resistor": false,
-      "has_zener": false
+      "has_zener": false,
+      "has_bjt": false,
+      "has_mosfet": false,
+      "has_opamp": false,
+      "has_active": false
     },
     "B1_order": {
       "sw_l_order": "SW_before_L",
@@ -252,6 +296,22 @@
       "has_high_degree_node": true,
       "cycle_count": 1
     },
+    "D_active": {
+      "has_bjt": false,
+      "has_mosfet": false,
+      "has_opamp": false,
+      "has_active": false,
+      "n_active": 0,
+      "p_type": false,
+      "transistor_config": null,
+      "opamp_config": null,
+      "has_feedback": false,
+      "is_inverting": false,
+      "is_follower": false,
+      "has_diode_connected": false,
+      "has_coupled_pair": false,
+      "is_differential": false
+    },
     "is_hierarchical": true,
     "n_blocks": 2,
     "blocks": [
@@ -285,7 +345,11 @@
           "has_diode": true,
           "has_capacitor": false,
           "has_resistor": false,
-          "has_zener": false
+          "has_zener": false,
+          "has_bjt": false,
+          "has_mosfet": false,
+          "has_opamp": false,
+          "has_active": false
         },
         "B1_order": {
           "sw_l_order": null,
@@ -329,6 +393,22 @@
           "high_degree_nodes": {},
           "has_high_degree_node": false,
           "cycle_count": 0
+        },
+        "D_active": {
+          "has_bjt": false,
+          "has_mosfet": false,
+          "has_opamp": false,
+          "has_active": false,
+          "n_active": 0,
+          "p_type": false,
+          "transistor_config": null,
+          "opamp_config": null,
+          "has_feedback": false,
+          "is_inverting": false,
+          "is_follower": false,
+          "has_diode_connected": false,
+          "has_coupled_pair": false,
+          "is_differential": false
         }
       },
       {
@@ -361,7 +441,11 @@
           "has_diode": false,
           "has_capacitor": true,
           "has_resistor": false,
-          "has_zener": false
+          "has_zener": false,
+          "has_bjt": false,
+          "has_mosfet": false,
+          "has_opamp": false,
+          "has_active": false
         },
         "B1_order": {
           "sw_l_order": null,
@@ -405,6 +489,22 @@
           "high_degree_nodes": {},
           "has_high_degree_node": false,
           "cycle_count": 0
+        },
+        "D_active": {
+          "has_bjt": false,
+          "has_mosfet": false,
+          "has_opamp": false,
+          "has_active": false,
+          "n_active": 0,
+          "p_type": false,
+          "transistor_config": null,
+          "opamp_config": null,
+          "has_feedback": false,
+          "is_inverting": false,
+          "is_follower": false,
+          "has_diode_connected": false,
+          "has_coupled_pair": false,
+          "is_differential": false
         }
       }
     ]
@@ -443,7 +543,11 @@
       "has_diode": true,
       "has_capacitor": true,
       "has_resistor": false,
-      "has_zener": false
+      "has_zener": false,
+      "has_bjt": false,
+      "has_mosfet": false,
+      "has_opamp": false,
+      "has_active": false
     },
     "B1_order": {
       "sw_l_order": null,
@@ -502,6 +606,22 @@
       "has_high_degree_node": true,
       "cycle_count": 1
     },
+    "D_active": {
+      "has_bjt": false,
+      "has_mosfet": false,
+      "has_opamp": false,
+      "has_active": false,
+      "n_active": 0,
+      "p_type": false,
+      "transistor_config": null,
+      "opamp_config": null,
+      "has_feedback": false,
+      "is_inverting": false,
+      "is_follower": false,
+      "has_diode_connected": false,
+      "has_coupled_pair": false,
+      "is_differential": false
+    },
     "is_hierarchical": true,
     "n_blocks": 2,
     "blocks": [
@@ -535,7 +655,11 @@
           "has_diode": false,
           "has_capacitor": false,
           "has_resistor": false,
-          "has_zener": false
+          "has_zener": false,
+          "has_bjt": false,
+          "has_mosfet": false,
+          "has_opamp": false,
+          "has_active": false
         },
         "B1_order": {
           "sw_l_order": null,
@@ -579,6 +703,22 @@
           "high_degree_nodes": {},
           "has_high_degree_node": false,
           "cycle_count": 0
+        },
+        "D_active": {
+          "has_bjt": false,
+          "has_mosfet": false,
+          "has_opamp": false,
+          "has_active": false,
+          "n_active": 0,
+          "p_type": false,
+          "transistor_config": null,
+          "opamp_config": null,
+          "has_feedback": false,
+          "is_inverting": false,
+          "is_follower": false,
+          "has_diode_connected": false,
+          "has_coupled_pair": false,
+          "is_differential": false
         }
       },
       {
@@ -611,7 +751,11 @@
           "has_diode": true,
           "has_capacitor": true,
           "has_resistor": false,
-          "has_zener": false
+          "has_zener": false,
+          "has_bjt": false,
+          "has_mosfet": false,
+          "has_opamp": false,
+          "has_active": false
         },
         "B1_order": {
           "sw_l_order": null,
@@ -655,6 +799,22 @@
           "high_degree_nodes": {},
           "has_high_degree_node": false,
           "cycle_count": 0
+        },
+        "D_active": {
+          "has_bjt": false,
+          "has_mosfet": false,
+          "has_opamp": false,
+          "has_active": false,
+          "n_active": 0,
+          "p_type": false,
+          "transistor_config": null,
+          "opamp_config": null,
+          "has_feedback": false,
+          "is_inverting": false,
+          "is_follower": false,
+          "has_diode_connected": false,
+          "has_coupled_pair": false,
+          "is_differential": false
         }
       }
     ]
@@ -690,7 +850,11 @@
       "has_diode": false,
       "has_capacitor": true,
       "has_resistor": false,
-      "has_zener": false
+      "has_zener": false,
+      "has_bjt": false,
+      "has_mosfet": false,
+      "has_opamp": false,
+      "has_active": false
     },
     "B1_order": {
       "sw_l_order": null,
@@ -735,6 +899,22 @@
       "has_high_degree_node": false,
       "cycle_count": 0
     },
+    "D_active": {
+      "has_bjt": false,
+      "has_mosfet": false,
+      "has_opamp": false,
+      "has_active": false,
+      "n_active": 0,
+      "p_type": false,
+      "transistor_config": null,
+      "opamp_config": null,
+      "has_feedback": false,
+      "is_inverting": false,
+      "is_follower": false,
+      "has_diode_connected": false,
+      "has_coupled_pair": false,
+      "is_differential": false
+    },
     "is_hierarchical": false,
     "n_blocks": 1,
     "blocks": []
@@ -770,7 +950,11 @@
       "has_diode": false,
       "has_capacitor": true,
       "has_resistor": false,
-      "has_zener": false
+      "has_zener": false,
+      "has_bjt": false,
+      "has_mosfet": false,
+      "has_opamp": false,
+      "has_active": false
     },
     "B1_order": {
       "sw_l_order": null,
@@ -815,6 +999,22 @@
       "has_high_degree_node": false,
       "cycle_count": 0
     },
+    "D_active": {
+      "has_bjt": false,
+      "has_mosfet": false,
+      "has_opamp": false,
+      "has_active": false,
+      "n_active": 0,
+      "p_type": false,
+      "transistor_config": null,
+      "opamp_config": null,
+      "has_feedback": false,
+      "is_inverting": false,
+      "is_follower": false,
+      "has_diode_connected": false,
+      "has_coupled_pair": false,
+      "is_differential": false
+    },
     "is_hierarchical": false,
     "n_blocks": 1,
     "blocks": []
@@ -852,7 +1052,11 @@
       "has_diode": false,
       "has_capacitor": true,
       "has_resistor": true,
-      "has_zener": false
+      "has_zener": false,
+      "has_bjt": false,
+      "has_mosfet": false,
+      "has_opamp": false,
+      "has_active": false
     },
     "B1_order": {
       "sw_l_order": null,
@@ -903,6 +1107,22 @@
       "has_high_degree_node": false,
       "cycle_count": 0
     },
+    "D_active": {
+      "has_bjt": false,
+      "has_mosfet": false,
+      "has_opamp": false,
+      "has_active": false,
+      "n_active": 0,
+      "p_type": false,
+      "transistor_config": null,
+      "opamp_config": null,
+      "has_feedback": false,
+      "is_inverting": false,
+      "is_follower": false,
+      "has_diode_connected": false,
+      "has_coupled_pair": false,
+      "is_differential": false
+    },
     "is_hierarchical": false,
     "n_blocks": 1,
     "blocks": []
@@ -942,7 +1162,11 @@
       "has_diode": false,
       "has_capacitor": true,
       "has_resistor": true,
-      "has_zener": false
+      "has_zener": false,
+      "has_bjt": false,
+      "has_mosfet": false,
+      "has_opamp": false,
+      "has_active": false
     },
     "B1_order": {
       "sw_l_order": null,
@@ -982,6 +1206,22 @@
       "has_high_degree_node": false,
       "cycle_count": 0
     },
+    "D_active": {
+      "has_bjt": false,
+      "has_mosfet": false,
+      "has_opamp": false,
+      "has_active": false,
+      "n_active": 0,
+      "p_type": false,
+      "transistor_config": null,
+      "opamp_config": null,
+      "has_feedback": false,
+      "is_inverting": false,
+      "is_follower": false,
+      "has_diode_connected": false,
+      "has_coupled_pair": false,
+      "is_differential": false
+    },
     "is_hierarchical": false,
     "n_blocks": 1,
     "blocks": []
@@ -1019,7 +1259,11 @@
       "has_diode": false,
       "has_capacitor": true,
       "has_resistor": false,
-      "has_zener": false
+      "has_zener": false,
+      "has_bjt": false,
+      "has_mosfet": false,
+      "has_opamp": false,
+      "has_active": false
     },
     "B1_order": {
       "sw_l_order": null,
@@ -1072,6 +1316,22 @@
       "has_high_degree_node": false,
       "cycle_count": 1
     },
+    "D_active": {
+      "has_bjt": false,
+      "has_mosfet": false,
+      "has_opamp": false,
+      "has_active": false,
+      "n_active": 0,
+      "p_type": false,
+      "transistor_config": null,
+      "opamp_config": null,
+      "has_feedback": false,
+      "is_inverting": false,
+      "is_follower": false,
+      "has_diode_connected": false,
+      "has_coupled_pair": false,
+      "is_differential": false
+    },
     "is_hierarchical": false,
     "n_blocks": 1,
     "blocks": []
@@ -1108,7 +1368,11 @@
       "has_diode": false,
       "has_capacitor": true,
       "has_resistor": false,
-      "has_zener": false
+      "has_zener": false,
+      "has_bjt": false,
+      "has_mosfet": false,
+      "has_opamp": false,
+      "has_active": false
     },
     "B1_order": {
       "sw_l_order": null,
@@ -1158,6 +1422,22 @@
       "has_high_degree_node": true,
       "cycle_count": 0
     },
+    "D_active": {
+      "has_bjt": false,
+      "has_mosfet": false,
+      "has_opamp": false,
+      "has_active": false,
+      "n_active": 0,
+      "p_type": false,
+      "transistor_config": null,
+      "opamp_config": null,
+      "has_feedback": false,
+      "is_inverting": false,
+      "is_follower": false,
+      "has_diode_connected": false,
+      "has_coupled_pair": false,
+      "is_differential": false
+    },
     "is_hierarchical": true,
     "n_blocks": 2,
     "blocks": [
@@ -1193,7 +1473,11 @@
           "has_diode": false,
           "has_capacitor": true,
           "has_resistor": false,
-          "has_zener": false
+          "has_zener": false,
+          "has_bjt": false,
+          "has_mosfet": false,
+          "has_opamp": false,
+          "has_active": false
         },
         "B1_order": {
           "sw_l_order": null,
@@ -1237,6 +1521,22 @@
           "high_degree_nodes": {},
           "has_high_degree_node": false,
           "cycle_count": 0
+        },
+        "D_active": {
+          "has_bjt": false,
+          "has_mosfet": false,
+          "has_opamp": false,
+          "has_active": false,
+          "n_active": 0,
+          "p_type": false,
+          "transistor_config": null,
+          "opamp_config": null,
+          "has_feedback": false,
+          "is_inverting": false,
+          "is_follower": false,
+          "has_diode_connected": false,
+          "has_coupled_pair": false,
+          "is_differential": false
         }
       },
       {
@@ -1269,7 +1569,11 @@
           "has_diode": false,
           "has_capacitor": false,
           "has_resistor": false,
-          "has_zener": false
+          "has_zener": false,
+          "has_bjt": false,
+          "has_mosfet": false,
+          "has_opamp": false,
+          "has_active": false
         },
         "B1_order": {
           "sw_l_order": null,
@@ -1303,6 +1607,22 @@
           "high_degree_nodes": {},
           "has_high_degree_node": false,
           "cycle_count": 0
+        },
+        "D_active": {
+          "has_bjt": false,
+          "has_mosfet": false,
+          "has_opamp": false,
+          "has_active": false,
+          "n_active": 0,
+          "p_type": false,
+          "transistor_config": null,
+          "opamp_config": null,
+          "has_feedback": false,
+          "is_inverting": false,
+          "is_follower": false,
+          "has_diode_connected": false,
+          "has_coupled_pair": false,
+          "is_differential": false
         }
       }
     ]
@@ -1337,7 +1657,11 @@
       "has_diode": true,
       "has_capacitor": false,
       "has_resistor": true,
-      "has_zener": false
+      "has_zener": false,
+      "has_bjt": false,
+      "has_mosfet": false,
+      "has_opamp": false,
+      "has_active": false
     },
     "B1_order": {
       "sw_l_order": null,
@@ -1382,6 +1706,22 @@
       "has_high_degree_node": false,
       "cycle_count": 0
     },
+    "D_active": {
+      "has_bjt": false,
+      "has_mosfet": false,
+      "has_opamp": false,
+      "has_active": false,
+      "n_active": 0,
+      "p_type": false,
+      "transistor_config": null,
+      "opamp_config": null,
+      "has_feedback": false,
+      "is_inverting": false,
+      "is_follower": false,
+      "has_diode_connected": false,
+      "has_coupled_pair": false,
+      "is_differential": false
+    },
     "is_hierarchical": false,
     "n_blocks": 1,
     "blocks": []
@@ -1416,7 +1756,11 @@
       "has_diode": true,
       "has_capacitor": false,
       "has_resistor": true,
-      "has_zener": false
+      "has_zener": false,
+      "has_bjt": false,
+      "has_mosfet": false,
+      "has_opamp": false,
+      "has_active": false
     },
     "B1_order": {
       "sw_l_order": null,
@@ -1461,6 +1805,22 @@
       "has_high_degree_node": false,
       "cycle_count": 0
     },
+    "D_active": {
+      "has_bjt": false,
+      "has_mosfet": false,
+      "has_opamp": false,
+      "has_active": false,
+      "n_active": 0,
+      "p_type": false,
+      "transistor_config": null,
+      "opamp_config": null,
+      "has_feedback": false,
+      "is_inverting": false,
+      "is_follower": false,
+      "has_diode_connected": false,
+      "has_coupled_pair": false,
+      "is_differential": false
+    },
     "is_hierarchical": false,
     "n_blocks": 1,
     "blocks": []
@@ -1495,7 +1855,11 @@
       "has_diode": true,
       "has_capacitor": false,
       "has_resistor": true,
-      "has_zener": false
+      "has_zener": false,
+      "has_bjt": false,
+      "has_mosfet": false,
+      "has_opamp": false,
+      "has_active": false
     },
     "B1_order": {
       "sw_l_order": null,
@@ -1540,6 +1904,22 @@
       "has_high_degree_node": false,
       "cycle_count": 0
     },
+    "D_active": {
+      "has_bjt": false,
+      "has_mosfet": false,
+      "has_opamp": false,
+      "has_active": false,
+      "n_active": 0,
+      "p_type": false,
+      "transistor_config": null,
+      "opamp_config": null,
+      "has_feedback": false,
+      "is_inverting": false,
+      "is_follower": false,
+      "has_diode_connected": false,
+      "has_coupled_pair": false,
+      "is_differential": false
+    },
     "is_hierarchical": false,
     "n_blocks": 1,
     "blocks": []
@@ -1575,7 +1955,11 @@
       "has_diode": true,
       "has_capacitor": false,
       "has_resistor": true,
-      "has_zener": true
+      "has_zener": true,
+      "has_bjt": false,
+      "has_mosfet": false,
+      "has_opamp": false,
+      "has_active": false
     },
     "B1_order": {
       "sw_l_order": null,
@@ -1620,6 +2004,22 @@
       "has_high_degree_node": false,
       "cycle_count": 0
     },
+    "D_active": {
+      "has_bjt": false,
+      "has_mosfet": false,
+      "has_opamp": false,
+      "has_active": false,
+      "n_active": 0,
+      "p_type": false,
+      "transistor_config": null,
+      "opamp_config": null,
+      "has_feedback": false,
+      "is_inverting": false,
+      "is_follower": false,
+      "has_diode_connected": false,
+      "has_coupled_pair": false,
+      "is_differential": false
+    },
     "is_hierarchical": false,
     "n_blocks": 1,
     "blocks": []
@@ -1662,7 +2062,11 @@
       "has_diode": true,
       "has_capacitor": true,
       "has_resistor": false,
-      "has_zener": false
+      "has_zener": false,
+      "has_bjt": false,
+      "has_mosfet": false,
+      "has_opamp": false,
+      "has_active": false
     },
     "B1_order": {
       "sw_l_order": "SW_before_L",
@@ -1733,6 +2137,22 @@
       "has_high_degree_node": true,
       "cycle_count": 2
     },
+    "D_active": {
+      "has_bjt": false,
+      "has_mosfet": false,
+      "has_opamp": false,
+      "has_active": false,
+      "n_active": 0,
+      "p_type": false,
+      "transistor_config": null,
+      "opamp_config": null,
+      "has_feedback": false,
+      "is_inverting": false,
+      "is_follower": false,
+      "has_diode_connected": false,
+      "has_coupled_pair": false,
+      "is_differential": false
+    },
     "is_hierarchical": true,
     "n_blocks": 3,
     "blocks": [
@@ -1770,7 +2190,11 @@
           "has_diode": true,
           "has_capacitor": false,
           "has_resistor": false,
-          "has_zener": false
+          "has_zener": false,
+          "has_bjt": false,
+          "has_mosfet": false,
+          "has_opamp": false,
+          "has_active": false
         },
         "B1_order": {
           "sw_l_order": null,
@@ -1814,6 +2238,22 @@
           "high_degree_nodes": {},
           "has_high_degree_node": false,
           "cycle_count": 0
+        },
+        "D_active": {
+          "has_bjt": false,
+          "has_mosfet": false,
+          "has_opamp": false,
+          "has_active": false,
+          "n_active": 0,
+          "p_type": false,
+          "transistor_config": null,
+          "opamp_config": null,
+          "has_feedback": false,
+          "is_inverting": false,
+          "is_follower": false,
+          "has_diode_connected": false,
+          "has_coupled_pair": false,
+          "is_differential": false
         }
       },
       {
@@ -1850,7 +2290,11 @@
           "has_diode": false,
           "has_capacitor": true,
           "has_resistor": false,
-          "has_zener": false
+          "has_zener": false,
+          "has_bjt": false,
+          "has_mosfet": false,
+          "has_opamp": false,
+          "has_active": false
         },
         "B1_order": {
           "sw_l_order": null,
@@ -1894,6 +2338,22 @@
           "high_degree_nodes": {},
           "has_high_degree_node": false,
           "cycle_count": 0
+        },
+        "D_active": {
+          "has_bjt": false,
+          "has_mosfet": false,
+          "has_opamp": false,
+          "has_active": false,
+          "n_active": 0,
+          "p_type": false,
+          "transistor_config": null,
+          "opamp_config": null,
+          "has_feedback": false,
+          "is_inverting": false,
+          "is_follower": false,
+          "has_diode_connected": false,
+          "has_coupled_pair": false,
+          "is_differential": false
         }
       },
       {
@@ -1930,7 +2390,11 @@
           "has_diode": false,
           "has_capacitor": true,
           "has_resistor": false,
-          "has_zener": false
+          "has_zener": false,
+          "has_bjt": false,
+          "has_mosfet": false,
+          "has_opamp": false,
+          "has_active": false
         },
         "B1_order": {
           "sw_l_order": null,
@@ -1974,6 +2438,22 @@
           "high_degree_nodes": {},
           "has_high_degree_node": false,
           "cycle_count": 0
+        },
+        "D_active": {
+          "has_bjt": false,
+          "has_mosfet": false,
+          "has_opamp": false,
+          "has_active": false,
+          "n_active": 0,
+          "p_type": false,
+          "transistor_config": null,
+          "opamp_config": null,
+          "has_feedback": false,
+          "is_inverting": false,
+          "is_follower": false,
+          "has_diode_connected": false,
+          "has_coupled_pair": false,
+          "is_differential": false
         }
       }
     ]
@@ -2010,7 +2490,11 @@
       "has_diode": false,
       "has_capacitor": true,
       "has_resistor": true,
-      "has_zener": false
+      "has_zener": false,
+      "has_bjt": false,
+      "has_mosfet": false,
+      "has_opamp": false,
+      "has_active": false
     },
     "B1_order": {
       "sw_l_order": null,
@@ -2069,6 +2553,22 @@
       "has_high_degree_node": true,
       "cycle_count": 1
     },
+    "D_active": {
+      "has_bjt": false,
+      "has_mosfet": false,
+      "has_opamp": false,
+      "has_active": false,
+      "n_active": 0,
+      "p_type": false,
+      "transistor_config": null,
+      "opamp_config": null,
+      "has_feedback": false,
+      "is_inverting": false,
+      "is_follower": false,
+      "has_diode_connected": false,
+      "has_coupled_pair": false,
+      "is_differential": false
+    },
     "is_hierarchical": true,
     "n_blocks": 2,
     "blocks": [
@@ -2104,7 +2604,11 @@
           "has_diode": false,
           "has_capacitor": true,
           "has_resistor": true,
-          "has_zener": false
+          "has_zener": false,
+          "has_bjt": false,
+          "has_mosfet": false,
+          "has_opamp": false,
+          "has_active": false
         },
         "B1_order": {
           "sw_l_order": null,
@@ -2148,6 +2652,22 @@
           "high_degree_nodes": {},
           "has_high_degree_node": false,
           "cycle_count": 0
+        },
+        "D_active": {
+          "has_bjt": false,
+          "has_mosfet": false,
+          "has_opamp": false,
+          "has_active": false,
+          "n_active": 0,
+          "p_type": false,
+          "transistor_config": null,
+          "opamp_config": null,
+          "has_feedback": false,
+          "is_inverting": false,
+          "is_follower": false,
+          "has_diode_connected": false,
+          "has_coupled_pair": false,
+          "is_differential": false
         }
       },
       {
@@ -2182,7 +2702,11 @@
           "has_diode": false,
           "has_capacitor": true,
           "has_resistor": true,
-          "has_zener": false
+          "has_zener": false,
+          "has_bjt": false,
+          "has_mosfet": false,
+          "has_opamp": false,
+          "has_active": false
         },
         "B1_order": {
           "sw_l_order": null,
@@ -2226,6 +2750,22 @@
           "high_degree_nodes": {},
           "has_high_degree_node": false,
           "cycle_count": 0
+        },
+        "D_active": {
+          "has_bjt": false,
+          "has_mosfet": false,
+          "has_opamp": false,
+          "has_active": false,
+          "n_active": 0,
+          "p_type": false,
+          "transistor_config": null,
+          "opamp_config": null,
+          "has_feedback": false,
+          "is_inverting": false,
+          "is_follower": false,
+          "has_diode_connected": false,
+          "has_coupled_pair": false,
+          "is_differential": false
         }
       }
     ]
@@ -2258,7 +2798,11 @@
       "has_diode": true,
       "has_capacitor": false,
       "has_resistor": false,
-      "has_zener": false
+      "has_zener": false,
+      "has_bjt": false,
+      "has_mosfet": false,
+      "has_opamp": false,
+      "has_active": false
     },
     "B1_order": {
       "sw_l_order": null,
@@ -2303,6 +2847,22 @@
       "has_high_degree_node": false,
       "cycle_count": 0
     },
+    "D_active": {
+      "has_bjt": false,
+      "has_mosfet": false,
+      "has_opamp": false,
+      "has_active": false,
+      "n_active": 0,
+      "p_type": false,
+      "transistor_config": null,
+      "opamp_config": null,
+      "has_feedback": false,
+      "is_inverting": false,
+      "is_follower": false,
+      "has_diode_connected": false,
+      "has_coupled_pair": false,
+      "is_differential": false
+    },
     "is_hierarchical": false,
     "n_blocks": 1,
     "blocks": []
@@ -2336,7 +2896,11 @@
       "has_diode": false,
       "has_capacitor": false,
       "has_resistor": false,
-      "has_zener": false
+      "has_zener": false,
+      "has_bjt": false,
+      "has_mosfet": false,
+      "has_opamp": false,
+      "has_active": false
     },
     "B1_order": {
       "sw_l_order": null,
@@ -2381,6 +2945,22 @@
       "has_high_degree_node": false,
       "cycle_count": 0
     },
+    "D_active": {
+      "has_bjt": false,
+      "has_mosfet": false,
+      "has_opamp": false,
+      "has_active": false,
+      "n_active": 0,
+      "p_type": false,
+      "transistor_config": null,
+      "opamp_config": null,
+      "has_feedback": false,
+      "is_inverting": false,
+      "is_follower": false,
+      "has_diode_connected": false,
+      "has_coupled_pair": false,
+      "is_differential": false
+    },
     "is_hierarchical": false,
     "n_blocks": 1,
     "blocks": []
@@ -2414,7 +2994,11 @@
       "has_diode": true,
       "has_capacitor": true,
       "has_resistor": false,
-      "has_zener": false
+      "has_zener": false,
+      "has_bjt": false,
+      "has_mosfet": false,
+      "has_opamp": false,
+      "has_active": false
     },
     "B1_order": {
       "sw_l_order": null,
@@ -2458,6 +3042,1409 @@
       "high_degree_nodes": {},
       "has_high_degree_node": false,
       "cycle_count": 0
+    },
+    "D_active": {
+      "has_bjt": false,
+      "has_mosfet": false,
+      "has_opamp": false,
+      "has_active": false,
+      "n_active": 0,
+      "p_type": false,
+      "transistor_config": null,
+      "opamp_config": null,
+      "has_feedback": false,
+      "is_inverting": false,
+      "is_follower": false,
+      "has_diode_connected": false,
+      "has_coupled_pair": false,
+      "is_differential": false
+    },
+    "is_hierarchical": false,
+    "n_blocks": 1,
+    "blocks": []
+  },
+  {
+    "circuit_id": "ce_amp_npn_001",
+    "circuit_name": "エミッタ接地増幅回路（NPN）",
+    "description": "NPNトランジスタによる接地エミッタ増幅回路。入力を結合コンデンサ経由でベースに与え、コレクタから反転増幅した信号を取り出す。分圧バイアスとエミッタ抵抗で動作点を安定化する。",
+    "function_tags": [
+      "amplifier",
+      "common_emitter",
+      "bjt",
+      "npn",
+      "active",
+      "inverting"
+    ],
+    "ports": {
+      "input": "VIN",
+      "output": "NC",
+      "gnd": "GND"
+    },
+    "A_component": {
+      "component_types": [
+        "C",
+        "NPN",
+        "R"
+      ],
+      "component_counts": {
+        "C": 1,
+        "R": 4,
+        "NPN": 1
+      },
+      "has_switch": false,
+      "has_inductor": false,
+      "has_diode": false,
+      "has_capacitor": true,
+      "has_resistor": true,
+      "has_zener": false,
+      "has_bjt": true,
+      "has_mosfet": false,
+      "has_opamp": false,
+      "has_active": true
+    },
+    "B1_order": {
+      "sw_l_order": null,
+      "path_sequence": [
+        {
+          "type": "C",
+          "shunt": false
+        },
+        {
+          "type": "R",
+          "shunt": true
+        },
+        {
+          "type": "R",
+          "shunt": false
+        },
+        {
+          "type": "R",
+          "shunt": false
+        }
+      ],
+      "series_type_sequence": [
+        "C",
+        "R",
+        "R"
+      ],
+      "first_series_type": "C",
+      "shunt_type_sequence": [
+        "R"
+      ]
+    },
+    "B2_diode": {
+      "diode_anode_to_gnd": false,
+      "diode_cathode_to_out": false,
+      "diode_anode_to_out": false,
+      "diode_cathode_to_gnd": false
+    },
+    "B3_series_parallel": {
+      "has_parallel_components": false,
+      "parallel_pairs": {},
+      "series_chain_nodes": [
+        "VCC",
+        "GND",
+        "NC",
+        "NE"
+      ],
+      "series_chain_length": 4
+    },
+    "C_node": {
+      "node_count": 7,
+      "gnd_connected_parts": [
+        "R2",
+        "Re"
+      ],
+      "high_degree_nodes": {
+        "NB": 4,
+        "__dev_Q1": 3
+      },
+      "has_high_degree_node": true,
+      "cycle_count": 2
+    },
+    "D_active": {
+      "has_bjt": true,
+      "has_mosfet": false,
+      "has_opamp": false,
+      "has_active": true,
+      "n_active": 1,
+      "p_type": false,
+      "transistor_config": "CE",
+      "opamp_config": null,
+      "has_feedback": false,
+      "is_inverting": true,
+      "is_follower": false,
+      "has_diode_connected": false,
+      "has_coupled_pair": false,
+      "is_differential": false
+    },
+    "is_hierarchical": false,
+    "n_blocks": 1,
+    "blocks": []
+  },
+  {
+    "circuit_id": "ce_amp_pnp_001",
+    "circuit_name": "エミッタ接地増幅回路（PNP）",
+    "description": "PNPトランジスタによる接地エミッタ増幅回路。エミッタを正電源側、コレクタを負荷抵抗経由でGND側に配置する。NPN版と構造は鏡像だが極性が反転する。",
+    "function_tags": [
+      "amplifier",
+      "common_emitter",
+      "bjt",
+      "pnp",
+      "active",
+      "inverting"
+    ],
+    "ports": {
+      "input": "VIN",
+      "output": "NC",
+      "gnd": "GND"
+    },
+    "A_component": {
+      "component_types": [
+        "C",
+        "PNP",
+        "R"
+      ],
+      "component_counts": {
+        "C": 1,
+        "R": 4,
+        "PNP": 1
+      },
+      "has_switch": false,
+      "has_inductor": false,
+      "has_diode": false,
+      "has_capacitor": true,
+      "has_resistor": true,
+      "has_zener": false,
+      "has_bjt": true,
+      "has_mosfet": false,
+      "has_opamp": false,
+      "has_active": true
+    },
+    "B1_order": {
+      "sw_l_order": null,
+      "path_sequence": [
+        {
+          "type": "C",
+          "shunt": false
+        },
+        {
+          "type": "R",
+          "shunt": true
+        },
+        {
+          "type": "PNP",
+          "shunt": false
+        },
+        {
+          "type": "PNP",
+          "shunt": false
+        },
+        {
+          "type": "R",
+          "shunt": true
+        }
+      ],
+      "series_type_sequence": [
+        "C",
+        "PNP",
+        "PNP"
+      ],
+      "first_series_type": "C",
+      "shunt_type_sequence": [
+        "R",
+        "R"
+      ]
+    },
+    "B2_diode": {
+      "diode_anode_to_gnd": false,
+      "diode_cathode_to_out": false,
+      "diode_anode_to_out": false,
+      "diode_cathode_to_gnd": false
+    },
+    "B3_series_parallel": {
+      "has_parallel_components": false,
+      "parallel_pairs": {},
+      "series_chain_nodes": [
+        "VCC",
+        "GND",
+        "NE",
+        "NC"
+      ],
+      "series_chain_length": 4
+    },
+    "C_node": {
+      "node_count": 7,
+      "gnd_connected_parts": [
+        "R2",
+        "Rc"
+      ],
+      "high_degree_nodes": {
+        "NB": 4,
+        "__dev_Q1": 3
+      },
+      "has_high_degree_node": true,
+      "cycle_count": 2
+    },
+    "D_active": {
+      "has_bjt": true,
+      "has_mosfet": false,
+      "has_opamp": false,
+      "has_active": true,
+      "n_active": 1,
+      "p_type": true,
+      "transistor_config": "CE",
+      "opamp_config": null,
+      "has_feedback": false,
+      "is_inverting": true,
+      "is_follower": false,
+      "has_diode_connected": false,
+      "has_coupled_pair": false,
+      "is_differential": false
+    },
+    "is_hierarchical": false,
+    "n_blocks": 1,
+    "blocks": []
+  },
+  {
+    "circuit_id": "emitter_follower_npn_001",
+    "circuit_name": "エミッタフォロワ（NPN）",
+    "description": "NPNトランジスタによるコレクタ接地増幅回路（エミッタフォロワ）。コレクタを電源に直結し、エミッタから出力する。電圧利得は約1で非反転、低出力インピーダンスのバッファとして使われる。",
+    "function_tags": [
+      "amplifier",
+      "common_collector",
+      "follower",
+      "buffer",
+      "bjt",
+      "npn",
+      "active",
+      "non_inverting"
+    ],
+    "ports": {
+      "input": "VIN",
+      "output": "NE",
+      "gnd": "GND"
+    },
+    "A_component": {
+      "component_types": [
+        "C",
+        "NPN",
+        "R"
+      ],
+      "component_counts": {
+        "C": 1,
+        "R": 3,
+        "NPN": 1
+      },
+      "has_switch": false,
+      "has_inductor": false,
+      "has_diode": false,
+      "has_capacitor": true,
+      "has_resistor": true,
+      "has_zener": false,
+      "has_bjt": true,
+      "has_mosfet": false,
+      "has_opamp": false,
+      "has_active": true
+    },
+    "B1_order": {
+      "sw_l_order": null,
+      "path_sequence": [
+        {
+          "type": "C",
+          "shunt": false
+        },
+        {
+          "type": "R",
+          "shunt": true
+        },
+        {
+          "type": "NPN",
+          "shunt": false
+        },
+        {
+          "type": "NPN",
+          "shunt": false
+        },
+        {
+          "type": "R",
+          "shunt": true
+        }
+      ],
+      "series_type_sequence": [
+        "C",
+        "NPN",
+        "NPN"
+      ],
+      "first_series_type": "C",
+      "shunt_type_sequence": [
+        "R",
+        "R"
+      ]
+    },
+    "B2_diode": {
+      "diode_anode_to_gnd": false,
+      "diode_cathode_to_out": false,
+      "diode_anode_to_out": false,
+      "diode_cathode_to_gnd": false
+    },
+    "B3_series_parallel": {
+      "has_parallel_components": false,
+      "parallel_pairs": {},
+      "series_chain_nodes": [
+        "VCC",
+        "GND",
+        "NE"
+      ],
+      "series_chain_length": 3
+    },
+    "C_node": {
+      "node_count": 6,
+      "gnd_connected_parts": [
+        "R2",
+        "Re"
+      ],
+      "high_degree_nodes": {
+        "NB": 4,
+        "__dev_Q1": 3
+      },
+      "has_high_degree_node": true,
+      "cycle_count": 2
+    },
+    "D_active": {
+      "has_bjt": true,
+      "has_mosfet": false,
+      "has_opamp": false,
+      "has_active": true,
+      "n_active": 1,
+      "p_type": false,
+      "transistor_config": "CC",
+      "opamp_config": null,
+      "has_feedback": false,
+      "is_inverting": false,
+      "is_follower": true,
+      "has_diode_connected": false,
+      "has_coupled_pair": false,
+      "is_differential": false
+    },
+    "is_hierarchical": false,
+    "n_blocks": 1,
+    "blocks": []
+  },
+  {
+    "circuit_id": "cs_amp_nmos_001",
+    "circuit_name": "ソース接地増幅回路（NMOS）",
+    "description": "NMOSトランジスタによる接地ソース増幅回路。ゲートに入力を与え、ドレインから反転増幅した信号を取り出す。BJTの接地エミッタに対応するMOS版。",
+    "function_tags": [
+      "amplifier",
+      "common_source",
+      "mosfet",
+      "nmos",
+      "active",
+      "inverting"
+    ],
+    "ports": {
+      "input": "VIN",
+      "output": "ND",
+      "gnd": "GND"
+    },
+    "A_component": {
+      "component_types": [
+        "C",
+        "NMOS",
+        "R"
+      ],
+      "component_counts": {
+        "C": 1,
+        "R": 4,
+        "NMOS": 1
+      },
+      "has_switch": false,
+      "has_inductor": false,
+      "has_diode": false,
+      "has_capacitor": true,
+      "has_resistor": true,
+      "has_zener": false,
+      "has_bjt": false,
+      "has_mosfet": true,
+      "has_opamp": false,
+      "has_active": true
+    },
+    "B1_order": {
+      "sw_l_order": null,
+      "path_sequence": [
+        {
+          "type": "C",
+          "shunt": false
+        },
+        {
+          "type": "R",
+          "shunt": true
+        },
+        {
+          "type": "R",
+          "shunt": false
+        },
+        {
+          "type": "R",
+          "shunt": false
+        }
+      ],
+      "series_type_sequence": [
+        "C",
+        "R",
+        "R"
+      ],
+      "first_series_type": "C",
+      "shunt_type_sequence": [
+        "R"
+      ]
+    },
+    "B2_diode": {
+      "diode_anode_to_gnd": false,
+      "diode_cathode_to_out": false,
+      "diode_anode_to_out": false,
+      "diode_cathode_to_gnd": false
+    },
+    "B3_series_parallel": {
+      "has_parallel_components": false,
+      "parallel_pairs": {},
+      "series_chain_nodes": [
+        "VDD",
+        "GND",
+        "ND",
+        "NS"
+      ],
+      "series_chain_length": 4
+    },
+    "C_node": {
+      "node_count": 7,
+      "gnd_connected_parts": [
+        "Rg2",
+        "Rs"
+      ],
+      "high_degree_nodes": {
+        "NG": 4,
+        "__dev_M1": 3
+      },
+      "has_high_degree_node": true,
+      "cycle_count": 2
+    },
+    "D_active": {
+      "has_bjt": false,
+      "has_mosfet": true,
+      "has_opamp": false,
+      "has_active": true,
+      "n_active": 1,
+      "p_type": false,
+      "transistor_config": "CE",
+      "opamp_config": null,
+      "has_feedback": false,
+      "is_inverting": true,
+      "is_follower": false,
+      "has_diode_connected": false,
+      "has_coupled_pair": false,
+      "is_differential": false
+    },
+    "is_hierarchical": false,
+    "n_blocks": 1,
+    "blocks": []
+  },
+  {
+    "circuit_id": "source_follower_nmos_001",
+    "circuit_name": "ソースフォロワ（NMOS）",
+    "description": "NMOSトランジスタによるドレイン接地増幅回路（ソースフォロワ）。ドレインを電源に直結し、ソースから出力する。電圧利得は約1で非反転のバッファ。",
+    "function_tags": [
+      "amplifier",
+      "common_drain",
+      "follower",
+      "buffer",
+      "mosfet",
+      "nmos",
+      "active",
+      "non_inverting"
+    ],
+    "ports": {
+      "input": "VIN",
+      "output": "NS",
+      "gnd": "GND"
+    },
+    "A_component": {
+      "component_types": [
+        "C",
+        "NMOS",
+        "R"
+      ],
+      "component_counts": {
+        "C": 1,
+        "R": 2,
+        "NMOS": 1
+      },
+      "has_switch": false,
+      "has_inductor": false,
+      "has_diode": false,
+      "has_capacitor": true,
+      "has_resistor": true,
+      "has_zener": false,
+      "has_bjt": false,
+      "has_mosfet": true,
+      "has_opamp": false,
+      "has_active": true
+    },
+    "B1_order": {
+      "sw_l_order": null,
+      "path_sequence": [
+        {
+          "type": "C",
+          "shunt": false
+        },
+        {
+          "type": "R",
+          "shunt": true
+        },
+        {
+          "type": "NMOS",
+          "shunt": false
+        },
+        {
+          "type": "NMOS",
+          "shunt": false
+        },
+        {
+          "type": "R",
+          "shunt": true
+        }
+      ],
+      "series_type_sequence": [
+        "C",
+        "NMOS",
+        "NMOS"
+      ],
+      "first_series_type": "C",
+      "shunt_type_sequence": [
+        "R",
+        "R"
+      ]
+    },
+    "B2_diode": {
+      "diode_anode_to_gnd": false,
+      "diode_cathode_to_out": false,
+      "diode_anode_to_out": false,
+      "diode_cathode_to_gnd": false
+    },
+    "B3_series_parallel": {
+      "has_parallel_components": false,
+      "parallel_pairs": {},
+      "series_chain_nodes": [
+        "GND",
+        "NS"
+      ],
+      "series_chain_length": 2
+    },
+    "C_node": {
+      "node_count": 6,
+      "gnd_connected_parts": [
+        "Rg",
+        "Rs"
+      ],
+      "high_degree_nodes": {
+        "NG": 3,
+        "__dev_M1": 3
+      },
+      "has_high_degree_node": true,
+      "cycle_count": 1
+    },
+    "D_active": {
+      "has_bjt": false,
+      "has_mosfet": true,
+      "has_opamp": false,
+      "has_active": true,
+      "n_active": 1,
+      "p_type": false,
+      "transistor_config": "CC",
+      "opamp_config": null,
+      "has_feedback": false,
+      "is_inverting": false,
+      "is_follower": true,
+      "has_diode_connected": false,
+      "has_coupled_pair": false,
+      "is_differential": false
+    },
+    "is_hierarchical": false,
+    "n_blocks": 1,
+    "blocks": []
+  },
+  {
+    "circuit_id": "opamp_inverting_001",
+    "circuit_name": "反転増幅回路（OpAmp）",
+    "description": "オペアンプによる反転増幅回路。入力抵抗を介して反転入力に信号を与え、出力から反転入力へ帰還抵抗で負帰還をかける。非反転入力はGNDに接地。利得は -Rf/Rin。",
+    "function_tags": [
+      "amplifier",
+      "opamp",
+      "inverting",
+      "active",
+      "feedback",
+      "negative_feedback"
+    ],
+    "ports": {
+      "input": "VIN",
+      "output": "OUT",
+      "gnd": "GND"
+    },
+    "A_component": {
+      "component_types": [
+        "OPAMP",
+        "R"
+      ],
+      "component_counts": {
+        "R": 2,
+        "OPAMP": 1
+      },
+      "has_switch": false,
+      "has_inductor": false,
+      "has_diode": false,
+      "has_capacitor": false,
+      "has_resistor": true,
+      "has_zener": false,
+      "has_bjt": false,
+      "has_mosfet": false,
+      "has_opamp": true,
+      "has_active": true
+    },
+    "B1_order": {
+      "sw_l_order": null,
+      "path_sequence": [
+        {
+          "type": "R",
+          "shunt": false
+        },
+        {
+          "type": "R",
+          "shunt": false
+        }
+      ],
+      "series_type_sequence": [
+        "R",
+        "R"
+      ],
+      "first_series_type": "R",
+      "shunt_type_sequence": []
+    },
+    "B2_diode": {
+      "diode_anode_to_gnd": false,
+      "diode_cathode_to_out": false,
+      "diode_anode_to_out": false,
+      "diode_cathode_to_gnd": false
+    },
+    "B3_series_parallel": {
+      "has_parallel_components": false,
+      "parallel_pairs": {},
+      "series_chain_nodes": [
+        "OUT"
+      ],
+      "series_chain_length": 1
+    },
+    "C_node": {
+      "node_count": 5,
+      "gnd_connected_parts": [
+        "OA1"
+      ],
+      "high_degree_nodes": {
+        "NINV": 3,
+        "__dev_OA1": 3
+      },
+      "has_high_degree_node": true,
+      "cycle_count": 1
+    },
+    "D_active": {
+      "has_bjt": false,
+      "has_mosfet": false,
+      "has_opamp": true,
+      "has_active": true,
+      "n_active": 1,
+      "p_type": false,
+      "transistor_config": null,
+      "opamp_config": "inverting",
+      "has_feedback": true,
+      "is_inverting": true,
+      "is_follower": false,
+      "has_diode_connected": false,
+      "has_coupled_pair": false,
+      "is_differential": false
+    },
+    "is_hierarchical": false,
+    "n_blocks": 1,
+    "blocks": []
+  },
+  {
+    "circuit_id": "opamp_noninverting_001",
+    "circuit_name": "非反転増幅回路（OpAmp）",
+    "description": "オペアンプによる非反転増幅回路。入力を非反転入力に直接与え、出力から反転入力への帰還分圧で利得を決める。利得は 1+Rf/R1。高入力インピーダンス。",
+    "function_tags": [
+      "amplifier",
+      "opamp",
+      "non_inverting",
+      "active",
+      "feedback",
+      "negative_feedback"
+    ],
+    "ports": {
+      "input": "VIN",
+      "output": "OUT",
+      "gnd": "GND"
+    },
+    "A_component": {
+      "component_types": [
+        "OPAMP",
+        "R"
+      ],
+      "component_counts": {
+        "R": 2,
+        "OPAMP": 1
+      },
+      "has_switch": false,
+      "has_inductor": false,
+      "has_diode": false,
+      "has_capacitor": false,
+      "has_resistor": true,
+      "has_zener": false,
+      "has_bjt": false,
+      "has_mosfet": false,
+      "has_opamp": true,
+      "has_active": true
+    },
+    "B1_order": {
+      "sw_l_order": null,
+      "path_sequence": [
+        {
+          "type": "OPAMP",
+          "shunt": false
+        },
+        {
+          "type": "OPAMP",
+          "shunt": false
+        }
+      ],
+      "series_type_sequence": [
+        "OPAMP",
+        "OPAMP"
+      ],
+      "first_series_type": "OPAMP",
+      "shunt_type_sequence": []
+    },
+    "B2_diode": {
+      "diode_anode_to_gnd": false,
+      "diode_cathode_to_out": false,
+      "diode_anode_to_out": false,
+      "diode_cathode_to_gnd": false
+    },
+    "B3_series_parallel": {
+      "has_parallel_components": false,
+      "parallel_pairs": {},
+      "series_chain_nodes": [
+        "OUT"
+      ],
+      "series_chain_length": 1
+    },
+    "C_node": {
+      "node_count": 5,
+      "gnd_connected_parts": [
+        "R1"
+      ],
+      "high_degree_nodes": {
+        "NINV": 3,
+        "__dev_OA1": 3
+      },
+      "has_high_degree_node": true,
+      "cycle_count": 1
+    },
+    "D_active": {
+      "has_bjt": false,
+      "has_mosfet": false,
+      "has_opamp": true,
+      "has_active": true,
+      "n_active": 1,
+      "p_type": false,
+      "transistor_config": null,
+      "opamp_config": "non_inverting",
+      "has_feedback": true,
+      "is_inverting": false,
+      "is_follower": false,
+      "has_diode_connected": false,
+      "has_coupled_pair": false,
+      "is_differential": false
+    },
+    "is_hierarchical": false,
+    "n_blocks": 1,
+    "blocks": []
+  },
+  {
+    "circuit_id": "opamp_buffer_001",
+    "circuit_name": "ボルテージフォロワ（OpAmp）",
+    "description": "オペアンプによるボルテージフォロワ（バッファ）。出力を反転入力に直結した100%負帰還で、利得1・非反転。高入力／低出力インピーダンスのインピーダンス変換に用いる。",
+    "function_tags": [
+      "opamp",
+      "buffer",
+      "follower",
+      "active",
+      "feedback",
+      "unity_gain"
+    ],
+    "ports": {
+      "input": "VIN",
+      "output": "OUT",
+      "gnd": "GND"
+    },
+    "A_component": {
+      "component_types": [
+        "OPAMP"
+      ],
+      "component_counts": {
+        "OPAMP": 1
+      },
+      "has_switch": false,
+      "has_inductor": false,
+      "has_diode": false,
+      "has_capacitor": false,
+      "has_resistor": false,
+      "has_zener": false,
+      "has_bjt": false,
+      "has_mosfet": false,
+      "has_opamp": true,
+      "has_active": true
+    },
+    "B1_order": {
+      "sw_l_order": null,
+      "path_sequence": [
+        {
+          "type": "OPAMP",
+          "shunt": false
+        },
+        {
+          "type": "OPAMP",
+          "shunt": false
+        }
+      ],
+      "series_type_sequence": [
+        "OPAMP",
+        "OPAMP"
+      ],
+      "first_series_type": "OPAMP",
+      "shunt_type_sequence": []
+    },
+    "B2_diode": {
+      "diode_anode_to_gnd": false,
+      "diode_cathode_to_out": false,
+      "diode_anode_to_out": false,
+      "diode_cathode_to_gnd": false
+    },
+    "B3_series_parallel": {
+      "has_parallel_components": false,
+      "parallel_pairs": {},
+      "series_chain_nodes": [
+        "__dev_OA1"
+      ],
+      "series_chain_length": 1
+    },
+    "C_node": {
+      "node_count": 3,
+      "gnd_connected_parts": [],
+      "high_degree_nodes": {},
+      "has_high_degree_node": false,
+      "cycle_count": 0
+    },
+    "D_active": {
+      "has_bjt": false,
+      "has_mosfet": false,
+      "has_opamp": true,
+      "has_active": true,
+      "n_active": 1,
+      "p_type": false,
+      "transistor_config": null,
+      "opamp_config": "buffer",
+      "has_feedback": true,
+      "is_inverting": false,
+      "is_follower": true,
+      "has_diode_connected": false,
+      "has_coupled_pair": false,
+      "is_differential": false
+    },
+    "is_hierarchical": false,
+    "n_blocks": 1,
+    "blocks": []
+  },
+  {
+    "circuit_id": "two_stage_ce_001",
+    "circuit_name": "2段エミッタ接地増幅回路（NPN）",
+    "description": "接地エミッタ増幅段を結合コンデンサで2段縦続接続した多段増幅回路。各段は分圧バイアスとエミッタ抵抗で安定化される。総合利得は各段の積になる。",
+    "function_tags": [
+      "amplifier",
+      "multistage",
+      "two_stage",
+      "common_emitter",
+      "bjt",
+      "npn",
+      "active",
+      "cascade"
+    ],
+    "ports": {
+      "input": "VIN",
+      "output": "NC2",
+      "gnd": "GND"
+    },
+    "A_component": {
+      "component_types": [
+        "C",
+        "NPN",
+        "R"
+      ],
+      "component_counts": {
+        "C": 2,
+        "R": 8,
+        "NPN": 2
+      },
+      "has_switch": false,
+      "has_inductor": false,
+      "has_diode": false,
+      "has_capacitor": true,
+      "has_resistor": true,
+      "has_zener": false,
+      "has_bjt": true,
+      "has_mosfet": false,
+      "has_opamp": false,
+      "has_active": true
+    },
+    "B1_order": {
+      "sw_l_order": null,
+      "path_sequence": [
+        {
+          "type": "C",
+          "shunt": false
+        },
+        {
+          "type": "R",
+          "shunt": true
+        },
+        {
+          "type": "R",
+          "shunt": false
+        },
+        {
+          "type": "R",
+          "shunt": false
+        }
+      ],
+      "series_type_sequence": [
+        "C",
+        "R",
+        "R"
+      ],
+      "first_series_type": "C",
+      "shunt_type_sequence": [
+        "R"
+      ]
+    },
+    "B2_diode": {
+      "diode_anode_to_gnd": false,
+      "diode_cathode_to_out": false,
+      "diode_anode_to_out": false,
+      "diode_cathode_to_gnd": false
+    },
+    "B3_series_parallel": {
+      "has_parallel_components": false,
+      "parallel_pairs": {},
+      "series_chain_nodes": [
+        "NE1",
+        "NC2",
+        "NE2"
+      ],
+      "series_chain_length": 3
+    },
+    "C_node": {
+      "node_count": 11,
+      "gnd_connected_parts": [
+        "R2",
+        "Re1",
+        "R4",
+        "Re2"
+      ],
+      "high_degree_nodes": {
+        "NB1": 4,
+        "VCC": 4,
+        "GND": 4,
+        "__dev_Q1": 3,
+        "NC1": 3,
+        "NB2": 4,
+        "__dev_Q2": 3
+      },
+      "has_high_degree_node": true,
+      "cycle_count": 6
+    },
+    "D_active": {
+      "has_bjt": true,
+      "has_mosfet": false,
+      "has_opamp": false,
+      "has_active": true,
+      "n_active": 2,
+      "p_type": false,
+      "transistor_config": "CE",
+      "opamp_config": null,
+      "has_feedback": false,
+      "is_inverting": true,
+      "is_follower": false,
+      "has_diode_connected": false,
+      "has_coupled_pair": false,
+      "is_differential": false
+    },
+    "is_hierarchical": false,
+    "n_blocks": 1,
+    "blocks": []
+  },
+  {
+    "circuit_id": "ce_follower_001",
+    "circuit_name": "エミッタ接地＋エミッタフォロワ（NPN 2段）",
+    "description": "接地エミッタ増幅段の後段にエミッタフォロワを縦続した多段回路。前段で電圧増幅し、後段のフォロワで低出力インピーダンス化して負荷を駆動する。",
+    "function_tags": [
+      "amplifier",
+      "multistage",
+      "two_stage",
+      "common_emitter",
+      "common_collector",
+      "follower",
+      "bjt",
+      "npn",
+      "active",
+      "cascade"
+    ],
+    "ports": {
+      "input": "VIN",
+      "output": "NE2",
+      "gnd": "GND"
+    },
+    "A_component": {
+      "component_types": [
+        "C",
+        "NPN",
+        "R"
+      ],
+      "component_counts": {
+        "C": 2,
+        "R": 7,
+        "NPN": 2
+      },
+      "has_switch": false,
+      "has_inductor": false,
+      "has_diode": false,
+      "has_capacitor": true,
+      "has_resistor": true,
+      "has_zener": false,
+      "has_bjt": true,
+      "has_mosfet": false,
+      "has_opamp": false,
+      "has_active": true
+    },
+    "B1_order": {
+      "sw_l_order": null,
+      "path_sequence": [
+        {
+          "type": "C",
+          "shunt": false
+        },
+        {
+          "type": "R",
+          "shunt": true
+        },
+        {
+          "type": "R",
+          "shunt": false
+        },
+        {
+          "type": "NPN",
+          "shunt": false
+        },
+        {
+          "type": "NPN",
+          "shunt": false
+        },
+        {
+          "type": "R",
+          "shunt": true
+        }
+      ],
+      "series_type_sequence": [
+        "C",
+        "R",
+        "NPN",
+        "NPN"
+      ],
+      "first_series_type": "C",
+      "shunt_type_sequence": [
+        "R",
+        "R"
+      ]
+    },
+    "B2_diode": {
+      "diode_anode_to_gnd": false,
+      "diode_cathode_to_out": false,
+      "diode_anode_to_out": false,
+      "diode_cathode_to_gnd": false
+    },
+    "B3_series_parallel": {
+      "has_parallel_components": false,
+      "parallel_pairs": {},
+      "series_chain_nodes": [
+        "NE1",
+        "NE2"
+      ],
+      "series_chain_length": 2
+    },
+    "C_node": {
+      "node_count": 10,
+      "gnd_connected_parts": [
+        "R2",
+        "Re1",
+        "R4",
+        "Re2"
+      ],
+      "high_degree_nodes": {
+        "NB1": 4,
+        "VCC": 4,
+        "GND": 4,
+        "__dev_Q1": 3,
+        "NC1": 3,
+        "NB2": 4,
+        "__dev_Q2": 3
+      },
+      "has_high_degree_node": true,
+      "cycle_count": 6
+    },
+    "D_active": {
+      "has_bjt": true,
+      "has_mosfet": false,
+      "has_opamp": false,
+      "has_active": true,
+      "n_active": 2,
+      "p_type": false,
+      "transistor_config": "CC",
+      "opamp_config": null,
+      "has_feedback": false,
+      "is_inverting": false,
+      "is_follower": true,
+      "has_diode_connected": false,
+      "has_coupled_pair": false,
+      "is_differential": false
+    },
+    "is_hierarchical": false,
+    "n_blocks": 1,
+    "blocks": []
+  },
+  {
+    "circuit_id": "current_mirror_npn_001",
+    "circuit_name": "カレントミラー（NPN）",
+    "description": "ダイオード接続した参照トランジスタと出力トランジスタでベースを共有し、参照電流を出力側に複製する電流源回路。バイアス回路の基本構成。",
+    "function_tags": [
+      "current_mirror",
+      "current_source",
+      "bias",
+      "bjt",
+      "npn",
+      "active"
+    ],
+    "ports": {
+      "input": "NREF",
+      "output": "NOUT",
+      "gnd": "GND"
+    },
+    "A_component": {
+      "component_types": [
+        "NPN",
+        "R"
+      ],
+      "component_counts": {
+        "R": 2,
+        "NPN": 2
+      },
+      "has_switch": false,
+      "has_inductor": false,
+      "has_diode": false,
+      "has_capacitor": false,
+      "has_resistor": true,
+      "has_zener": false,
+      "has_bjt": true,
+      "has_mosfet": false,
+      "has_opamp": false,
+      "has_active": true
+    },
+    "B1_order": {
+      "sw_l_order": null,
+      "path_sequence": [
+        {
+          "type": "R",
+          "shunt": false
+        },
+        {
+          "type": "R",
+          "shunt": false
+        }
+      ],
+      "series_type_sequence": [
+        "R",
+        "R"
+      ],
+      "first_series_type": "R",
+      "shunt_type_sequence": []
+    },
+    "B2_diode": {
+      "diode_anode_to_gnd": false,
+      "diode_cathode_to_out": false,
+      "diode_anode_to_out": false,
+      "diode_cathode_to_gnd": false
+    },
+    "B3_series_parallel": {
+      "has_parallel_components": false,
+      "parallel_pairs": {},
+      "series_chain_nodes": [
+        "VCC",
+        "__dev_Q1",
+        "GND",
+        "NOUT"
+      ],
+      "series_chain_length": 4
+    },
+    "C_node": {
+      "node_count": 6,
+      "gnd_connected_parts": [
+        "Q1",
+        "Q2"
+      ],
+      "high_degree_nodes": {
+        "NREF": 3,
+        "__dev_Q2": 3
+      },
+      "has_high_degree_node": true,
+      "cycle_count": 2
+    },
+    "D_active": {
+      "has_bjt": true,
+      "has_mosfet": false,
+      "has_opamp": false,
+      "has_active": true,
+      "n_active": 2,
+      "p_type": false,
+      "transistor_config": "CE",
+      "opamp_config": null,
+      "has_feedback": false,
+      "is_inverting": true,
+      "is_follower": false,
+      "has_diode_connected": true,
+      "has_coupled_pair": false,
+      "is_differential": false
+    },
+    "is_hierarchical": false,
+    "n_blocks": 1,
+    "blocks": []
+  },
+  {
+    "circuit_id": "diff_pair_npn_001",
+    "circuit_name": "差動対（NPN ロングテールペア）",
+    "description": "エミッタを共通テール抵抗で結合した2つのNPNトランジスタによる差動増幅回路。2入力の差を増幅し同相成分を除去する。オペアンプ入力段の基本構成。",
+    "function_tags": [
+      "differential",
+      "long_tailed_pair",
+      "amplifier",
+      "bjt",
+      "npn",
+      "active"
+    ],
+    "ports": {
+      "input": "VIN",
+      "input2": "VIN2",
+      "output": "NC1",
+      "gnd": "GND"
+    },
+    "A_component": {
+      "component_types": [
+        "NPN",
+        "R"
+      ],
+      "component_counts": {
+        "NPN": 2,
+        "R": 3
+      },
+      "has_switch": false,
+      "has_inductor": false,
+      "has_diode": false,
+      "has_capacitor": false,
+      "has_resistor": true,
+      "has_zener": false,
+      "has_bjt": true,
+      "has_mosfet": false,
+      "has_opamp": false,
+      "has_active": true
+    },
+    "B1_order": {
+      "sw_l_order": null,
+      "path_sequence": [
+        {
+          "type": "NPN",
+          "shunt": false
+        },
+        {
+          "type": "NPN",
+          "shunt": false
+        }
+      ],
+      "series_type_sequence": [
+        "NPN",
+        "NPN"
+      ],
+      "first_series_type": "NPN",
+      "shunt_type_sequence": []
+    },
+    "B2_diode": {
+      "diode_anode_to_gnd": false,
+      "diode_cathode_to_out": false,
+      "diode_anode_to_out": false,
+      "diode_cathode_to_gnd": false
+    },
+    "B3_series_parallel": {
+      "has_parallel_components": false,
+      "parallel_pairs": {},
+      "series_chain_nodes": [
+        "NC1",
+        "NC2",
+        "VCC"
+      ],
+      "series_chain_length": 3
+    },
+    "C_node": {
+      "node_count": 9,
+      "gnd_connected_parts": [
+        "Rtail"
+      ],
+      "high_degree_nodes": {
+        "__dev_Q1": 3,
+        "NTAIL": 3,
+        "__dev_Q2": 3
+      },
+      "has_high_degree_node": true,
+      "cycle_count": 1
+    },
+    "D_active": {
+      "has_bjt": true,
+      "has_mosfet": false,
+      "has_opamp": false,
+      "has_active": true,
+      "n_active": 2,
+      "p_type": false,
+      "transistor_config": "CE",
+      "opamp_config": null,
+      "has_feedback": false,
+      "is_inverting": true,
+      "is_follower": false,
+      "has_diode_connected": false,
+      "has_coupled_pair": true,
+      "is_differential": true
     },
     "is_hierarchical": false,
     "n_blocks": 1,

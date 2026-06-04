@@ -3,3 +3,8 @@ __pycache__/
 *.pyo
 .env
 kicad_query.json
+
+# Secrets / certificates (never commit)
+*.key
+*.crt
+*.pem

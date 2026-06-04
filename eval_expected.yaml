@@ -1,0 +1,132 @@
+# eval_expected.yaml — シミュレーション期待値（evaluate.py --sim が参照）
+#
+# circuit_simulator.py の「実出力」に対して校正済み。
+#   検証環境: KiCad 10.0 同梱 ngspice-46 + PySpice 1.5
+#
+# simulation_type は実コード（circuit_simulator.py）の返り値に準拠する：
+#   ac_passive        : R/L/C のみのパッシブ回路（AC 解析成功）
+#   skipped_switch    : SW を含む（過渡解析・未実装のためスキップ）
+#   skipped_nonlinear : ダイオード/ツェナーを含む（過渡解析・未実装のためスキップ）
+#       ※ 設計書(EVALUATION_DESIGN.md)の "ac_with_diode" は実装されていない種別。
+#         実装に合わせて skipped_nonlinear とする。
+#
+# cutoff_freq_hz は許容範囲 [min, max]。実測 fc を概ね ±35% で囲む回帰検出レンジ。
+# 判定フラグは「真であるべきもの」のみ列挙する（列挙しないフラグは照合対象外）。
+#   ※ 無損失 LC ローパスは共振により is_bandpass も True になるため、
+#     is_lowpass のみを照合し is_bandpass は照合しない。
+
+# ── パッシブ（AC 解析成功）─────────────────────────────
+rc_lowpass_001:
+  simulation_type: ac_passive
+  is_lowpass: true
+  cutoff_freq_hz: [1000, 2400]        # 実測 1621.8（理論 1591.5）
+
+rc_highpass_001:
+  simulation_type: ac_passive
+  is_highpass: true
+  cutoff_freq_hz: [1000, 2400]        # 実測 1621.8
+
+lc_lowpass_001:
+  simulation_type: ac_passive
+  is_lowpass: true                    # 無損失 LC のため is_bandpass も真（照合しない）
+  cutoff_freq_hz: [16000, 36000]      # 実測 25118.9
+
+lc_highpass_001:
+  simulation_type: ac_passive
+  is_highpass: true
+  cutoff_freq_hz: [6500, 16000]       # 実測 10471.3
+
+rlc_bandpass_001:
+  simulation_type: ac_passive
+  is_bandpass: true
+  cutoff_freq_hz: [10000, 22000]      # 実測 15848.9（共振 fc）
+
+rlc_notch_001:
+  simulation_type: ac_passive
+  is_bandstop: true
+  # fc は信頼度 low（境界ケース）のため照合しない
+
+lc_pi_filter_001:
+  simulation_type: ac_passive
+  is_lowpass: true
+  cutoff_freq_hz: [16000, 36000]      # 実測 25118.9
+
+lc_t_filter_001:
+  simulation_type: ac_passive
+  is_lowpass: true
+  cutoff_freq_hz: [16000, 36000]      # 実測 25118.9
+
+rc_cascade_lpf_001:
+  simulation_type: ac_passive
+  is_lowpass: true
+  cutoff_freq_hz: [350, 1000]         # 実測 602.6（2 段ロードで単段より低下）
+
+# ── ダイオード/ツェナー（skipped_nonlinear）─────────────
+halfwave_rect_001:
+  simulation_type: skipped_nonlinear
+
+positive_clipper_001:
+  simulation_type: skipped_nonlinear
+
+negative_clipper_001:
+  simulation_type: skipped_nonlinear
+
+zener_regulator_001:
+  simulation_type: skipped_nonlinear
+
+rectifier_cap_stage_001:
+  simulation_type: skipped_nonlinear
+
+# ── 能動素子（skipped_active）──────────────────────────
+# BJT/MOSFET/OpAmp は DC バイアス＋小信号 AC 解析が必要（未実装）。
+ce_amp_npn_001:
+  simulation_type: skipped_active
+
+ce_amp_pnp_001:
+  simulation_type: skipped_active
+
+emitter_follower_npn_001:
+  simulation_type: skipped_active
+
+cs_amp_nmos_001:
+  simulation_type: skipped_active
+
+source_follower_nmos_001:
+  simulation_type: skipped_active
+
+opamp_inverting_001:
+  simulation_type: skipped_active
+
+opamp_noninverting_001:
+  simulation_type: skipped_active
+
+opamp_buffer_001:
+  simulation_type: skipped_active
+
+two_stage_ce_001:
+  simulation_type: skipped_active
+
+ce_follower_001:
+  simulation_type: skipped_active
+
+current_mirror_npn_001:
+  simulation_type: skipped_active
+
+diff_pair_npn_001:
+  simulation_type: skipped_active
+
+# ── スイッチング（skipped_switch）──────────────────────
+buck_001:
+  simulation_type: skipped_switch
+
+boost_001:
+  simulation_type: skipped_switch
+
+buck_lc_filter_001:
+  simulation_type: skipped_switch
+
+sw_freewheel_001:
+  simulation_type: skipped_switch
+
+boost_input_stage_001:
+  simulation_type: skipped_switch

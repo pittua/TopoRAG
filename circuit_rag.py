@@ -19,6 +19,7 @@ _SIM_TYPE_LABEL = {
     "ac_passive":             "AC解析（パッシブ）",
     "tran_nonlinear":         "過渡解析（大信号）",
     "skipped_switch":         "スキップ（スイッチング回路）",
+    "skipped_active":         "スキップ（能動素子・小信号解析未実装）",
     "skipped_nonlinear":      "スキップ（ダイオード/非線形・過渡解析未実装）",
     "skipped_missing_values": "スキップ（部品値欠落）",
     "skipped_no_ngspice":     "スキップ（ngspice/PySpice 未検出）",
@@ -98,7 +99,11 @@ def _format_sim_for_prompt(sim: dict | None) -> str:
 
 
 # ─────────────────────────────────────────────────────────
-# ベクトル化（19次元）
+# ベクトル化（34次元）
+#   0–18  : 受動トポロジー（R/C/L/SW/D/DZ）。能動素子追加後も不変。
+#   19–33 : 能動素子（BJT/MOSFET/OpAmp）の構成・多素子トポロジー。
+#           受動回路では全て 0 になり、末尾ゼロ拡張のためコサイン類似度は不変
+#           （= 既存19回路の自己検索/摂動テストは回帰しない）。
 # ─────────────────────────────────────────────────────────
 
 def vectorize(features: dict) -> np.ndarray:
@@ -107,9 +112,12 @@ def vectorize(features: dict) -> np.ndarray:
     B2 = features["B2_diode"]
     B3 = features["B3_series_parallel"]
     C  = features["C_node"]
+    D  = features.get("D_active", {})   # 旧DB互換: 無ければ全て False/None
 
     order_map = {"SW_before_L": 1.0, "L_before_SW": -1.0, None: 0.0}
     first = B1.get("first_series_type")
+    tc = D.get("transistor_config")
+    oc = D.get("opamp_config")
 
     return np.array([
         float(A["has_resistor"]),           # 0
@@ -131,6 +139,21 @@ def vectorize(features: dict) -> np.ndarray:
         float(C["has_high_degree_node"]),  # 16
         min(C["cycle_count"] / 5.0, 1.0), # 17
         float(A.get("has_zener", False)),  # 18
+        float(D.get("has_bjt", False)),    # 19
+        float(D.get("has_mosfet", False)), # 20
+        float(D.get("has_opamp", False)),  # 21
+        float(tc == "CE"),                 # 22  接地エミッタ/ソース（反転増幅）
+        float(tc == "CC"),                 # 23  コレクタ/ドレイン接地（フォロワ）
+        float(tc == "CB"),                 # 24  ベース/ゲート接地
+        float(oc == "inverting"),          # 25  反転アンプ
+        float(oc == "non_inverting"),      # 26  非反転アンプ
+        float(oc == "buffer"),             # 27  ボルテージフォロワ
+        float(D.get("has_feedback", False)), # 28  帰還の有無
+        float(D.get("p_type", False)),     # 29  PNP/PMOS（極性）
+        min(D.get("n_active", 0) / 4.0, 1.0), # 30  能動素子数（正規化）
+        float(D.get("has_diode_connected", False)), # 31  ダイオード接続（カレントミラー）
+        float(D.get("has_coupled_pair", False)),    # 32  結合ペア（差動/ロングテール）
+        float(D.get("is_differential", False)),     # 33  差動（2入力）
     ], dtype=float)
 
 
@@ -269,6 +292,20 @@ class CircuitRAG:
             f"  Dカソード→OUT  : {B2['diode_cathode_to_out']}",
             f"  ループ数        : {f['C_node']['cycle_count']}",
         ]
+        D = f.get("D_active", {})
+        if D.get("has_active"):
+            _CFG = {"CE": "接地エミッタ/ソース(反転増幅)", "CC": "コレクタ/ドレイン接地(フォロワ)",
+                    "CB": "ベース/ゲート接地"}
+            parts = []
+            if D.get("transistor_config"):
+                parts.append(_CFG.get(D["transistor_config"], D["transistor_config"]))
+            if D.get("opamp_config"):
+                parts.append(f"OpAmp:{D['opamp_config']}")
+            lines.append(
+                f"  能動素子構成    : {' / '.join(parts) or '不明'}"
+                f"{'  (帰還あり)' if D.get('has_feedback') else ''}"
+                f"{'  (p型)' if D.get('p_type') else ''}"
+            )
         if f.get("is_hierarchical") and f.get("blocks"):
             lines.append(f"  ブロック構成     : {f['n_blocks']} ブロック")
             for i, blk in enumerate(f["blocks"]):

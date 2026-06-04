@@ -222,6 +222,180 @@
         {"id": "C1", "type": "C", "value": "100u", "terminals": {"p": "OUT", "n": "GND"}}
       ],
       "ports": {"input": "IN", "output": "OUT", "gnd": "GND"}
+    },
+    {
+      "id": "ce_amp_npn_001",
+      "name": "エミッタ接地増幅回路（NPN）",
+      "description": "NPNトランジスタによる接地エミッタ増幅回路。入力を結合コンデンサ経由でベースに与え、コレクタから反転増幅した信号を取り出す。分圧バイアスとエミッタ抵抗で動作点を安定化する。",
+      "function_tags": ["amplifier", "common_emitter", "bjt", "npn", "active", "inverting"],
+      "components": [
+        {"id": "Cin", "type": "C", "value": "1u",  "terminals": {"p": "VIN", "n": "NB"}},
+        {"id": "R1",  "type": "R", "value": "47k", "terminals": {"p": "VCC", "n": "NB"}},
+        {"id": "R2",  "type": "R", "value": "10k", "terminals": {"p": "NB",  "n": "GND"}},
+        {"id": "Q1",  "type": "NPN", "terminals": {"base": "NB", "collector": "NC", "emitter": "NE"}},
+        {"id": "Rc",  "type": "R", "value": "4.7k", "terminals": {"p": "VCC", "n": "NC"}},
+        {"id": "Re",  "type": "R", "value": "1k",  "terminals": {"p": "NE",  "n": "GND"}}
+      ],
+      "ports": {"input": "VIN", "output": "NC", "gnd": "GND"}
+    },
+    {
+      "id": "ce_amp_pnp_001",
+      "name": "エミッタ接地増幅回路（PNP）",
+      "description": "PNPトランジスタによる接地エミッタ増幅回路。エミッタを正電源側、コレクタを負荷抵抗経由でGND側に配置する。NPN版と構造は鏡像だが極性が反転する。",
+      "function_tags": ["amplifier", "common_emitter", "bjt", "pnp", "active", "inverting"],
+      "components": [
+        {"id": "Cin", "type": "C", "value": "1u",  "terminals": {"p": "VIN", "n": "NB"}},
+        {"id": "R1",  "type": "R", "value": "47k", "terminals": {"p": "VCC", "n": "NB"}},
+        {"id": "R2",  "type": "R", "value": "10k", "terminals": {"p": "NB",  "n": "GND"}},
+        {"id": "Q1",  "type": "PNP", "terminals": {"base": "NB", "emitter": "NE", "collector": "NC"}},
+        {"id": "Re",  "type": "R", "value": "1k",  "terminals": {"p": "VCC", "n": "NE"}},
+        {"id": "Rc",  "type": "R", "value": "4.7k", "terminals": {"p": "NC",  "n": "GND"}}
+      ],
+      "ports": {"input": "VIN", "output": "NC", "gnd": "GND"}
+    },
+    {
+      "id": "emitter_follower_npn_001",
+      "name": "エミッタフォロワ（NPN）",
+      "description": "NPNトランジスタによるコレクタ接地増幅回路（エミッタフォロワ）。コレクタを電源に直結し、エミッタから出力する。電圧利得は約1で非反転、低出力インピーダンスのバッファとして使われる。",
+      "function_tags": ["amplifier", "common_collector", "follower", "buffer", "bjt", "npn", "active", "non_inverting"],
+      "components": [
+        {"id": "Cin", "type": "C", "value": "1u",  "terminals": {"p": "VIN", "n": "NB"}},
+        {"id": "R1",  "type": "R", "value": "47k", "terminals": {"p": "VCC", "n": "NB"}},
+        {"id": "R2",  "type": "R", "value": "47k", "terminals": {"p": "NB",  "n": "GND"}},
+        {"id": "Q1",  "type": "NPN", "terminals": {"base": "NB", "collector": "VCC", "emitter": "NE"}},
+        {"id": "Re",  "type": "R", "value": "1k",  "terminals": {"p": "NE",  "n": "GND"}}
+      ],
+      "ports": {"input": "VIN", "output": "NE", "gnd": "GND"}
+    },
+    {
+      "id": "cs_amp_nmos_001",
+      "name": "ソース接地増幅回路（NMOS）",
+      "description": "NMOSトランジスタによる接地ソース増幅回路。ゲートに入力を与え、ドレインから反転増幅した信号を取り出す。BJTの接地エミッタに対応するMOS版。",
+      "function_tags": ["amplifier", "common_source", "mosfet", "nmos", "active", "inverting"],
+      "components": [
+        {"id": "Cin", "type": "C", "value": "1u",  "terminals": {"p": "VIN", "n": "NG"}},
+        {"id": "Rg1", "type": "R", "value": "1M",  "terminals": {"p": "VDD", "n": "NG"}},
+        {"id": "Rg2", "type": "R", "value": "1M",  "terminals": {"p": "NG",  "n": "GND"}},
+        {"id": "M1",  "type": "NMOS", "terminals": {"gate": "NG", "drain": "ND", "source": "NS"}},
+        {"id": "Rd",  "type": "R", "value": "4.7k", "terminals": {"p": "VDD", "n": "ND"}},
+        {"id": "Rs",  "type": "R", "value": "1k",  "terminals": {"p": "NS",  "n": "GND"}}
+      ],
+      "ports": {"input": "VIN", "output": "ND", "gnd": "GND"}
+    },
+    {
+      "id": "source_follower_nmos_001",
+      "name": "ソースフォロワ（NMOS）",
+      "description": "NMOSトランジスタによるドレイン接地増幅回路（ソースフォロワ）。ドレインを電源に直結し、ソースから出力する。電圧利得は約1で非反転のバッファ。",
+      "function_tags": ["amplifier", "common_drain", "follower", "buffer", "mosfet", "nmos", "active", "non_inverting"],
+      "components": [
+        {"id": "Cin", "type": "C", "value": "1u",  "terminals": {"p": "VIN", "n": "NG"}},
+        {"id": "Rg",  "type": "R", "value": "1M",  "terminals": {"p": "NG",  "n": "GND"}},
+        {"id": "M1",  "type": "NMOS", "terminals": {"gate": "NG", "drain": "VDD", "source": "NS"}},
+        {"id": "Rs",  "type": "R", "value": "1k",  "terminals": {"p": "NS",  "n": "GND"}}
+      ],
+      "ports": {"input": "VIN", "output": "NS", "gnd": "GND"}
+    },
+    {
+      "id": "opamp_inverting_001",
+      "name": "反転増幅回路（OpAmp）",
+      "description": "オペアンプによる反転増幅回路。入力抵抗を介して反転入力に信号を与え、出力から反転入力へ帰還抵抗で負帰還をかける。非反転入力はGNDに接地。利得は -Rf/Rin。",
+      "function_tags": ["amplifier", "opamp", "inverting", "active", "feedback", "negative_feedback"],
+      "components": [
+        {"id": "Rin", "type": "R", "value": "10k", "terminals": {"p": "VIN", "n": "NINV"}},
+        {"id": "Rf",  "type": "R", "value": "100k", "terminals": {"p": "NINV", "n": "OUT"}},
+        {"id": "OA1", "type": "OPAMP", "terminals": {"in_p": "GND", "in_n": "NINV", "out": "OUT"}}
+      ],
+      "ports": {"input": "VIN", "output": "OUT", "gnd": "GND"}
+    },
+    {
+      "id": "opamp_noninverting_001",
+      "name": "非反転増幅回路（OpAmp）",
+      "description": "オペアンプによる非反転増幅回路。入力を非反転入力に直接与え、出力から反転入力への帰還分圧で利得を決める。利得は 1+Rf/R1。高入力インピーダンス。",
+      "function_tags": ["amplifier", "opamp", "non_inverting", "active", "feedback", "negative_feedback"],
+      "components": [
+        {"id": "R1",  "type": "R", "value": "10k", "terminals": {"p": "NINV", "n": "GND"}},
+        {"id": "Rf",  "type": "R", "value": "90k", "terminals": {"p": "OUT",  "n": "NINV"}},
+        {"id": "OA1", "type": "OPAMP", "terminals": {"in_p": "VIN", "in_n": "NINV", "out": "OUT"}}
+      ],
+      "ports": {"input": "VIN", "output": "OUT", "gnd": "GND"}
+    },
+    {
+      "id": "opamp_buffer_001",
+      "name": "ボルテージフォロワ（OpAmp）",
+      "description": "オペアンプによるボルテージフォロワ（バッファ）。出力を反転入力に直結した100%負帰還で、利得1・非反転。高入力／低出力インピーダンスのインピーダンス変換に用いる。",
+      "function_tags": ["opamp", "buffer", "follower", "active", "feedback", "unity_gain"],
+      "components": [
+        {"id": "OA1", "type": "OPAMP", "terminals": {"in_p": "VIN", "in_n": "OUT", "out": "OUT"}}
+      ],
+      "ports": {"input": "VIN", "output": "OUT", "gnd": "GND"}
+    },
+    {
+      "id": "two_stage_ce_001",
+      "name": "2段エミッタ接地増幅回路（NPN）",
+      "description": "接地エミッタ増幅段を結合コンデンサで2段縦続接続した多段増幅回路。各段は分圧バイアスとエミッタ抵抗で安定化される。総合利得は各段の積になる。",
+      "function_tags": ["amplifier", "multistage", "two_stage", "common_emitter", "bjt", "npn", "active", "cascade"],
+      "components": [
+        {"id": "Cin", "type": "C", "value": "1u",  "terminals": {"p": "VIN", "n": "NB1"}},
+        {"id": "R1",  "type": "R", "value": "47k", "terminals": {"p": "VCC", "n": "NB1"}},
+        {"id": "R2",  "type": "R", "value": "10k", "terminals": {"p": "NB1", "n": "GND"}},
+        {"id": "Q1",  "type": "NPN", "terminals": {"base": "NB1", "collector": "NC1", "emitter": "NE1"}},
+        {"id": "Rc1", "type": "R", "value": "4.7k", "terminals": {"p": "VCC", "n": "NC1"}},
+        {"id": "Re1", "type": "R", "value": "1k",  "terminals": {"p": "NE1", "n": "GND"}},
+        {"id": "Cc",  "type": "C", "value": "1u",  "terminals": {"p": "NC1", "n": "NB2"}},
+        {"id": "R3",  "type": "R", "value": "47k", "terminals": {"p": "VCC", "n": "NB2"}},
+        {"id": "R4",  "type": "R", "value": "10k", "terminals": {"p": "NB2", "n": "GND"}},
+        {"id": "Q2",  "type": "NPN", "terminals": {"base": "NB2", "collector": "NC2", "emitter": "NE2"}},
+        {"id": "Rc2", "type": "R", "value": "4.7k", "terminals": {"p": "VCC", "n": "NC2"}},
+        {"id": "Re2", "type": "R", "value": "1k",  "terminals": {"p": "NE2", "n": "GND"}}
+      ],
+      "ports": {"input": "VIN", "output": "NC2", "gnd": "GND"}
+    },
+    {
+      "id": "ce_follower_001",
+      "name": "エミッタ接地＋エミッタフォロワ（NPN 2段）",
+      "description": "接地エミッタ増幅段の後段にエミッタフォロワを縦続した多段回路。前段で電圧増幅し、後段のフォロワで低出力インピーダンス化して負荷を駆動する。",
+      "function_tags": ["amplifier", "multistage", "two_stage", "common_emitter", "common_collector", "follower", "bjt", "npn", "active", "cascade"],
+      "components": [
+        {"id": "Cin", "type": "C", "value": "1u",  "terminals": {"p": "VIN", "n": "NB1"}},
+        {"id": "R1",  "type": "R", "value": "47k", "terminals": {"p": "VCC", "n": "NB1"}},
+        {"id": "R2",  "type": "R", "value": "10k", "terminals": {"p": "NB1", "n": "GND"}},
+        {"id": "Q1",  "type": "NPN", "terminals": {"base": "NB1", "collector": "NC1", "emitter": "NE1"}},
+        {"id": "Rc1", "type": "R", "value": "4.7k", "terminals": {"p": "VCC", "n": "NC1"}},
+        {"id": "Re1", "type": "R", "value": "1k",  "terminals": {"p": "NE1", "n": "GND"}},
+        {"id": "Cc",  "type": "C", "value": "1u",  "terminals": {"p": "NC1", "n": "NB2"}},
+        {"id": "R3",  "type": "R", "value": "47k", "terminals": {"p": "VCC", "n": "NB2"}},
+        {"id": "R4",  "type": "R", "value": "47k", "terminals": {"p": "NB2", "n": "GND"}},
+        {"id": "Q2",  "type": "NPN", "terminals": {"base": "NB2", "collector": "VCC", "emitter": "NE2"}},
+        {"id": "Re2", "type": "R", "value": "1k",  "terminals": {"p": "NE2", "n": "GND"}}
+      ],
+      "ports": {"input": "VIN", "output": "NE2", "gnd": "GND"}
+    },
+    {
+      "id": "current_mirror_npn_001",
+      "name": "カレントミラー（NPN）",
+      "description": "ダイオード接続した参照トランジスタと出力トランジスタでベースを共有し、参照電流を出力側に複製する電流源回路。バイアス回路の基本構成。",
+      "function_tags": ["current_mirror", "current_source", "bias", "bjt", "npn", "active"],
+      "components": [
+        {"id": "Rref", "type": "R", "value": "10k", "terminals": {"p": "VCC", "n": "NREF"}},
+        {"id": "Q1",   "type": "NPN", "terminals": {"collector": "NREF", "base": "NREF", "emitter": "GND"}},
+        {"id": "Q2",   "type": "NPN", "terminals": {"base": "NREF", "collector": "NOUT", "emitter": "GND"}},
+        {"id": "Rload","type": "R", "value": "4.7k", "terminals": {"p": "VCC", "n": "NOUT"}}
+      ],
+      "ports": {"input": "NREF", "output": "NOUT", "gnd": "GND"}
+    },
+    {
+      "id": "diff_pair_npn_001",
+      "name": "差動対（NPN ロングテールペア）",
+      "description": "エミッタを共通テール抵抗で結合した2つのNPNトランジスタによる差動増幅回路。2入力の差を増幅し同相成分を除去する。オペアンプ入力段の基本構成。",
+      "function_tags": ["differential", "long_tailed_pair", "amplifier", "bjt", "npn", "active"],
+      "components": [
+        {"id": "Q1",  "type": "NPN", "terminals": {"base": "VIN", "collector": "NC1", "emitter": "NTAIL"}},
+        {"id": "Q2",  "type": "NPN", "terminals": {"base": "VIN2", "collector": "NC2", "emitter": "NTAIL"}},
+        {"id": "Rc1", "type": "R", "value": "4.7k", "terminals": {"p": "VCC", "n": "NC1"}},
+        {"id": "Rc2", "type": "R", "value": "4.7k", "terminals": {"p": "VCC", "n": "NC2"}},
+        {"id": "Rtail","type": "R", "value": "10k", "terminals": {"p": "NTAIL", "n": "GND"}}
+      ],
+      "ports": {"input": "VIN", "input2": "VIN2", "output": "NC1", "gnd": "GND"}
     }
   ]
 }
