@@ -73,8 +73,8 @@ smps-com:
 sallen_key:
   scope: out
   note: 2次アクティブ(Sallen-Key)フィルタ。DB 未収録。
-        （旧: 変換時のポート検出が OUT=GND/GND=VSS と誤っていたが (d) で修正済み →
-        現在は OUT=/lowpass, GND=GND と正しく推定）。
+        旧は変換時のポート検出が OUT=GND/GND=VSS と誤っていたが (d) で修正済み。
+        現在は OUT=/lowpass, GND=GND と正しく推定。
 generic_opamp_bip:
   scope: out
   note: OpAmp の内部トランジスタ・マクロモデル試験回路。単一機能カテゴリに非該当。
