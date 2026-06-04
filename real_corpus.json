@@ -1,0 +1,1101 @@
+{
+  "circuits": [
+    {
+      "id": "amplifier-ac",
+      "name": "amplifier-ac",
+      "description": "",
+      "components": [
+        {
+          "id": "C1",
+          "type": "C",
+          "value": 1.0,
+          "terminals": {
+            "p": "/VIN",
+            "n": "Net-(C1-Pad2)"
+          }
+        },
+        {
+          "id": "C2",
+          "type": "C",
+          "value": 2.2e-10,
+          "terminals": {
+            "p": "/VBASE",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "C3",
+          "type": "C",
+          "value": 1e-08,
+          "terminals": {
+            "p": "Net-(C3-Pad1)",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "C4",
+          "type": "C",
+          "value": 1e-08,
+          "terminals": {
+            "p": "VOUT",
+            "n": "Net-(C4-Pad2)"
+          }
+        },
+        {
+          "id": "L1",
+          "type": "L",
+          "value": 0.1,
+          "terminals": {
+            "p": "Net-(C4-Pad2)",
+            "n": "VOUT"
+          }
+        },
+        {
+          "id": "L2",
+          "type": "L",
+          "value": 0.1,
+          "terminals": {
+            "p": "Net-(L2-Pad1)",
+            "n": "Net-(C3-Pad1)"
+          }
+        },
+        {
+          "id": "Q1",
+          "type": "NPN",
+          "value": null,
+          "terminals": {
+            "base": "/VBASE",
+            "emitter": "Net-(Q1-E)",
+            "collector": "VOUT"
+          }
+        },
+        {
+          "id": "Q2",
+          "type": "NPN",
+          "value": null,
+          "terminals": {
+            "base": "/VIN",
+            "collector": "Net-(Q2-C)",
+            "emitter": "Net-(Q2-E)"
+          }
+        },
+        {
+          "id": "Q3",
+          "type": "NPN",
+          "value": null,
+          "terminals": {
+            "collector": "/VBASE",
+            "emitter": "Net-(Q2-E)",
+            "base": "Net-(Q3-B)"
+          }
+        },
+        {
+          "id": "R1",
+          "type": "R",
+          "value": 10.0,
+          "terminals": {
+            "p": "+12V",
+            "n": "Net-(C4-Pad2)"
+          }
+        },
+        {
+          "id": "R2",
+          "type": "R",
+          "value": 22000.0,
+          "terminals": {
+            "p": "VOUT",
+            "n": "Net-(C4-Pad2)"
+          }
+        },
+        {
+          "id": "R3",
+          "type": "R",
+          "value": 22000.0,
+          "terminals": {
+            "p": "+12V",
+            "n": "/VIN"
+          }
+        },
+        {
+          "id": "R4",
+          "type": "R",
+          "value": 1000.0,
+          "terminals": {
+            "p": "+12V",
+            "n": "Net-(Q2-C)"
+          }
+        },
+        {
+          "id": "R5",
+          "type": "R",
+          "value": 1000.0,
+          "terminals": {
+            "p": "+12V",
+            "n": "/VBASE"
+          }
+        },
+        {
+          "id": "R6",
+          "type": "R",
+          "value": 22000.0,
+          "terminals": {
+            "p": "+12V",
+            "n": "Net-(Q3-B)"
+          }
+        },
+        {
+          "id": "R7",
+          "type": "R",
+          "value": 22000.0,
+          "terminals": {
+            "p": "Net-(C3-Pad1)",
+            "n": "Net-(L2-Pad1)"
+          }
+        },
+        {
+          "id": "R8",
+          "type": "R",
+          "value": 2200.0,
+          "terminals": {
+            "p": "Net-(Q1-E)",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "R9",
+          "type": "R",
+          "value": 10000.0,
+          "terminals": {
+            "p": "/VIN",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "R10",
+          "type": "R",
+          "value": 470.0,
+          "terminals": {
+            "p": "Net-(Q2-E)",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "R11",
+          "type": "R",
+          "value": 10000.0,
+          "terminals": {
+            "p": "Net-(Q3-B)",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "R12",
+          "type": "R",
+          "value": 100.0,
+          "terminals": {
+            "p": "Net-(L2-Pad1)",
+            "n": "Net-(Q1-E)"
+          }
+        }
+      ],
+      "ports": {
+        "input": "/VIN",
+        "output": "VOUT",
+        "gnd": "GND"
+      }
+    },
+    {
+      "id": "buck_conv",
+      "name": "buck_conv",
+      "description": "",
+      "components": [
+        {
+          "id": "C101",
+          "type": "C",
+          "value": 9.999999999999999e-05,
+          "terminals": {
+            "p": "/VOUT",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "D101",
+          "type": "D",
+          "value": null,
+          "terminals": {
+            "anode": "GND",
+            "cathode": "/PWM_OUT"
+          }
+        },
+        {
+          "id": "L101",
+          "type": "L",
+          "value": 9.999999999999999e-05,
+          "terminals": {
+            "p": "/PWM_OUT",
+            "n": "/VOUT"
+          }
+        },
+        {
+          "id": "Q1",
+          "type": "NMOS",
+          "value": null,
+          "terminals": {
+            "source": "/PWM_OUT",
+            "drain": "/VIN",
+            "gate": "/gg"
+          }
+        },
+        {
+          "id": "R101",
+          "type": "R",
+          "value": 5.0,
+          "terminals": {
+            "p": "/gg",
+            "n": "/PWM_IN"
+          }
+        },
+        {
+          "id": "R103",
+          "type": "R",
+          "value": 5.0,
+          "terminals": {
+            "p": "/VOUT",
+            "n": "GND"
+          }
+        }
+      ],
+      "ports": {
+        "input": "/VIN",
+        "output": "/VOUT",
+        "gnd": "GND"
+      }
+    },
+    {
+      "id": "generic_opamp_bip",
+      "name": "generic_opamp_bip",
+      "description": "",
+      "components": [
+        {
+          "id": "C1",
+          "type": "C",
+          "value": 1e-06,
+          "terminals": {
+            "p": "/in",
+            "n": "Net-(Q1-B)"
+          }
+        },
+        {
+          "id": "C2",
+          "type": "C",
+          "value": 1e-06,
+          "terminals": {
+            "p": "Net-(Q1-C)",
+            "n": "/outb"
+          }
+        },
+        {
+          "id": "Q1",
+          "type": "NPN",
+          "value": null,
+          "terminals": {
+            "base": "Net-(Q1-B)",
+            "collector": "Net-(Q1-C)",
+            "emitter": "Net-(Q1-E)"
+          }
+        },
+        {
+          "id": "R1",
+          "type": "R",
+          "value": 100000.0,
+          "terminals": {
+            "p": "/out",
+            "n": "Net-(U1--)"
+          }
+        },
+        {
+          "id": "R2",
+          "type": "R",
+          "value": 10000.0,
+          "terminals": {
+            "p": "Net-(U1--)",
+            "n": "/in"
+          }
+        },
+        {
+          "id": "R3",
+          "type": "R",
+          "value": 10000.0,
+          "terminals": {
+            "p": "Net-(Q1-B)",
+            "n": "0"
+          }
+        },
+        {
+          "id": "R4",
+          "type": "R",
+          "value": 50000.0,
+          "terminals": {
+            "p": "+5V",
+            "n": "Net-(Q1-B)"
+          }
+        },
+        {
+          "id": "R5",
+          "type": "R",
+          "value": 5000.0,
+          "terminals": {
+            "p": "+5V",
+            "n": "Net-(Q1-C)"
+          }
+        },
+        {
+          "id": "R6",
+          "type": "R",
+          "value": 330.0,
+          "terminals": {
+            "p": "Net-(Q1-E)",
+            "n": "0"
+          }
+        },
+        {
+          "id": "R7",
+          "type": "R",
+          "value": 100000.0,
+          "terminals": {
+            "p": "/outb",
+            "n": "0"
+          }
+        },
+        {
+          "id": "U1",
+          "type": "OPAMP",
+          "value": 10.0,
+          "terminals": {
+            "in_p": "0",
+            "in_n": "Net-(U1--)",
+            "out": "/out"
+          }
+        }
+      ],
+      "ports": {
+        "input": "/in",
+        "output": "/out",
+        "gnd": "0"
+      }
+    },
+    {
+      "id": "lc-series-resonance",
+      "name": "LC-Series-resonance",
+      "description": "",
+      "components": [
+        {
+          "id": "C1",
+          "type": "C",
+          "value": 1e-06,
+          "terminals": {
+            "p": "Net-(C1-Pad1)",
+            "n": "In"
+          }
+        },
+        {
+          "id": "L1",
+          "type": "L",
+          "value": 1e-06,
+          "terminals": {
+            "p": "Out",
+            "n": "Net-(C1-Pad1)"
+          }
+        },
+        {
+          "id": "R1",
+          "type": "R",
+          "value": 10.0,
+          "terminals": {
+            "p": "Out",
+            "n": "GND"
+          }
+        }
+      ],
+      "ports": {
+        "input": "In",
+        "output": "Out",
+        "gnd": "GND"
+      }
+    },
+    {
+      "id": "nmos-amplifier-cs",
+      "name": "NMOS-Amplifier-CS",
+      "description": "",
+      "components": [
+        {
+          "id": "C1",
+          "type": "C",
+          "value": 1e-06,
+          "terminals": {
+            "p": "Vsig",
+            "n": "/Ug"
+          }
+        },
+        {
+          "id": "C2",
+          "type": "C",
+          "value": 1e-06,
+          "terminals": {
+            "p": "/Ud",
+            "n": "/Out"
+          }
+        },
+        {
+          "id": "Q1",
+          "type": "NMOS",
+          "value": null,
+          "terminals": {
+            "drain": "/Ud",
+            "gate": "/Ug",
+            "source": "/Us"
+          }
+        },
+        {
+          "id": "R1",
+          "type": "R",
+          "value": 120000.0,
+          "terminals": {
+            "p": "Vdc",
+            "n": "/Ug"
+          }
+        },
+        {
+          "id": "R2",
+          "type": "R",
+          "value": 52000.0,
+          "terminals": {
+            "p": "/Ug",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "R3",
+          "type": "R",
+          "value": 2000.0,
+          "terminals": {
+            "p": "Vdc",
+            "n": "/Ud"
+          }
+        },
+        {
+          "id": "R4",
+          "type": "R",
+          "value": 100.0,
+          "terminals": {
+            "p": "/Us",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "R5",
+          "type": "R",
+          "value": 100000.0,
+          "terminals": {
+            "p": "/Out",
+            "n": "GND"
+          }
+        }
+      ],
+      "ports": {
+        "input": "Vsig",
+        "output": "/Out",
+        "gnd": "GND"
+      }
+    },
+    {
+      "id": "npn-amplifier-ce",
+      "name": "NPN-Amplifier-CE",
+      "description": "",
+      "components": [
+        {
+          "id": "C1",
+          "type": "C",
+          "value": 1e-06,
+          "terminals": {
+            "p": "Vsig",
+            "n": "/Ub"
+          }
+        },
+        {
+          "id": "C2",
+          "type": "C",
+          "value": 1e-06,
+          "terminals": {
+            "p": "/Uc",
+            "n": "/Out"
+          }
+        },
+        {
+          "id": "Q1",
+          "type": "NPN",
+          "value": null,
+          "terminals": {
+            "base": "/Ub",
+            "collector": "/Uc",
+            "emitter": "/Ue"
+          }
+        },
+        {
+          "id": "R1",
+          "type": "R",
+          "value": 48000.0,
+          "terminals": {
+            "p": "Vdc",
+            "n": "/Ub"
+          }
+        },
+        {
+          "id": "R2",
+          "type": "R",
+          "value": 7200.0,
+          "terminals": {
+            "p": "/Ub",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "R3",
+          "type": "R",
+          "value": 1000.0,
+          "terminals": {
+            "p": "Vdc",
+            "n": "/Uc"
+          }
+        },
+        {
+          "id": "R4",
+          "type": "R",
+          "value": 100.0,
+          "terminals": {
+            "p": "/Ue",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "R5",
+          "type": "R",
+          "value": 100000.0,
+          "terminals": {
+            "p": "/Out",
+            "n": "GND"
+          }
+        }
+      ],
+      "ports": {
+        "input": "Vsig",
+        "output": "/Out",
+        "gnd": "GND"
+      }
+    },
+    {
+      "id": "opamp-inverting",
+      "name": "OPamp-inverting",
+      "description": "",
+      "components": [
+        {
+          "id": "R1",
+          "type": "R",
+          "value": 1000.0,
+          "terminals": {
+            "p": "Net-(U1--)",
+            "n": "In"
+          }
+        },
+        {
+          "id": "R2",
+          "type": "R",
+          "value": 10000.0,
+          "terminals": {
+            "p": "Out",
+            "n": "Net-(U1--)"
+          }
+        },
+        {
+          "id": "U1",
+          "type": "OPAMP",
+          "value": null,
+          "terminals": {
+            "in_p": "GND",
+            "in_n": "Net-(U1--)",
+            "out": "Out"
+          }
+        }
+      ],
+      "ports": {
+        "input": "In",
+        "output": "Out",
+        "gnd": "GND"
+      }
+    },
+    {
+      "id": "opamp-noninverting",
+      "name": "OPamp-noninverting",
+      "description": "",
+      "components": [
+        {
+          "id": "R1",
+          "type": "R",
+          "value": 1000.0,
+          "terminals": {
+            "p": "GND",
+            "n": "Net-(U1--)"
+          }
+        },
+        {
+          "id": "R2",
+          "type": "R",
+          "value": 9000.0,
+          "terminals": {
+            "p": "Out",
+            "n": "Net-(U1--)"
+          }
+        },
+        {
+          "id": "U1",
+          "type": "OPAMP",
+          "value": null,
+          "terminals": {
+            "in_p": "In",
+            "in_n": "Net-(U1--)",
+            "out": "Out"
+          }
+        }
+      ],
+      "ports": {
+        "input": "In",
+        "output": "Out",
+        "gnd": "GND"
+      }
+    },
+    {
+      "id": "opamp-voltage-follower",
+      "name": "OPamp-voltage-follower",
+      "description": "",
+      "components": [
+        {
+          "id": "U1",
+          "type": "OPAMP",
+          "value": null,
+          "terminals": {
+            "in_p": "In",
+            "in_n": "Out",
+            "out": "Out"
+          }
+        }
+      ],
+      "ports": {
+        "input": "In",
+        "output": "Out",
+        "gnd": "GND"
+      }
+    },
+    {
+      "id": "rc-bandpass",
+      "name": "RC-Bandpass",
+      "description": "",
+      "components": [
+        {
+          "id": "C1",
+          "type": "C",
+          "value": 9.999999999999999e-05,
+          "terminals": {
+            "p": "Net-(C1-Pad1)",
+            "n": "In"
+          }
+        },
+        {
+          "id": "C2",
+          "type": "C",
+          "value": 1e-06,
+          "terminals": {
+            "p": "GND",
+            "n": "Out"
+          }
+        },
+        {
+          "id": "R1",
+          "type": "R",
+          "value": 100.0,
+          "terminals": {
+            "p": "Net-(C1-Pad1)",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "R2",
+          "type": "R",
+          "value": 10.0,
+          "terminals": {
+            "p": "Net-(C1-Pad1)",
+            "n": "Out"
+          }
+        }
+      ],
+      "ports": {
+        "input": "In",
+        "output": "Out",
+        "gnd": "GND"
+      }
+    },
+    {
+      "id": "rc-highpass",
+      "name": "RC-Highpass",
+      "description": "",
+      "components": [
+        {
+          "id": "C1",
+          "type": "C",
+          "value": 9.999999999999999e-05,
+          "terminals": {
+            "p": "Out",
+            "n": "In"
+          }
+        },
+        {
+          "id": "R1",
+          "type": "R",
+          "value": 100.0,
+          "terminals": {
+            "p": "Out",
+            "n": "GND"
+          }
+        }
+      ],
+      "ports": {
+        "input": "In",
+        "output": "Out",
+        "gnd": "GND"
+      }
+    },
+    {
+      "id": "rc-lowpass",
+      "name": "RC-Lowpass",
+      "description": "",
+      "components": [
+        {
+          "id": "C1",
+          "type": "C",
+          "value": 1e-06,
+          "terminals": {
+            "p": "Out",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "R1",
+          "type": "R",
+          "value": 10.0,
+          "terminals": {
+            "p": "Out",
+            "n": "In"
+          }
+        }
+      ],
+      "ports": {
+        "input": "In",
+        "output": "Out",
+        "gnd": "GND"
+      }
+    },
+    {
+      "id": "rectifier-1d",
+      "name": "Rectifier-1D",
+      "description": "",
+      "components": [
+        {
+          "id": "C1",
+          "type": "C",
+          "value": 0.0033,
+          "terminals": {
+            "p": "Out",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "D1",
+          "type": "D",
+          "value": null,
+          "terminals": {
+            "anode": "In",
+            "cathode": "Out"
+          }
+        },
+        {
+          "id": "R1",
+          "type": "R",
+          "value": 100.0,
+          "terminals": {
+            "p": "Out",
+            "n": "GND"
+          }
+        }
+      ],
+      "ports": {
+        "input": "In",
+        "output": "Out",
+        "gnd": "GND"
+      }
+    },
+    {
+      "id": "rectifier",
+      "name": "rectifier",
+      "description": "",
+      "components": [
+        {
+          "id": "C1",
+          "type": "C",
+          "value": 1.0000000000000001e-07,
+          "terminals": {
+            "p": "/rect_out",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "D1",
+          "type": "D",
+          "value": null,
+          "terminals": {
+            "anode": "Net-(D1-A)",
+            "cathode": "/rect_out"
+          }
+        },
+        {
+          "id": "R1",
+          "type": "R",
+          "value": 1000.0,
+          "terminals": {
+            "p": "/signal_in",
+            "n": "Net-(D1-A)"
+          }
+        },
+        {
+          "id": "R2",
+          "type": "R",
+          "value": 100000.0,
+          "terminals": {
+            "p": "/rect_out",
+            "n": "GND"
+          }
+        }
+      ],
+      "ports": {
+        "input": "/signal_in",
+        "output": "/rect_out",
+        "gnd": "GND"
+      }
+    },
+    {
+      "id": "sallen_key",
+      "name": "sallen_key",
+      "description": "",
+      "components": [
+        {
+          "id": "C1",
+          "type": "C",
+          "value": 1.0000000000000001e-07,
+          "terminals": {
+            "p": "/lowpass",
+            "n": "Net-(C1-Pad2)"
+          }
+        },
+        {
+          "id": "C2",
+          "type": "C",
+          "value": 1.0000000000000001e-07,
+          "terminals": {
+            "p": "Net-(U1-+)",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "R1",
+          "type": "R",
+          "value": 1000.0,
+          "terminals": {
+            "p": "Net-(C1-Pad2)",
+            "n": "Net-(R1-Pad2)"
+          }
+        },
+        {
+          "id": "R2",
+          "type": "R",
+          "value": 1000.0,
+          "terminals": {
+            "p": "Net-(U1-+)",
+            "n": "Net-(C1-Pad2)"
+          }
+        },
+        {
+          "id": "U1",
+          "type": "OPAMP",
+          "value": null,
+          "terminals": {
+            "in_p": "Net-(U1-+)",
+            "in_n": "/lowpass",
+            "out": "/lowpass"
+          }
+        }
+      ],
+      "ports": {
+        "input": "Net-(R1-Pad2)",
+        "output": "GND",
+        "gnd": "VSS"
+      }
+    },
+    {
+      "id": "smps-com",
+      "name": "smps-com",
+      "description": "",
+      "components": [
+        {
+          "id": "C1",
+          "type": "C",
+          "value": 4.7e-06,
+          "terminals": {
+            "p": "/out",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "C2",
+          "type": "C",
+          "value": 1e-08,
+          "terminals": {
+            "p": "Net-(U1--)",
+            "n": "Net-(C2-Pad2)"
+          }
+        },
+        {
+          "id": "D1",
+          "type": "D",
+          "value": null,
+          "terminals": {
+            "anode": "/sout",
+            "cathode": "/out"
+          }
+        },
+        {
+          "id": "L1",
+          "type": "L",
+          "value": 9.999999999999999e-06,
+          "terminals": {
+            "p": "Net-(L1-Pad1)",
+            "n": "/sout"
+          }
+        },
+        {
+          "id": "Q1",
+          "type": "NMOS",
+          "value": null,
+          "terminals": {
+            "gate": "/gg",
+            "drain": "/sout",
+            "source": "GND"
+          }
+        },
+        {
+          "id": "R1",
+          "type": "R",
+          "value": 0.0022,
+          "terminals": {
+            "p": "/in",
+            "n": "Net-(L1-Pad1)"
+          }
+        },
+        {
+          "id": "R2",
+          "type": "R",
+          "value": null,
+          "terminals": {
+            "p": "/out",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "R3",
+          "type": "R",
+          "value": 1.0,
+          "terminals": {
+            "p": "/pw",
+            "n": "/gg"
+          }
+        },
+        {
+          "id": "R4",
+          "type": "R",
+          "value": 1000.0,
+          "terminals": {
+            "p": "/vdiv",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "R5",
+          "type": "R",
+          "value": 9100.0,
+          "terminals": {
+            "p": "/out",
+            "n": "/vdiv"
+          }
+        },
+        {
+          "id": "R6",
+          "type": "R",
+          "value": 10000.0,
+          "terminals": {
+            "p": "/vdiv",
+            "n": "Net-(U1--)"
+          }
+        },
+        {
+          "id": "R7",
+          "type": "R",
+          "value": 20000.0,
+          "terminals": {
+            "p": "Net-(C2-Pad2)",
+            "n": "Net-(R7-Pad2)"
+          }
+        },
+        {
+          "id": "R8",
+          "type": "R",
+          "value": 1000.0,
+          "terminals": {
+            "p": "Net-(R7-Pad2)",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "R9",
+          "type": "R",
+          "value": 10000000.0,
+          "terminals": {
+            "p": "Net-(U1--)",
+            "n": "Net-(C2-Pad2)"
+          }
+        },
+        {
+          "id": "U1",
+          "type": "OPAMP",
+          "value": null,
+          "terminals": {
+            "in_p": "Net-(U1-+)",
+            "in_n": "Net-(U1--)",
+            "out": "Net-(C2-Pad2)"
+          }
+        }
+      ],
+      "ports": {
+        "input": "/in",
+        "output": "/out",
+        "gnd": "GND"
+      }
+    }
+  ]
+}

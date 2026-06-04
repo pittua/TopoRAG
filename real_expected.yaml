@@ -1,0 +1,79 @@
+# real_expected.yaml — 実機コーパス(real_corpus.json)の正解ラベル
+#
+# validate_real.py が参照。キーは変換後の回路 id（=元 .kicad_sch のファイル名スラグ）。
+#   scope : in  … DB にカテゴリが存在。expect の id が rank1 に来れば正解。
+#           out … DB 未収録。棄却されるべき（top1 スコアが低いことを期待）。
+#   expect: 正解とみなす DB の circuit_id（複数可。近縁カテゴリは列挙）。
+#   note  : 検証上の所見。
+#
+# 出典: 末尾 -*** は feastorg/KiCad-Simulation-Examples、その他は KiCad 同梱 demos/simulation。
+
+# ── 受動フィルタ（feastorg 由来。自作 DB と素性が近い）──────────
+rc-lowpass:
+  scope: in
+  expect: [rc_lowpass_001, rc_cascade_lpf_001]
+rc-highpass:
+  scope: in
+  expect: [rc_highpass_001]
+rc-bandpass:
+  scope: in
+  expect: [rlc_bandpass_001, rc_highpass_001, rc_lowpass_001]
+  note: RC バンドパス。DB に厳密一致は無く CR-RC 縦続。近縁を許容。
+lc-series-resonance:
+  scope: in
+  expect: [lc_highpass_001, lc_lowpass_001, rlc_bandpass_001]
+  note: 直列 LC 共振。負荷条件次第でハイパス/バンドパス的。近縁を許容。
+
+# ── 整流（D+C）────────────────────────────────────────────
+rectifier-1d:
+  scope: in
+  expect: [halfwave_rect_001, rectifier_cap_stage_001]
+rectifier:
+  scope: in
+  expect: [halfwave_rect_001, rectifier_cap_stage_001]
+  note: KiCad demo。signal_in→D→rect_out、平滑 C 付き。
+
+# ── 能動・単段（feastorg 由来。構成分類の頑健性テスト）──────────
+npn-amplifier-ce:
+  scope: in
+  expect: [ce_amp_npn_001]
+  note: 構成分類 tcfg=CE を期待。
+nmos-amplifier-cs:
+  scope: in
+  expect: [cs_amp_nmos_001]
+  note: 構成分類 tcfg=CE(=ソース接地/反転) を期待。
+opamp-inverting:
+  scope: in
+  expect: [opamp_inverting_001]
+  note: ocfg=inverting, fb を期待。
+opamp-noninverting:
+  scope: in
+  expect: [opamp_noninverting_001]
+  note: ocfg=non_inverting, fb を期待。
+opamp-voltage-follower:
+  scope: in
+  expect: [opamp_buffer_001]
+  note: ocfg=buffer, fb を期待。
+
+# ── 能動・複雑（KiCad demo。自作 DB より遥かに複雑＝汎化ストレス）──
+amplifier-ac:
+  scope: in
+  expect: [two_stage_ce_001, ce_amp_npn_001, ce_follower_001]
+  note: NPN×3 の多段ディスクリート増幅。多段 CE 近縁を許容。
+buck_conv:
+  scope: in
+  expect: [buck_001, buck_lc_filter_001]
+  note: NMOS+D+L の降圧コンバータ（制御は簡略）。
+smps-com:
+  scope: in
+  expect: [boost_001, boost_input_stage_001]
+  note: OPAMP+SUBCKT 制御付き昇圧 SMPS。15 部品。同定難。
+
+# ── out-of-scope（DB 未収録。棄却が正解）────────────────────
+sallen_key:
+  scope: out
+  note: 2次アクティブ(Sallen-Key)フィルタ。DB 未収録。
+        加えて変換時のポート検出が誤り(OUT=GND)→ 既知の脆弱性事例。
+generic_opamp_bip:
+  scope: out
+  note: OpAmp の内部トランジスタ・マクロモデル試験回路。単一機能カテゴリに非該当。
