@@ -7,7 +7,7 @@
 #   ac_passive        : R/L/C のみのパッシブ回路（AC 解析成功）
 #   skipped_switch    : SW を含む（過渡解析・未実装のためスキップ）
 #   skipped_nonlinear : ダイオード/ツェナーを含む（過渡解析・未実装のためスキップ）
-#       ※ 設計書(EVALUATION_DESIGN.md)の "ac_with_diode" は実装されていない種別。
+#       ※ 設計書(docs/EVALUATION_DESIGN.md)の "ac_with_diode" は実装されていない種別。
 #         実装に合わせて skipped_nonlinear とする。
 #
 # cutoff_freq_hz は許容範囲 [min, max]。実測 fc を概ね ±35% で囲む回帰検出レンジ。

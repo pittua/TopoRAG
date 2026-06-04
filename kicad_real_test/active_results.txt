@@ -1,0 +1,30 @@
+### NMOS-Amplifier-CS
+  D_active: bjt=False mos=True op=False tcfg=CE ocfg=None fb=False
+    [1] score=0.9939  ソース接地増幅回路（NMOS）
+    [2] score=0.8612  2段エミッタ接地増幅回路（NPN）
+    [3] score=0.8586  エミッタ接地増幅回路（NPN）
+
+### NPN-Amplifier-CE
+  D_active: bjt=True mos=False op=False tcfg=CE ocfg=None fb=False
+    [1] score=0.9939  エミッタ接地増幅回路（NPN）
+    [2] score=0.9863  2段エミッタ接地増幅回路（NPN）
+    [3] score=0.9325  エミッタ接地増幅回路（PNP）
+
+### OPamp-inverting
+  D_active: bjt=False mos=False op=True tcfg=None ocfg=inverting fb=True
+    [1] score=1.0000  反転増幅回路（OpAmp）
+    [2] score=0.7481  非反転増幅回路（OpAmp）
+    [3] score=0.5325  カレントミラー（NPN）
+
+### OPamp-noninverting
+  D_active: bjt=False mos=False op=True tcfg=None ocfg=non_inverting fb=True
+    [1] score=1.0000  非反転増幅回路（OpAmp）
+    [2] score=0.7481  反転増幅回路（OpAmp）
+    [3] score=0.5429  ボルテージフォロワ（OpAmp）
+
+### OPamp-voltage-follower
+  D_active: bjt=False mos=False op=True tcfg=None ocfg=buffer fb=True
+    [1] score=1.0000  ボルテージフォロワ（OpAmp）
+    [2] score=0.5429  非反転増幅回路（OpAmp）
+    [3] score=0.4986  反転増幅回路（OpAmp）
+

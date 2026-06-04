@@ -1,7 +1,7 @@
 """
 circuit_simulator.py — ngspice / PySpice による回路シミュレーション解析
 
-設計: SIMULATION_DESIGN.md
+設計: docs/SIMULATION_DESIGN.md
 
 役割:
   ネットリスト（部品値あり）を PySpice 経由で ngspice に渡し、
@@ -76,7 +76,7 @@ def parse_value(v) -> float | None:
     >>> parse_value(None)     # None
 
     対応接頭辞: f / p / n / u / μ / m / k / K / M / G
-    （m=ミリ, M=メガ。SIMULATION_DESIGN.md に準拠）
+    （m=ミリ, M=メガ。docs/SIMULATION_DESIGN.md に準拠）
     """
     if v is None:
         return None

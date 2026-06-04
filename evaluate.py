@@ -1,7 +1,7 @@
 """
 evaluate.py — TopoRAG 評価スクリプト
 
-設計: EVALUATION_DESIGN.md
+設計: docs/EVALUATION_DESIGN.md
 
 検索段（ベクトル検索）と LLM 段を分離して評価する。
 
