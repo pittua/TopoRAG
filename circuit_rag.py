@@ -9,6 +9,8 @@ import numpy as np
 from feature_extractor import extract_all_features, extract_hierarchical_features
 from llm_client import LLMClient, CLILLMClient, MockLLMClient
 from circuit_simulator import CircuitSimulator
+from topo_kernel import wl_kernel
+from scipy.optimize import linear_sum_assignment
 
 
 # ─────────────────────────────────────────────────────────
@@ -113,6 +115,7 @@ def vectorize(features: dict) -> np.ndarray:
     B3 = features["B3_series_parallel"]
     C  = features["C_node"]
     D  = features.get("D_active", {})   # 旧DB互換: 無ければ全て False/None
+    NC = A.get("normalized_counts", {}) # 正規化部品数（旧DB互換: 無ければ空＝0）
 
     order_map = {"SW_before_L": 1.0, "L_before_SW": -1.0, None: 0.0}
     first = B1.get("first_series_type")
@@ -158,6 +161,15 @@ def vectorize(features: dict) -> np.ndarray:
         float(B2.get("diode_anode_at_input", False)), # 35  アノード＝入力（真の整流段）
         float(B2.get("diode_shunt", False)),          # 36  シャントダイオード（クリッパ/ツェナー）
         float(B2.get("rectifier_smoothing", False)),  # 37  整流＋出力平滑コンデンサ
+        # ── 部品数（sgnb 追加 38–42）─────────────────────────
+        #   presence(0–4) は D1個↔D2個↔D4個や SW 数を区別できず、半波↔全波整流・
+        #   buck↔ブリッジ整流が誤同定する。正規化部品数を末尾に追加して矯正する。
+        #   既存カテゴリは部品数が一致するため自己検索は不変（末尾拡張で後方互換）。
+        min(NC.get("R", 0) / 4.0, 1.0),   # 38  抵抗数
+        min(NC.get("C", 0) / 4.0, 1.0),   # 39  コンデンサ数
+        min(NC.get("L", 0) / 3.0, 1.0),   # 40  インダクタ数
+        min(NC.get("D", 0) / 4.0, 1.0),   # 41  ダイオード数
+        min(NC.get("SW", 0) / 2.0, 1.0),  # 42  スイッチ数
     ], dtype=float)
 
 
@@ -175,9 +187,18 @@ def tag_similarity(tags_a: list, tags_b: list) -> float:
 
 
 # 棄却閾値: 実機20回路(in14/out6)を reject_eval.py で校正した値（balanced acc 最大、
-# AUC 0.893）。トポロジーのみ(alpha=1.0)の top-1 スコアに対して適用する。
+# AUC 0.857）。トポロジーのみ(alpha=1.0)の top-1 スコアに対して適用する。
 # 旧 LOO 校正値(0.9786)は「素のDB」基準で実機を全棄却するため使用しない。
 RECOMMENDED_REJECT_THRESHOLD = 0.83
+
+# トポロジースコア内の配合: topo = beta*コサイン + (1-beta)*WLカーネル。
+# beta=1.0 で従来(コサインのみ)に一致。beta=0.8 で自己検索(トポロジーのみ)の
+# Hit@1 が 77.4%→100% に改善（WLカーネルが DB 内の構造衝突7件を解消）。
+# 正式 search での beta-sweep（DB47 + 部品数特徴）の結果、beta=0.95 が最適点:
+# 自己検索(トポロジーのみ) 100% かつ 実機 in-scope Hit@1 73.3%・MRR 0.822（ともに最良）。
+# コサイン＋部品数を主軸にしつつ WL カーネルを薄く効かせて DB 内の構造衝突(自己79→100%)を
+# 解消する。WL を厚くすると実機汎化が落ち、コサインのみ(beta=1.0)では自己検索が 79% に低下。
+DEFAULT_BETA = 0.95
 
 
 # ─────────────────────────────────────────────────────────
@@ -208,30 +229,21 @@ class CircuitRAG:
     @staticmethod
     def _block_match_greedy(q_vecs: list, d_vecs: list) -> float:
         """
-        グリーディ最適ブロックマッチング。
-        一方のブロック数が多い場合は余剰ブロックをスコア 0 として扱い、
-        max(n_q, n_d) で正規化することでブロック数ミスマッチにペナルティを与える。
+        ブロック単位の最適割当（Hungarian 法 / scipy.linear_sum_assignment）。
+
+        従来のグリーディ割当は局所最適に陥り得る（最初に高スコアのペアを確定
+        すると残りで最適化できない）。Hungarian 法は割当全体の類似度和を大域
+        最適化する。一方のブロック数が多い場合は余剰ブロックをスコア 0 とみなし、
+        max(n_q, n_d) で正規化してブロック数ミスマッチにペナルティを与える
+        （従来と同じ正規化＝互換動作）。
         """
         n_q, n_d = len(q_vecs), len(d_vecs)
-        sims = [[cosine_similarity(q, d) for d in d_vecs] for q in q_vecs]
-        used_q: set[int] = set()
-        used_d: set[int] = set()
-        total = 0.0
-        for _ in range(min(n_q, n_d)):
-            best, bi, bj = -1.0, -1, -1
-            for i in range(n_q):
-                if i in used_q:
-                    continue
-                for j in range(n_d):
-                    if j in used_d:
-                        continue
-                    if sims[i][j] > best:
-                        best, bi, bj = sims[i][j], i, j
-            if bi == -1:
-                break
-            total += best
-            used_q.add(bi)
-            used_d.add(bj)
+        if n_q == 0 or n_d == 0:
+            return 0.0
+        sim = np.array([[cosine_similarity(q, d) for d in d_vecs] for q in q_vecs])
+        # linear_sum_assignment はコスト最小化なので符号反転（長方形行列も可）
+        row, col = linear_sum_assignment(-sim)
+        total = float(sim[row, col].sum())
         return total / max(n_q, n_d)
 
     def _topo_similarity(self,
@@ -261,19 +273,27 @@ class CircuitRAG:
     # ── 類似検索 ─────────────────────────────────────────
 
     def search(self, query_features: dict, top_k: int = 3,
-               alpha: float = 0.7) -> list[dict]:
+               alpha: float = 0.7, beta: float = DEFAULT_BETA) -> list[dict]:
         """
-        alpha: トポロジースコアの重み（0.0〜1.0）
-               残り (1-alpha) がタグスコアの重み
-               クエリにタグがなければ alpha=1.0 と同じ結果になる
+        alpha: トポロジースコアの重み（0.0〜1.0）。残り (1-alpha) がタグスコア。
+               クエリにタグがなければ alpha=1.0 と同じ結果になる。
+        beta : トポロジースコア内での コサイン vs WL カーネルの配合
+               （topo = beta*cosine + (1-beta)*wl_kernel）。
+               クエリが wl_features を持たない（旧DB互換）場合はコサインのみ。
         """
         q_vec   = vectorize(query_features)
         q_bvecs = [vectorize(b) for b in query_features.get("blocks", [])]
         q_tags  = query_features.get("function_tags", [])
+        q_wl    = query_features.get("wl_features") or {}
         scores  = []
         for db_feat, db_vec, db_bvecs in zip(self.db, self.vectors, self.block_vectors):
-            topo = self._topo_similarity(q_vec, q_bvecs, db_vec, db_bvecs)
-            tag  = tag_similarity(q_tags, db_feat.get("function_tags", []))
+            cos_topo = self._topo_similarity(q_vec, q_bvecs, db_vec, db_bvecs)
+            if q_wl:
+                wl_topo = wl_kernel(q_wl, db_feat.get("wl_features") or {})
+                topo = beta * cos_topo + (1.0 - beta) * wl_topo
+            else:
+                topo = cos_topo
+            tag = tag_similarity(q_tags, db_feat.get("function_tags", []))
             scores.append(alpha * topo + (1.0 - alpha) * tag)
         ranked = sorted(enumerate(scores), key=lambda x: x[1], reverse=True)
         return [

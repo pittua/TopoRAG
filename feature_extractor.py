@@ -102,9 +102,22 @@ def extract_component_features(circuit: dict) -> dict:
     has_amp_mosfet = bool(amp_fets)
     has_other_active = bool(type_set & (ACTIVE_TYPES - FET_TYPES))
 
+    # 正規化部品数: スイッチ化 MOSFET を SW にカウントし、DZ は D に合算。
+    # （実機の実 MOSFET スイッチと DB の SW 表現を部品数でも統一する）
+    norm_count: dict = defaultdict(int)
+    for c in circuit["components"]:
+        t = c["type"]
+        if t in FET_TYPES and c["id"] in sw_ids:
+            norm_count["SW"] += 1
+        elif t == "DZ":
+            norm_count["D"] += 1
+        else:
+            norm_count[t] += 1
+
     return {
         "component_types":  sorted(type_set),
         "component_counts": dict(count),
+        "normalized_counts": dict(norm_count),
         "has_switch":    ("SW" in count) or bool(sw_ids),
         "has_inductor":  "L"  in count,
         "has_diode":     "D"  in count or "DZ" in count,
@@ -487,6 +500,7 @@ def extract_active_features(circuit: dict) -> dict:
 # ── まとめて抽出 ──────────────────────────────────────────
 
 def extract_all_features(circuit: dict) -> dict:
+    from topo_kernel import wl_histogram  # 循環インポート回避
     G = build_graph(circuit)
     return {
         "circuit_id":         circuit["id"],
@@ -500,6 +514,7 @@ def extract_all_features(circuit: dict) -> dict:
         "B3_series_parallel": extract_b3_series_parallel(circuit, G),
         "C_node":             extract_node_features(circuit, G),
         "D_active":           extract_active_features(circuit),
+        "wl_features":        wl_histogram(circuit, G=G),
     }
 
 

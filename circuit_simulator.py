@@ -191,8 +191,17 @@ def _classify_response(freqs, gains) -> dict:
     # 端点アーティファクト除外: レンジ端から EDGE_MARGIN_DEC デケード内側で評価
     f_lo = freqs[0]  * (10.0 ** EDGE_MARGIN_DEC)
     f_hi = freqs[-1] / (10.0 ** EDGE_MARGIN_DEC)
-    lo_idx = min(int(np.searchsorted(freqs, f_lo)), len(freqs) - 1)
-    hi_idx = max(min(int(np.searchsorted(freqs, f_hi)), len(freqs) - 1), 0)
+    n = len(freqs)
+    lo_idx = min(int(np.searchsorted(freqs, f_lo)), n - 1)
+    hi_idx = max(min(int(np.searchsorted(freqs, f_hi)), n - 1), 0)
+
+    # 短配列ガード: 周波数レンジが 2*EDGE_MARGIN_DEC デケード未満だと両端のマージンが
+    # 重なり lo_idx > hi_idx に逆転する。このとき DC/HF 代理が入れ替わり is_bandpass
+    # の peak_interior 判定（lo_idx < pk_idx < hi_idx）が恒偽になる。逆転または縮退時は
+    # 端点マージンを諦めて全域(0〜n-1)で評価する（合成テスト用の短い配列でも壊さない）。
+    if hi_idx <= lo_idx:
+        lo_idx, hi_idx = 0, n - 1
+        warnings.append("周波数レンジが狭く端点マージンを適用できないため全域で評価した")
 
     dc = float(gains[lo_idx])   # 低域利得（DC 利得の代理）
     hf = float(gains[hi_idx])   # 高域利得
@@ -384,8 +393,16 @@ class CircuitSimulator:
             # GND ポートは PySpice の基準ノード(0)に対応づける
             return spice.gnd if name == gnd else name
 
-        # 入力に AC 1V 源を接続（DC 0 / AC 1）
+        # 入力に AC 1V 源を接続。
+        # amplitude は SIN(...) の過渡振幅であり .ac 解析は参照しない。
+        # .ac のスティミュラスは SPICE 行の "AC <mag>"（= ac_magnitude）が決めるため、
+        # ここで dc_offset=0 / ac_magnitude=1V を明示し、ソース行を
+        #   Vsrc <in> 0 DC 0 AC 1 SIN(...)
+        # に展開させて AC 解析の入力が確実に 1V になるようにする
+        # （ac_magnitude を渡さないと既定 1 に暗黙依存し、意図が保証されない）。
         spice.SinusoidalVoltageSource("src", node(inp), spice.gnd,
+                                      dc_offset=0 @ u_V,
+                                      ac_magnitude=1 @ u_V,
                                       amplitude=1 @ u_V)
 
         for comp in c["components"]:

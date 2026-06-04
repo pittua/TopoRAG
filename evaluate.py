@@ -5,8 +5,9 @@ evaluate.py — TopoRAG 評価スクリプト
 
 検索段（ベクトル検索）と LLM 段を分離して評価する。
 
-  [Section 1] 自己検索テスト        … 常時実行（Hit@1 / Hit@3 / MRR）
+  [Section 1] 自己検索テスト        … 常時実行（Hit@1 / Hit@3 [95%CI] / MRR）
   [Section 2] Alpha グリッドサーチ  … --alpha-sweep
+  [Section 2b]Beta スイープ         … --beta-sweep（alpha=1.0 固定で WL ブレンド効果）
   [Section 3] 摂動ロバスト性テスト  … 常時実行（ノード名・部品ID変更）
   [Section 4] 棄却閾値校正(LOO)     … 常時実行（推奨閾値 θ）
   [Section 5] LLM 判定精度          … --llm（LLM_PROVIDER 環境変数が必要）
@@ -18,6 +19,7 @@ evaluate.py — TopoRAG 評価スクリプト
 使い方:
   python evaluate.py                              # Section 1,3,4
   python evaluate.py --alpha-sweep                # + Section 2
+  python evaluate.py --beta-sweep                 # + Section 2b
   LLM_PROVIDER=claude python evaluate.py --llm    # + Section 5
   python evaluate.py --sim                        # + Section 6
   LLM_PROVIDER=claude python evaluate.py --alpha-sweep --llm --sim   # 全実行
@@ -30,6 +32,7 @@ import re
 import sys
 import copy
 import json
+import math
 import argparse
 
 # Windows コンソール(cp932)でも ✓/✗/罫線などを出力できるよう UTF-8 に固定する
@@ -50,6 +53,32 @@ SEP = "─" * 60
 # ─────────────────────────────────────────────────────────
 # 共通ユーティリティ
 # ─────────────────────────────────────────────────────────
+
+def wilson_ci(k: int, n: int, z: float = 1.959963984540054) -> tuple[float, float]:
+    """二項比率 k/n の Wilson score 信頼区間（既定 z=1.96 ≒ 95%）を返す。
+
+    点推定だけでは小標本(n=14 等)で誤誘導になるため、Hit@k 等の併記用に使う。
+    返り値は (lower, upper) を百分率(0–100)で。n=0 のときは (0.0, 0.0)。
+    正規近似(Wald)と違い 0% / 100% でも区間が潰れず、小標本でも被覆が安定する。
+    """
+    if n == 0:
+        return 0.0, 0.0
+    p = k / n
+    z2 = z * z
+    denom = 1.0 + z2 / n
+    center = (p + z2 / (2 * n)) / denom
+    half = (z * math.sqrt(p * (1 - p) / n + z2 / (4 * n * n))) / denom
+    lo = max(0.0, center - half)
+    hi = min(1.0, center + half)
+    return lo * 100.0, hi * 100.0
+
+
+def fmt_hit_ci(k: int, n: int, label: str) -> str:
+    """`Hit@1 = 10/14 = 71.4% [95%CI 45.4–88.3]` 形式の1行を組み立てる。"""
+    pct = (k / n * 100.0) if n else 0.0
+    lo, hi = wilson_ci(k, n)
+    return f"{label} : {k}/{n} = {pct:.1f}% [95%CI {lo:.1f}–{hi:.1f}]"
+
 
 def load_circuits(path: str = SAMPLES_PATH) -> list[dict]:
     with open(path, encoding="utf-8") as f:
@@ -93,13 +122,15 @@ def section1_self_search(circuits: list[dict], alpha: float) -> dict:
         if rank != 1:
             failures.append((c["id"], rank, top1["circuit_id"], top1["circuit_name"]))
 
-    hit1 = sum(r == 1 for r in ranks) / n
-    hit3 = sum(r <= 3 for r in ranks) / n
+    hit1_n = sum(r == 1 for r in ranks)
+    hit3_n = sum(r <= 3 for r in ranks)
+    hit1 = hit1_n / n
+    hit3 = hit3_n / n
     mrr = sum(1.0 / r for r in ranks) / n
 
     print(f"\n[Section 1] 自己検索テスト  (alpha={alpha}) {SEP}")
-    print(f"  Hit@1 : {sum(r == 1 for r in ranks)}/{n} = {hit1*100:.1f}%")
-    print(f"  Hit@3 : {sum(r <= 3 for r in ranks)}/{n} = {hit3*100:.1f}%")
+    print(f"  {fmt_hit_ci(hit1_n, n, 'Hit@1')}")
+    print(f"  {fmt_hit_ci(hit3_n, n, 'Hit@3')}")
     print(f"  MRR   : {mrr:.3f}")
     for cid, rank, t_id, t_name in failures:
         print(f"  ⚠ 失敗: {cid} → rank {rank}  (top1={t_id} / {t_name})")
@@ -142,6 +173,44 @@ def section2_alpha_sweep(circuits: list[dict]) -> float:
         print(f"    → 構造ベクトル単独では {n - round(topo_only*n)} 件を取り違える。"
               f"特徴量次元の拡張余地（タスク: DB拡張）を示す診断。")
     return recommended
+
+
+# ─────────────────────────────────────────────────────────
+# Section 2b: Beta スイープ（WL ブレンドの効果）
+# ─────────────────────────────────────────────────────────
+
+def section2b_beta_sweep(circuits: list[dict]) -> float:
+    """alpha=1.0（トポロジーのみ）に固定し、beta を 0.0〜1.0 で振って自己検索 Hit@1 を見る。
+
+    topo = beta*cosine + (1-beta)*WLカーネル。beta=1.0 で従来(コサインのみ)、
+    beta=0.0 で WL カーネルのみ。コサインが取り違える DB 内の構造衝突を
+    WL ブレンドが解消する効果を可視化する。
+    """
+    rag = build_rag(circuits)
+    n = len(circuits)
+    print(f"\n[Section 2b] Beta スイープ (alpha=1.0 固定) {SEP}")
+    print("  topo = beta*コサイン + (1-beta)*WLカーネル。beta=1.0 でコサインのみ。")
+
+    rates: dict[float, tuple[int, float]] = {}
+    for step in range(11):
+        beta = round(step / 10.0, 1)
+        hit1_n = 0
+        for c in circuits:
+            q = extract_hierarchical_features(c)
+            hits = rag.search(q, top_k=n, alpha=1.0, beta=beta)
+            r = next((h["rank"] for h in hits
+                      if h["features"]["circuit_id"] == c["id"]), n)
+            hit1_n += (r == 1)
+        rates[beta] = (hit1_n, hit1_n / n)
+        print(f"  beta={beta:.1f} : {fmt_hit_ci(hit1_n, n, 'Hit@1')}")
+
+    best = max(r for _, r in rates.values())
+    plateau = sorted(b for b, (_, r) in rates.items() if r == best)
+    print(f"  → 最高 Hit@1 = {best*100:.1f}%  "
+          f"（beta {plateau[0]:.1f}〜{plateau[-1]:.1f} が同率）")
+    print(f"  ◇ コサインのみ(beta=1.0)の Hit@1 = {rates[1.0][1]*100:.1f}%  "
+          f"／ WLカーネルのみ(beta=0.0) = {rates[0.0][1]*100:.1f}%")
+    return max(plateau)
 
 
 # ─────────────────────────────────────────────────────────
@@ -400,6 +469,8 @@ def main():
                         help="LLM 判定で参照する上位件数（デフォルト: 3）")
     parser.add_argument("--alpha-sweep", action="store_true",
                         help="Section 2: Alpha グリッドサーチを実行")
+    parser.add_argument("--beta-sweep", action="store_true",
+                        help="Section 2b: Beta スイープ（alpha=1.0 固定で WL ブレンドの効果を可視化）")
     parser.add_argument("--llm", action="store_true",
                         help="Section 5: LLM 判定精度を測定（LLM_PROVIDER 必要）")
     parser.add_argument("--sim", action="store_true",
@@ -417,6 +488,10 @@ def main():
     # Section 2（任意）
     if args.alpha_sweep:
         section2_alpha_sweep(circuits)
+
+    # Section 2b（任意）— beta スイープ（WL ブレンドの効果）
+    if args.beta_sweep:
+        section2b_beta_sweep(circuits)
 
     # Section 3（常時）— 摂動失敗は実バグの可能性が高いため hard fail に数える
     hard_problems += section3_perturbation(circuits, args.alpha)
