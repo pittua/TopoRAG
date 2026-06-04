@@ -8,3 +8,6 @@ kicad_query.json
 *.key
 *.crt
 *.pem
+
+# Local test fixtures (not part of the repo)
+kicad_real_test/
