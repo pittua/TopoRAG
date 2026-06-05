@@ -19,6 +19,7 @@ _SIM_TYPE_LABEL = {
     "ac_passive":             "AC解析（パッシブ）",
     "tran_nonlinear":         "過渡解析（大信号）",
     "skipped_switch":         "スキップ（スイッチング回路）",
+    "skipped_active":         "スキップ（能動素子・小信号解析未実装）",
     "skipped_nonlinear":      "スキップ（ダイオード/非線形・過渡解析未実装）",
     "skipped_missing_values": "スキップ（部品値欠落）",
     "skipped_no_ngspice":     "スキップ（ngspice/PySpice 未検出）",
@@ -98,7 +99,11 @@ def _format_sim_for_prompt(sim: dict | None) -> str:
 
 
 # ─────────────────────────────────────────────────────────
-# ベクトル化（19次元）
+# ベクトル化（34次元）
+#   0–18  : 受動トポロジー（R/C/L/SW/D/DZ）。能動素子追加後も不変。
+#   19–33 : 能動素子（BJT/MOSFET/OpAmp）の構成・多素子トポロジー。
+#           受動回路では全て 0 になり、末尾ゼロ拡張のためコサイン類似度は不変
+#           （= 既存19回路の自己検索/摂動テストは回帰しない）。
 # ─────────────────────────────────────────────────────────
 
 def vectorize(features: dict) -> np.ndarray:
@@ -107,9 +112,12 @@ def vectorize(features: dict) -> np.ndarray:
     B2 = features["B2_diode"]
     B3 = features["B3_series_parallel"]
     C  = features["C_node"]
+    D  = features.get("D_active", {})   # 旧DB互換: 無ければ全て False/None
 
     order_map = {"SW_before_L": 1.0, "L_before_SW": -1.0, None: 0.0}
     first = B1.get("first_series_type")
+    tc = D.get("transistor_config")
+    oc = D.get("opamp_config")
 
     return np.array([
         float(A["has_resistor"]),           # 0
@@ -131,6 +139,25 @@ def vectorize(features: dict) -> np.ndarray:
         float(C["has_high_degree_node"]),  # 16
         min(C["cycle_count"] / 5.0, 1.0), # 17
         float(A.get("has_zener", False)),  # 18
+        float(D.get("has_bjt", False)),    # 19
+        float(D.get("has_mosfet", False)), # 20
+        float(D.get("has_opamp", False)),  # 21
+        float(tc == "CE"),                 # 22  接地エミッタ/ソース（反転増幅）
+        float(tc == "CC"),                 # 23  コレクタ/ドレイン接地（フォロワ）
+        float(tc == "CB"),                 # 24  ベース/ゲート接地
+        float(oc == "inverting"),          # 25  反転アンプ
+        float(oc == "non_inverting"),      # 26  非反転アンプ
+        float(oc == "buffer"),             # 27  ボルテージフォロワ
+        float(D.get("has_feedback", False)), # 28  帰還の有無
+        float(D.get("p_type", False)),     # 29  PNP/PMOS（極性）
+        min(D.get("n_active", 0) / 4.0, 1.0), # 30  能動素子数（正規化）
+        float(D.get("has_diode_connected", False)), # 31  ダイオード接続（カレントミラー）
+        float(D.get("has_coupled_pair", False)),    # 32  結合ペア（差動/ロングテール）
+        float(D.get("is_differential", False)),     # 33  差動（2入力）
+        float(B2.get("diode_series", False)),         # 34  直列ダイオード（整流/昇圧の本線）
+        float(B2.get("diode_anode_at_input", False)), # 35  アノード＝入力（真の整流段）
+        float(B2.get("diode_shunt", False)),          # 36  シャントダイオード（クリッパ/ツェナー）
+        float(B2.get("rectifier_smoothing", False)),  # 37  整流＋出力平滑コンデンサ
     ], dtype=float)
 
 
@@ -145,6 +172,12 @@ def tag_similarity(tags_a: list, tags_b: list) -> float:
     if not a and not b:
         return 0.0
     return len(a & b) / len(a | b)
+
+
+# 棄却閾値: 実機20回路(in14/out6)を reject_eval.py で校正した値（balanced acc 最大、
+# AUC 0.893）。トポロジーのみ(alpha=1.0)の top-1 スコアに対して適用する。
+# 旧 LOO 校正値(0.9786)は「素のDB」基準で実機を全棄却するため使用しない。
+RECOMMENDED_REJECT_THRESHOLD = 0.83
 
 
 # ─────────────────────────────────────────────────────────
@@ -248,6 +281,28 @@ class CircuitRAG:
             for r, (i, _) in enumerate(ranked[:top_k])
         ]
 
+    def search_with_rejection(self, query_features: dict, top_k: int = 3,
+                              alpha: float = 0.7,
+                              reject_threshold: float = RECOMMENDED_REJECT_THRESHOLD
+                              ) -> tuple[list[dict], bool, float]:
+        """
+        未知（DB 未収録）回路を棄却する検索。
+
+        棄却判定は **トポロジーのみ(alpha=1.0) の top-1 スコア** で行う。
+        これは reject_eval.py の比較で最も分離性能が高かったシグナルで（AUC 0.893）、
+        margin/ratio は実機ではほぼ無力だったため採用しない。タグ非依存にするのは、
+        実機クエリがタグを持たず、タグ込み絶対スコアが校正用DBと実機で別分布になるため。
+
+        返り値:
+          hits        : 受理時は通常検索(指定 alpha)の上位 top_k。棄却時は []（識別不能）。
+          accepted    : 受理されたか。
+          topo_conf   : 判定に用いたトポロジーのみ top-1 スコア（信頼度）。
+        """
+        topo_conf = self.search(query_features, top_k=1, alpha=1.0)[0]["score"]
+        accepted = topo_conf >= reject_threshold
+        hits = self.search(query_features, top_k=top_k, alpha=alpha) if accepted else []
+        return hits, accepted, topo_conf
+
     # ── プロンプト生成 ────────────────────────────────────
 
     def _fmt(self, f: dict) -> str:
@@ -269,6 +324,20 @@ class CircuitRAG:
             f"  Dカソード→OUT  : {B2['diode_cathode_to_out']}",
             f"  ループ数        : {f['C_node']['cycle_count']}",
         ]
+        D = f.get("D_active", {})
+        if D.get("has_active"):
+            _CFG = {"CE": "接地エミッタ/ソース(反転増幅)", "CC": "コレクタ/ドレイン接地(フォロワ)",
+                    "CB": "ベース/ゲート接地"}
+            parts = []
+            if D.get("transistor_config"):
+                parts.append(_CFG.get(D["transistor_config"], D["transistor_config"]))
+            if D.get("opamp_config"):
+                parts.append(f"OpAmp:{D['opamp_config']}")
+            lines.append(
+                f"  能動素子構成    : {' / '.join(parts) or '不明'}"
+                f"{'  (帰還あり)' if D.get('has_feedback') else ''}"
+                f"{'  (p型)' if D.get('p_type') else ''}"
+            )
         if f.get("is_hierarchical") and f.get("blocks"):
             lines.append(f"  ブロック構成     : {f['n_blocks']} ブロック")
             for i, blk in enumerate(f["blocks"]):

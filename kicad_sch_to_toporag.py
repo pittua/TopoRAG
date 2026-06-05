@@ -9,10 +9,10 @@ KiCad .kicad_sch → TopoRAG query_netlists.json コンバータ
   5. 部品種別・terminals・ports を解決して TopoRAG 形式に変換
 
 対応部品:
-  R / C / L / D / DZ / MOSFET(SW として近似)
+  R / C / L / D / DZ / BJT(NPN/PNP) / MOSFET(NMOS/PMOS) / OpAmp
 
 スキップ:
-  電圧源・電流源・BJT・OpAmp・論理ゲート 等
+  電圧源・電流源・論理ゲート 等
 """
 
 import sys
@@ -74,13 +74,16 @@ def _find_kicad_cli() -> str:
 SIM_DEVICE_MAP: dict[str, str | None] = {
     "R": "R", "C": "C", "L": "L",
     "D": "D", "DZ": "DZ",
-    "NMOS": "SW", "PMOS": "SW", "VDMOS": "SW",
+    "NPN": "NPN", "PNP": "PNP",     # BJT
+    "NMOS": "NMOS", "PMOS": "PMOS", # MOSFET
+    "VDMOS": "NMOS",                # パワーMOSFET（極性不明時は N 既定。pchan は未判定）
+    "OPAMP": "OPAMP",
     "V": None, "I": None,          # 電源・電流源スキップ
-    "NPN": None, "PNP": None,      # BJT スキップ
-    "OPAMP": None,                  # OpAmp スキップ
+    # OpAmp は Sim.Device が "SUBCKT" のことが多い → part 名キーワードで解決する
 }
 
-# part 名キーワード → TopoRAG 種別（Sim.Device がない場合）
+# part 名キーワード → TopoRAG 種別（Sim.Device がない / SUBCKT の場合）
+# 極性が名前に現れる NPN/PNP/NMOS/PMOS を汎用 BJT/MOSFET より先に判定する。
 PART_KEYWORD_MAP = [
     ("ZENER",    "DZ"),
     ("SCHOTTKY", "D"),
@@ -88,18 +91,23 @@ PART_KEYWORD_MAP = [
     ("INDUCTOR", "L"),
     ("CAPACITOR","C"),
     ("RESISTOR", "R"),
-    ("MOSFET",   "SW"),
+    ("OPAMP",    "OPAMP"),
+    ("NPN",      "NPN"),
+    ("PNP",      "PNP"),
+    ("NMOS",     "NMOS"),
+    ("PMOS",     "PMOS"),
+    ("MOSFET",   None),   # 極性不明 → Sim.Device に委ねる
     ("JFET",     None),
-    ("BJT",      None),
-    ("OPAMP",    None),
+    ("BJT",      None),   # 極性不明
 ]
 
 # ref 頭文字 → TopoRAG 種別（最終フォールバック）
+# Q/M は極性（NPN/PNP・NMOS/PMOS）を頭文字から決められないため None（Sim.Device 依存）。
 REF_PREFIX_MAP = {
     "R": "R", "C": "C", "L": "L",
     "D": "D", "Z": "DZ",
-    "Q": "SW", "M": "SW",
     "V": None, "I": None,
+    "Q": None, "M": None,
     "U": None, "IC": None,
     "X": None, "J": None, "P": None, "T": None,
 }
@@ -107,8 +115,11 @@ REF_PREFIX_MAP = {
 # ─── ネット名パターン ───────────────────────────────────────
 
 GND_RE = re.compile(r"^(GND|/GND|\bGND\b|VSS|AGND|DGND|0)$", re.IGNORECASE)
-IN_RE  = re.compile(r"(^|/)(V?IN|VIN|VCC|VDD|V\+|INPUT|SRC|SOURCE|SIGNAL|AC_IN)$", re.IGNORECASE)
+# 信号入力（電源レールは含めない。VCC/VDD/V+ は POWER_RAIL_RE 側で除外する）
+IN_RE  = re.compile(r"(^|/)(V?IN|VIN|VSIG|VSIGNAL|SIG|SIGNAL|INPUT|SRC|SOURCE|AC_IN)$", re.IGNORECASE)
 OUT_RE = re.compile(r"(^|/)(V?OUT|VOUT|OUTPUT|RECT_OUT|DC_POS|LOAD)$", re.IGNORECASE)
+# 電源レール（DCバイアス供給）。能動回路の入出力ポート候補から除外する。
+POWER_RAIL_RE = re.compile(r"(^|/)(VDC|VCC|VDD|VEE|VSS|VBAT|VSUP|VSUPPLY|V\+|V-)$", re.IGNORECASE)
 
 
 # ─── S式パーサ ─────────────────────────────────────────────
@@ -249,6 +260,15 @@ def _resolve_type(comp: dict) -> str | None:
 
 # ─── terminals の構築 ────────────────────────────────────────
 
+def _terminals_by_pinnum(pin_nets: dict[str, str],
+                         role_order: list[str]) -> dict | None:
+    """ピン番号昇順に role_order を割り当てるフォールバック（役割名が無い素子用）。"""
+    pnums = sorted(pin_nets, key=lambda x: (len(x), x))
+    if len(pnums) < len(role_order):
+        return None
+    return {role: pin_nets[pnums[i]] for i, role in enumerate(role_order)}
+
+
 def _build_terminals(ttype: str, pin_role: dict[str, str],
                      pin_nets: dict[str, str]) -> dict | None:
     """ピン役割とネット名から TopoRAG terminals を構築。"""
@@ -270,26 +290,59 @@ def _build_terminals(ttype: str, pin_role: dict[str, str],
                 return None
         return {"anode": anode, "cathode": cathode}
 
-    if ttype == "SW":
-        # MOSFET: Drain → p, Source → n (Gate/Bulk はスキップ)
-        GATE_ROLES  = {"G", "GATE", "B", "BULK"}
-        DRAIN_ROLES = {"D", "DRAIN", "+"}
-        SRC_ROLES   = {"S", "SOURCE", "-"}
-        p = n = None
+    if ttype in ("NPN", "PNP"):
+        # BJT: 役割 C/B/E → collector/base/emitter
+        role_map = {"C": "collector", "COLLECTOR": "collector",
+                    "B": "base", "BASE": "base",
+                    "E": "emitter", "EMITTER": "emitter"}
+        terms: dict[str, str] = {}
+        for pnum, net in pin_nets.items():
+            r = role_map.get(pin_role.get(pnum, ""))
+            if r:
+                terms[r] = net
+        if len(terms) == 3:
+            return terms
+        # フォールバック: KiCad 既定ピン番号 1=C 2=B 3=E
+        return _terminals_by_pinnum(pin_nets, ["collector", "base", "emitter"])
+
+    if ttype in ("NMOS", "PMOS"):
+        # MOSFET: 役割 D/G/S → drain/gate/source（Bulk はスキップ）
+        role_map = {"D": "drain", "DRAIN": "drain",
+                    "G": "gate", "GATE": "gate",
+                    "S": "source", "SOURCE": "source"}
+        terms = {}
+        for pnum, net in pin_nets.items():
+            r = role_map.get(pin_role.get(pnum, ""))
+            if r and r not in terms:
+                terms[r] = net
+        if len(terms) == 3:
+            return terms
+        # フォールバック: KiCad 既定ピン番号 1=D 2=G 3=S
+        return _terminals_by_pinnum(pin_nets, ["drain", "gate", "source"])
+
+    if ttype == "OPAMP":
+        # 役割 + → in_p, - → in_n。電源ピン(V+/V-等)はスキップ。
+        # 出力は +/-/電源以外のピン（KiCad では役割名なしのことが多い）。
+        POWER_ROLES = {"V+", "V-", "VCC", "VEE", "VDD", "VSS",
+                       "VS+", "VS-", "VCC+", "VCC-", "VDD+", "VSS-"}
+        in_p = in_n = None
+        leftover: list[tuple[str, str]] = []
         for pnum, net in pin_nets.items():
             role = pin_role.get(pnum, "")
-            if role in DRAIN_ROLES:
-                p = net
-            elif role in SRC_ROLES:
-                n = net
-        if p and n:
-            return {"p": p, "n": n}
-        # 役割不明 → Gate/Bulk 以外のピンから 2 本取る
-        power_pins = [(pnum, net) for pnum, net in pin_nets.items()
-                      if pin_role.get(pnum, "") not in GATE_ROLES]
-        if len(power_pins) >= 2:
-            power_pins.sort()
-            return {"p": power_pins[0][1], "n": power_pins[1][1]}
+            if role == "+":
+                in_p = net
+            elif role == "-":
+                in_n = net
+            elif role in POWER_ROLES:
+                continue
+            else:
+                leftover.append((pnum, net))
+        out = None
+        if leftover:
+            leftover.sort()
+            out = leftover[0][1]
+        if in_p and in_n and out:
+            return {"in_p": in_p, "in_n": in_n, "out": out}
         return None
 
     # R / C / L
@@ -311,42 +364,62 @@ def _build_terminals(ttype: str, pin_role: dict[str, str],
 
 # ─── ポート推定 ────────────────────────────────────────────
 
+def _gnd_priority(net: str) -> tuple:
+    """代表 GND を決定的に選ぶための優先度。GND/0 を VSS/AGND 等より優先する。"""
+    s = net.lstrip("/").upper()
+    if s in ("GND", "0"):
+        return (0, net)
+    if s in ("AGND", "DGND"):
+        return (1, net)
+    return (2, net)          # VSS など（負電源とも解釈されうるエイリアス）
+
+
 def _infer_ports(all_nets: set[str],
                  pin_to_net: dict,
                  orig_comps: list[dict]) -> dict | None:
 
-    # GND
-    gnd = next((n for n in all_nets if GND_RE.match(n)), None)
-    if not gnd:
+    # GND: GND/0/VSS/AGND/DGND 等の「接地系ネット」をすべて把握し、
+    # 代表を決定的に選ぶ（集合の反復順に依存して VSS を GND より先に選ぶと、
+    # 残った GND が出力ポートに誤って漏れる問題を防ぐ）。
+    gnd_nets = {n for n in all_nets if GND_RE.match(n)}
+    if not gnd_nets:
         return None
+    gnd = sorted(gnd_nets, key=_gnd_priority)[0]
 
-    # 電圧源 + 端子ネットを入力候補に追加
+    # 電源レール（VCC/VDD/V+/V-/Vdc 等）。接地系と合わせて入出力候補から除外する。
+    rails = {n for n in all_nets if POWER_RAIL_RE.search(n)}
+    excluded = gnd_nets | rails        # 入出力ポートになり得ないネット集合
+
+    # 電圧源の + 端子ネット（信号源候補）。接地系・電源レールは除く。
     vsrc_pos: list[str] = []
     for comp in orig_comps:
         if comp["sim_device"] == "V":
             ref = comp["ref"]
-            # + ピンを探す（role=+ or pin 1）
             role_to_pin = {v: k for k, v in comp["pin_role"].items()}
             pos_pin = role_to_pin.get("+") or role_to_pin.get("1") or "1"
             net = pin_to_net.get((ref, pos_pin))
-            if net and net != gnd:
+            if net and net not in excluded:
                 vsrc_pos.append(net)
 
-    inp = next((n for n in all_nets if IN_RE.search(n)), None)
+    # 入力: 信号名にマッチ かつ 接地系/電源レールでないネットを優先
+    inp = next((n for n in sorted(all_nets)
+                if IN_RE.search(n) and n not in excluded), None)
     if not inp:
         inp = vsrc_pos[0] if vsrc_pos else None
 
-    out = next((n for n in all_nets
-                if OUT_RE.search(n) and n not in (gnd, inp)), None)
+    # 出力: 出力名にマッチ かつ 接地系/入力/電源レール以外
+    out = next((n for n in sorted(all_nets)
+                if OUT_RE.search(n) and n not in excluded and n != inp), None)
 
-    # 出力が見つからない → 最多ノード接続の非 GND/入力ネット
+    # 出力が見つからない → 最多ノード接続の非 接地系/入力/電源レールのネット
     if not out:
         degree: dict[str, int] = {}
         for net in pin_to_net.values():
-            if net not in (gnd, inp):
+            if net not in excluded and net != inp:
                 degree[net] = degree.get(net, 0) + 1
         if degree:
-            out = max(degree, key=lambda n: degree[n])
+            # 次数が同点の場合に備え、名前順で決定的に選ぶ
+            out = max(sorted(degree), key=lambda n: degree[n])
 
     if inp and out and gnd and inp != out:
         return {"input": inp, "output": out, "gnd": gnd}

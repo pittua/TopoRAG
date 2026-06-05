@@ -3,3 +3,11 @@ __pycache__/
 *.pyo
 .env
 kicad_query.json
+
+# Secrets / certificates (never commit)
+*.key
+*.crt
+*.pem
+
+# Local test fixtures (not part of the repo)
+kicad_real_test/

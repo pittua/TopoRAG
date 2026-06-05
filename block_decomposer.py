@@ -13,7 +13,7 @@ TopoSizing 的な考え方との対応:
 """
 
 import networkx as nx
-from feature_extractor import build_graph
+from feature_extractor import build_graph, ACTIVE_TYPES
 
 
 def decompose_blocks(circuit: dict) -> list[dict]:
@@ -31,6 +31,11 @@ def decompose_blocks(circuit: dict) -> list[dict]:
         ブロック数 >= 2 の場合: サブ回路 dict のリスト（各ブロックは extract_all_features に渡せる形式）
         単一ブロックの場合: [circuit] をそのまま返す
     """
+    # 能動素子を含む段は T 分岐分割の対象外（バイアス節点で分断しない）。
+    # ブロック分解は受動の多段回路向けに設計されている。
+    if any(c["type"] in ACTIVE_TYPES for c in circuit["components"]):
+        return [circuit]
+
     G = build_graph(circuit)
     inp = circuit["ports"]["input"]
     out = circuit["ports"]["output"]

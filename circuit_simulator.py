@@ -1,7 +1,7 @@
 """
 circuit_simulator.py — ngspice / PySpice による回路シミュレーション解析
 
-設計: SIMULATION_DESIGN.md
+設計: docs/SIMULATION_DESIGN.md
 
 役割:
   ネットリスト（部品値あり）を PySpice 経由で ngspice に渡し、
@@ -45,6 +45,9 @@ AC_PTS_DEC = 100         # points / decade
 
 _SQRT2 = math.sqrt(2.0)
 
+# 能動素子（3端子以上）。線形 AC 解析の対象外（DCバイアスが必要）
+_ACTIVE_TYPES = {"NPN", "PNP", "NMOS", "PMOS", "OPAMP"}
+
 
 # ─────────────────────────────────────────────────────────
 # SI 接頭辞パーサ
@@ -73,7 +76,7 @@ def parse_value(v) -> float | None:
     >>> parse_value(None)     # None
 
     対応接頭辞: f / p / n / u / μ / m / k / K / M / G
-    （m=ミリ, M=メガ。SIMULATION_DESIGN.md に準拠）
+    （m=ミリ, M=メガ。docs/SIMULATION_DESIGN.md に準拠）
     """
     if v is None:
         return None
@@ -292,6 +295,11 @@ class CircuitSimulator:
         """
         comps = self.circuit.get("components", [])
         types = {c["type"] for c in comps}
+
+        # 能動素子（BJT/MOSFET/OpAmp）→ DCバイアス＋小信号解析が必要（未実装）
+        if types & _ACTIVE_TYPES:
+            return _skip_result("skipped_active",
+                                "能動素子を含むためスキップ（将来: DCバイアス＋小信号AC解析）")
 
         # SW を含む → 過渡解析が必要（未実装）のためスキップ
         if "SW" in types:
