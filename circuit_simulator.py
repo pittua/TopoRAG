@@ -194,6 +194,12 @@ def _classify_response(freqs, gains) -> dict:
     lo_idx = min(int(np.searchsorted(freqs, f_lo)), len(freqs) - 1)
     hi_idx = max(min(int(np.searchsorted(freqs, f_hi)), len(freqs) - 1), 0)
 
+    # 周波数レンジが 2*EDGE_MARGIN_DEC デケード未満だと端点トリムで lo_idx > hi_idx に
+    # 逆転し、dc/hf 代理が入れ替わって is_bandpass が恒偽化する。レンジ端にフォールバック。
+    if lo_idx > hi_idx:
+        lo_idx, hi_idx = 0, len(freqs) - 1
+        warnings.append("周波数レンジが狭く端点トリムを無効化した（DC/HF はレンジ端で評価）")
+
     dc = float(gains[lo_idx])   # 低域利得（DC 利得の代理）
     hf = float(gains[hi_idx])   # 高域利得
     pk = float(gains.max())     # ピーク利得
@@ -384,9 +390,11 @@ class CircuitSimulator:
             # GND ポートは PySpice の基準ノード(0)に対応づける
             return spice.gnd if name == gnd else name
 
-        # 入力に AC 1V 源を接続（DC 0 / AC 1）
+        # 入力に AC 1V 源を接続（DC 0 / AC 1）。
+        # ac_magnitude を明示しないと SPICE ネットリストに "AC 1" が出力されず、
+        # .ac 解析で入力が 0 とみなされ DC 利得が 0dB にならない。
         spice.SinusoidalVoltageSource("src", node(inp), spice.gnd,
-                                      amplitude=1 @ u_V)
+                                      amplitude=1 @ u_V, ac_magnitude=1 @ u_V)
 
         for comp in c["components"]:
             t, cid = comp["type"], comp["id"]
