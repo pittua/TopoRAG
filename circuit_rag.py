@@ -251,13 +251,20 @@ class CircuitRAG:
         has_q = len(q_bvecs) > 0
         has_d = len(d_bvecs) > 0
 
+        # 全回路 vs 全回路の類似度。ブロックマッチングはこれを「置換」せず
+        # max で底上げする補助シグナルとして扱う（フラットなクエリが分解済み
+        # DB の部分ブロックとしか比較されず系統的に過小評価される問題を防ぐ）。
+        whole = cosine_similarity(q_vec, d_vec)
+
         if not has_q and not has_d:
-            return cosine_similarity(q_vec, d_vec)
+            return whole
         if has_q and not has_d:
-            return max(cosine_similarity(bv, d_vec) for bv in q_bvecs)
-        if not has_q and has_d:
-            return max(cosine_similarity(q_vec, bv) for bv in d_bvecs)
-        return self._block_match_greedy(q_bvecs, d_bvecs)
+            block = max(cosine_similarity(bv, d_vec) for bv in q_bvecs)
+        elif not has_q and has_d:
+            block = max(cosine_similarity(q_vec, bv) for bv in d_bvecs)
+        else:
+            block = self._block_match_greedy(q_bvecs, d_bvecs)
+        return max(whole, block)
 
     # ── 類似検索 ─────────────────────────────────────────
 
