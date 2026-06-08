@@ -150,8 +150,9 @@ def main() -> int:
             in_ranks.append(rank)
             verdict = "✓ Hit@1" if rank == 1 else (
                 f"△ Hit@{rank}" if rank <= args.top_k else "✗ miss")
-            if rank == 1:
-                in_top1_scores.append(top1_score)
+            # 棄却は正誤に関わらず top1 スコアへ適用するため、分離余裕も rank==1 正解
+            # だけに絞らず全 in-scope の top1 を母数にする（楽観側への選択バイアス回避）。
+            in_top1_scores.append(top1_score)
         elif scope == "out":
             out_top1_scores.append(top1_score)
             verdict = f"out-of-scope (top1={top1_score:.3f})"
@@ -196,7 +197,7 @@ def main() -> int:
               f"min={min(out_top1_scores):.4f}")
     if in_top1_scores and out_top1_scores:
         sep = min(in_top1_scores) - max(out_top1_scores)
-        print(f"  分離余裕(min in-scope正解スコア − max out-scopeスコア): {sep:+.4f}")
+        print(f"  分離余裕(min in-scope top1スコア − max out-scopeスコア): {sep:+.4f}")
         print("    → 正なら単一閾値で in/out を分離可能。負なら重なりあり（θ校正の限界）")
     return 0
 

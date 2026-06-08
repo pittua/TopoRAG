@@ -9,7 +9,7 @@ KiCad .kicad_sch → TopoRAG query_netlists.json コンバータ
   5. 部品種別・terminals・ports を解決して TopoRAG 形式に変換
 
 対応部品:
-  R / C / L / D / DZ / BJT(NPN/PNP) / MOSFET(NMOS/PMOS) / OpAmp
+  R / C / L / SW / D / DZ / BJT(NPN/PNP) / MOSFET(NMOS/PMOS) / OpAmp
 
 スキップ:
   電圧源・電流源・論理ゲート 等
@@ -73,6 +73,7 @@ def _find_kicad_cli() -> str:
 # Sim.Device プロパティ値 → TopoRAG 種別
 SIM_DEVICE_MAP: dict[str, str | None] = {
     "R": "R", "C": "C", "L": "L",
+    "SW": "SW",                     # スイッチ（スイッチング変換器の開閉素子）
     "D": "D", "DZ": "DZ",
     "NPN": "NPN", "PNP": "PNP",     # BJT
     "NMOS": "NMOS", "PMOS": "PMOS", # MOSFET
@@ -88,6 +89,7 @@ PART_KEYWORD_MAP = [
     ("ZENER",    "DZ"),
     ("SCHOTTKY", "D"),
     ("DIODE",    "D"),
+    ("SWITCH",   "SW"),
     ("INDUCTOR", "L"),
     ("CAPACITOR","C"),
     ("RESISTOR", "R"),
@@ -104,6 +106,7 @@ PART_KEYWORD_MAP = [
 # ref 頭文字 → TopoRAG 種別（最終フォールバック）
 # Q/M は極性（NPN/PNP・NMOS/PMOS）を頭文字から決められないため None（Sim.Device 依存）。
 REF_PREFIX_MAP = {
+    "SW": "SW",                          # スイッチ（KiCad の標準リファレンス SW*）
     "R": "R", "C": "C", "L": "L",
     "D": "D", "Z": "DZ",
     "V": None, "I": None,
@@ -345,7 +348,7 @@ def _build_terminals(ttype: str, pin_role: dict[str, str],
             return {"in_p": in_p, "in_n": in_n, "out": out}
         return None
 
-    # R / C / L
+    # R / C / L / SW（2 端子素子）
     p = n = None
     for pnum, net in pin_nets.items():
         role = pin_role.get(pnum, "")
