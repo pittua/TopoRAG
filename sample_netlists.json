@@ -4,398 +4,2805 @@
       "id": "rc_lowpass_001",
       "name": "RCローパスフィルタ",
       "description": "抵抗とコンデンサで構成される一次ローパスフィルタ。高周波成分を減衰し低周波を通過させる。",
-      "function_tags": ["filter", "lowpass", "rc", "passive", "frequency_selective"],
-      "components": [
-        {"id": "R1", "type": "R", "value": "1k", "terminals": {"p": "N1", "n": "N2"}},
-        {"id": "C1", "type": "C", "value": "100n", "terminals": {"p": "N2", "n": "GND"}}
+      "function_tags": [
+        "filter",
+        "lowpass",
+        "rc",
+        "passive",
+        "frequency_selective"
       ],
-      "ports": {"input": "N1", "output": "N2", "gnd": "GND"}
+      "components": [
+        {
+          "id": "R1",
+          "type": "R",
+          "value": "1k",
+          "terminals": {
+            "p": "N1",
+            "n": "N2"
+          }
+        },
+        {
+          "id": "C1",
+          "type": "C",
+          "value": "100n",
+          "terminals": {
+            "p": "N2",
+            "n": "GND"
+          }
+        }
+      ],
+      "ports": {
+        "input": "N1",
+        "output": "N2",
+        "gnd": "GND"
+      }
     },
     {
       "id": "rc_highpass_001",
       "name": "RCハイパスフィルタ",
       "description": "抵抗とコンデンサで構成される一次ハイパスフィルタ。低周波・直流成分を遮断し高周波を通過させる。交流結合・DC除去にも用いられる。",
-      "function_tags": ["filter", "highpass", "rc", "passive", "frequency_selective", "ac_coupling", "dc_blocking"],
-      "components": [
-        {"id": "C1", "type": "C", "value": "100n", "terminals": {"p": "N1", "n": "N2"}},
-        {"id": "R1", "type": "R", "value": "1k", "terminals": {"p": "N2", "n": "GND"}}
+      "function_tags": [
+        "filter",
+        "highpass",
+        "rc",
+        "passive",
+        "frequency_selective",
+        "ac_coupling",
+        "dc_blocking"
       ],
-      "ports": {"input": "N1", "output": "N2", "gnd": "GND"}
+      "components": [
+        {
+          "id": "C1",
+          "type": "C",
+          "value": "100n",
+          "terminals": {
+            "p": "N1",
+            "n": "N2"
+          }
+        },
+        {
+          "id": "R1",
+          "type": "R",
+          "value": "1k",
+          "terminals": {
+            "p": "N2",
+            "n": "GND"
+          }
+        }
+      ],
+      "ports": {
+        "input": "N1",
+        "output": "N2",
+        "gnd": "GND"
+      }
     },
     {
       "id": "buck_001",
       "name": "降圧チョッパ（Buck Converter）",
       "description": "スイッチング方式のDC-DCコンバータ。入力電圧より低い電圧を出力する降圧回路。",
-      "function_tags": ["converter", "dc_dc", "switching", "step_down", "power"],
-      "components": [
-        {"id": "SW1", "type": "SW", "terminals": {"p": "VIN",  "n": "N1"}},
-        {"id": "D1",  "type": "D",  "terminals": {"anode": "GND", "cathode": "N1"}},
-        {"id": "L1",  "type": "L",  "value": "10u", "terminals": {"p": "N1",  "n": "N2"}},
-        {"id": "C1",  "type": "C",  "value": "100u", "terminals": {"p": "N2",  "n": "GND"}}
+      "function_tags": [
+        "converter",
+        "dc_dc",
+        "switching",
+        "step_down",
+        "power"
       ],
-      "ports": {"input": "VIN", "output": "N2", "gnd": "GND"}
+      "components": [
+        {
+          "id": "SW1",
+          "type": "SW",
+          "terminals": {
+            "p": "VIN",
+            "n": "N1"
+          }
+        },
+        {
+          "id": "D1",
+          "type": "D",
+          "terminals": {
+            "anode": "GND",
+            "cathode": "N1"
+          }
+        },
+        {
+          "id": "L1",
+          "type": "L",
+          "value": "10u",
+          "terminals": {
+            "p": "N1",
+            "n": "N2"
+          }
+        },
+        {
+          "id": "C1",
+          "type": "C",
+          "value": "100u",
+          "terminals": {
+            "p": "N2",
+            "n": "GND"
+          }
+        }
+      ],
+      "ports": {
+        "input": "VIN",
+        "output": "N2",
+        "gnd": "GND"
+      }
     },
     {
       "id": "boost_001",
       "name": "昇圧チョッパ（Boost Converter）",
       "description": "スイッチング方式のDC-DCコンバータ。入力電圧より高い電圧を出力する昇圧回路。",
-      "function_tags": ["converter", "dc_dc", "switching", "step_up", "power"],
-      "components": [
-        {"id": "L1",  "type": "L",  "value": "10u", "terminals": {"p": "VIN", "n": "N1"}},
-        {"id": "SW1", "type": "SW", "terminals": {"p": "N1",  "n": "GND"}},
-        {"id": "D1",  "type": "D",  "terminals": {"anode": "N1", "cathode": "N2"}},
-        {"id": "C1",  "type": "C",  "value": "100u", "terminals": {"p": "N2",  "n": "GND"}}
+      "function_tags": [
+        "converter",
+        "dc_dc",
+        "switching",
+        "step_up",
+        "power"
       ],
-      "ports": {"input": "VIN", "output": "N2", "gnd": "GND"}
+      "components": [
+        {
+          "id": "L1",
+          "type": "L",
+          "value": "10u",
+          "terminals": {
+            "p": "VIN",
+            "n": "N1"
+          }
+        },
+        {
+          "id": "SW1",
+          "type": "SW",
+          "terminals": {
+            "p": "N1",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "D1",
+          "type": "D",
+          "terminals": {
+            "anode": "N1",
+            "cathode": "N2"
+          }
+        },
+        {
+          "id": "C1",
+          "type": "C",
+          "value": "100u",
+          "terminals": {
+            "p": "N2",
+            "n": "GND"
+          }
+        }
+      ],
+      "ports": {
+        "input": "VIN",
+        "output": "N2",
+        "gnd": "GND"
+      }
     },
     {
       "id": "lc_lowpass_001",
       "name": "LCローパスフィルタ",
       "description": "インダクタとコンデンサで構成されるローパスフィルタ。抵抗による損失がなく、急峻な遮断特性を持つ。電源ラインのノイズ除去にも使用される。",
-      "function_tags": ["filter", "lowpass", "lc", "passive", "frequency_selective", "noise_reduction"],
-      "components": [
-        {"id": "L1", "type": "L", "value": "1m", "terminals": {"p": "VIN", "n": "N1"}},
-        {"id": "C1", "type": "C", "value": "100n", "terminals": {"p": "N1", "n": "GND"}}
+      "function_tags": [
+        "filter",
+        "lowpass",
+        "lc",
+        "passive",
+        "frequency_selective",
+        "noise_reduction"
       ],
-      "ports": {"input": "VIN", "output": "N1", "gnd": "GND"}
+      "components": [
+        {
+          "id": "L1",
+          "type": "L",
+          "value": "1m",
+          "terminals": {
+            "p": "VIN",
+            "n": "N1"
+          }
+        },
+        {
+          "id": "C1",
+          "type": "C",
+          "value": "100n",
+          "terminals": {
+            "p": "N1",
+            "n": "GND"
+          }
+        }
+      ],
+      "ports": {
+        "input": "VIN",
+        "output": "N1",
+        "gnd": "GND"
+      }
     },
     {
       "id": "lc_highpass_001",
       "name": "LCハイパスフィルタ",
       "description": "コンデンサとインダクタで構成されるハイパスフィルタ。損失が少なく高周波帯域を効率よく通過させる。",
-      "function_tags": ["filter", "highpass", "lc", "passive", "frequency_selective", "dc_blocking"],
-      "components": [
-        {"id": "C1", "type": "C", "value": "100n", "terminals": {"p": "VIN", "n": "N1"}},
-        {"id": "L1", "type": "L", "value": "1m", "terminals": {"p": "N1", "n": "GND"}}
+      "function_tags": [
+        "filter",
+        "highpass",
+        "lc",
+        "passive",
+        "frequency_selective",
+        "dc_blocking"
       ],
-      "ports": {"input": "VIN", "output": "N1", "gnd": "GND"}
+      "components": [
+        {
+          "id": "C1",
+          "type": "C",
+          "value": "100n",
+          "terminals": {
+            "p": "VIN",
+            "n": "N1"
+          }
+        },
+        {
+          "id": "L1",
+          "type": "L",
+          "value": "1m",
+          "terminals": {
+            "p": "N1",
+            "n": "GND"
+          }
+        }
+      ],
+      "ports": {
+        "input": "VIN",
+        "output": "N1",
+        "gnd": "GND"
+      }
     },
     {
       "id": "rlc_bandpass_001",
       "name": "RLCバンドパスフィルタ",
       "description": "抵抗・インダクタ・コンデンサで構成される直列共振型バンドパスフィルタ。共振周波数付近の信号のみを通過させる。",
-      "function_tags": ["filter", "bandpass", "rlc", "passive", "frequency_selective", "resonant"],
-      "components": [
-        {"id": "L1", "type": "L", "value": "1m", "terminals": {"p": "VIN", "n": "N1"}},
-        {"id": "C1", "type": "C", "value": "100n", "terminals": {"p": "N1", "n": "N2"}},
-        {"id": "R1", "type": "R", "value": "100", "terminals": {"p": "N2", "n": "GND"}}
+      "function_tags": [
+        "filter",
+        "bandpass",
+        "rlc",
+        "passive",
+        "frequency_selective",
+        "resonant"
       ],
-      "ports": {"input": "VIN", "output": "N2", "gnd": "GND"}
+      "components": [
+        {
+          "id": "L1",
+          "type": "L",
+          "value": "1m",
+          "terminals": {
+            "p": "VIN",
+            "n": "N1"
+          }
+        },
+        {
+          "id": "C1",
+          "type": "C",
+          "value": "100n",
+          "terminals": {
+            "p": "N1",
+            "n": "N2"
+          }
+        },
+        {
+          "id": "R1",
+          "type": "R",
+          "value": "100",
+          "terminals": {
+            "p": "N2",
+            "n": "GND"
+          }
+        }
+      ],
+      "ports": {
+        "input": "VIN",
+        "output": "N2",
+        "gnd": "GND"
+      }
     },
     {
       "id": "rlc_notch_001",
       "name": "RLCノッチフィルタ",
       "description": "抵抗・インダクタ・コンデンサで構成されるノッチ（帯域除去）フィルタ。特定周波数を選択的に除去する。ハム除去や妨害波除去に使用される。",
-      "function_tags": ["filter", "notch", "bandstop", "rlc", "passive", "frequency_selective", "resonant", "noise_reduction"],
-      "components": [
-        {"id": "R1", "type": "R", "value": "100", "terminals": {"p": "VIN", "n": "N1"}},
-        {"id": "L1", "type": "L", "value": "1m", "terminals": {"p": "N1", "n": "N2"}},
-        {"id": "C1", "type": "C", "value": "100n", "terminals": {"p": "N2", "n": "GND"}}
+      "function_tags": [
+        "filter",
+        "notch",
+        "bandstop",
+        "rlc",
+        "passive",
+        "frequency_selective",
+        "resonant",
+        "noise_reduction"
       ],
-      "ports": {"input": "VIN", "output": "N1", "gnd": "GND"}
+      "components": [
+        {
+          "id": "R1",
+          "type": "R",
+          "value": "100",
+          "terminals": {
+            "p": "VIN",
+            "n": "N1"
+          }
+        },
+        {
+          "id": "L1",
+          "type": "L",
+          "value": "1m",
+          "terminals": {
+            "p": "N1",
+            "n": "N2"
+          }
+        },
+        {
+          "id": "C1",
+          "type": "C",
+          "value": "100n",
+          "terminals": {
+            "p": "N2",
+            "n": "GND"
+          }
+        }
+      ],
+      "ports": {
+        "input": "VIN",
+        "output": "N1",
+        "gnd": "GND"
+      }
     },
     {
       "id": "lc_pi_filter_001",
       "name": "π型LCフィルタ（ローパス）",
       "description": "入出力にシャントコンデンサ、中央に直列インダクタを配置したπ型ローパスフィルタ。電源ラインのリップル除去や高周波ノイズ対策に広く使用される。",
-      "function_tags": ["filter", "lowpass", "lc", "passive", "pi_filter", "frequency_selective", "noise_reduction", "power"],
-      "components": [
-        {"id": "C1", "type": "C", "value": "100n", "terminals": {"p": "IN", "n": "GND"}},
-        {"id": "L1", "type": "L", "value": "1m", "terminals": {"p": "IN", "n": "OUT"}},
-        {"id": "C2", "type": "C", "value": "100n", "terminals": {"p": "OUT", "n": "GND"}}
+      "function_tags": [
+        "filter",
+        "lowpass",
+        "lc",
+        "passive",
+        "pi_filter",
+        "frequency_selective",
+        "noise_reduction",
+        "power"
       ],
-      "ports": {"input": "IN", "output": "OUT", "gnd": "GND"}
+      "components": [
+        {
+          "id": "C1",
+          "type": "C",
+          "value": "100n",
+          "terminals": {
+            "p": "IN",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "L1",
+          "type": "L",
+          "value": "1m",
+          "terminals": {
+            "p": "IN",
+            "n": "OUT"
+          }
+        },
+        {
+          "id": "C2",
+          "type": "C",
+          "value": "100n",
+          "terminals": {
+            "p": "OUT",
+            "n": "GND"
+          }
+        }
+      ],
+      "ports": {
+        "input": "IN",
+        "output": "OUT",
+        "gnd": "GND"
+      }
     },
     {
       "id": "lc_t_filter_001",
       "name": "T型LCフィルタ（ローパス）",
       "description": "入出力に直列インダクタ、中央にシャントコンデンサを配置したT型ローパスフィルタ。インピーダンス整合が必要な用途に使用される。",
-      "function_tags": ["filter", "lowpass", "lc", "passive", "t_filter", "frequency_selective", "noise_reduction"],
-      "components": [
-        {"id": "L1", "type": "L", "value": "1m", "terminals": {"p": "IN", "n": "N1"}},
-        {"id": "C1", "type": "C", "value": "100n", "terminals": {"p": "N1", "n": "GND"}},
-        {"id": "L2", "type": "L", "value": "1m", "terminals": {"p": "N1", "n": "OUT"}}
+      "function_tags": [
+        "filter",
+        "lowpass",
+        "lc",
+        "passive",
+        "t_filter",
+        "frequency_selective",
+        "noise_reduction"
       ],
-      "ports": {"input": "IN", "output": "OUT", "gnd": "GND"}
+      "components": [
+        {
+          "id": "L1",
+          "type": "L",
+          "value": "1m",
+          "terminals": {
+            "p": "IN",
+            "n": "N1"
+          }
+        },
+        {
+          "id": "C1",
+          "type": "C",
+          "value": "100n",
+          "terminals": {
+            "p": "N1",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "L2",
+          "type": "L",
+          "value": "1m",
+          "terminals": {
+            "p": "N1",
+            "n": "OUT"
+          }
+        }
+      ],
+      "ports": {
+        "input": "IN",
+        "output": "OUT",
+        "gnd": "GND"
+      }
     },
     {
       "id": "halfwave_rect_001",
       "name": "半波整流回路",
       "description": "ダイオード1本で交流の半サイクルのみを整流する回路。最も単純なAC-DC変換回路。",
-      "function_tags": ["rectifier", "halfwave", "ac_dc", "diode", "power"],
-      "components": [
-        {"id": "D1", "type": "D", "terminals": {"anode": "IN", "cathode": "N1"}},
-        {"id": "R1", "type": "R", "value": "1k", "terminals": {"p": "N1", "n": "GND"}}
+      "function_tags": [
+        "rectifier",
+        "halfwave",
+        "ac_dc",
+        "diode",
+        "power"
       ],
-      "ports": {"input": "IN", "output": "N1", "gnd": "GND"}
+      "components": [
+        {
+          "id": "D1",
+          "type": "D",
+          "terminals": {
+            "anode": "IN",
+            "cathode": "N1"
+          }
+        },
+        {
+          "id": "R1",
+          "type": "R",
+          "value": "1k",
+          "terminals": {
+            "p": "N1",
+            "n": "GND"
+          }
+        }
+      ],
+      "ports": {
+        "input": "IN",
+        "output": "N1",
+        "gnd": "GND"
+      }
     },
     {
       "id": "positive_clipper_001",
       "name": "正クリッパ回路",
       "description": "信号の正側ピークをクリップ（切り取る）する波形整形回路。ダイオードが正方向に導通したときに出力をクランプする。",
-      "function_tags": ["clipper", "waveform_shaping", "diode", "positive_clip", "protection"],
-      "components": [
-        {"id": "R1", "type": "R", "value": "1k", "terminals": {"p": "IN", "n": "N1"}},
-        {"id": "D1", "type": "D", "terminals": {"anode": "N1", "cathode": "GND"}}
+      "function_tags": [
+        "clipper",
+        "waveform_shaping",
+        "diode",
+        "positive_clip",
+        "protection"
       ],
-      "ports": {"input": "IN", "output": "N1", "gnd": "GND"}
+      "components": [
+        {
+          "id": "R1",
+          "type": "R",
+          "value": "1k",
+          "terminals": {
+            "p": "IN",
+            "n": "N1"
+          }
+        },
+        {
+          "id": "D1",
+          "type": "D",
+          "terminals": {
+            "anode": "N1",
+            "cathode": "GND"
+          }
+        }
+      ],
+      "ports": {
+        "input": "IN",
+        "output": "N1",
+        "gnd": "GND"
+      }
     },
     {
       "id": "negative_clipper_001",
       "name": "負クリッパ回路",
       "description": "信号の負側ピークをクリップ（切り取る）する波形整形回路。ダイオードが負方向に導通したときに出力をクランプする。",
-      "function_tags": ["clipper", "waveform_shaping", "diode", "negative_clip", "protection"],
-      "components": [
-        {"id": "R1", "type": "R", "value": "1k", "terminals": {"p": "IN", "n": "N1"}},
-        {"id": "D1", "type": "D", "terminals": {"anode": "GND", "cathode": "N1"}}
+      "function_tags": [
+        "clipper",
+        "waveform_shaping",
+        "diode",
+        "negative_clip",
+        "protection"
       ],
-      "ports": {"input": "IN", "output": "N1", "gnd": "GND"}
+      "components": [
+        {
+          "id": "R1",
+          "type": "R",
+          "value": "1k",
+          "terminals": {
+            "p": "IN",
+            "n": "N1"
+          }
+        },
+        {
+          "id": "D1",
+          "type": "D",
+          "terminals": {
+            "anode": "GND",
+            "cathode": "N1"
+          }
+        }
+      ],
+      "ports": {
+        "input": "IN",
+        "output": "N1",
+        "gnd": "GND"
+      }
     },
     {
       "id": "zener_regulator_001",
       "name": "ツェナー定電圧回路",
       "description": "ツェナーダイオードの降伏電圧を利用した定電圧回路。入力電圧が変動しても出力電圧を一定に保つ。電圧リファレンスや保護回路として使用される。",
-      "function_tags": ["regulator", "voltage_reference", "zener", "passive", "protection", "dc"],
-      "components": [
-        {"id": "R1",  "type": "R",  "value": "1k", "terminals": {"p": "IN", "n": "N1"}},
-        {"id": "DZ1", "type": "DZ", "terminals": {"anode": "GND", "cathode": "N1"}}
+      "function_tags": [
+        "regulator",
+        "voltage_reference",
+        "zener",
+        "passive",
+        "protection",
+        "dc"
       ],
-      "ports": {"input": "IN", "output": "N1", "gnd": "GND"}
+      "components": [
+        {
+          "id": "R1",
+          "type": "R",
+          "value": "1k",
+          "terminals": {
+            "p": "IN",
+            "n": "N1"
+          }
+        },
+        {
+          "id": "DZ1",
+          "type": "DZ",
+          "terminals": {
+            "anode": "GND",
+            "cathode": "N1"
+          }
+        }
+      ],
+      "ports": {
+        "input": "IN",
+        "output": "N1",
+        "gnd": "GND"
+      }
     },
     {
       "id": "buck_lc_filter_001",
       "name": "降圧チョッパ + LC出力フィルタ",
       "description": "BuckコンバータにLC低域通過フィルタを追加した複合回路。スイッチング周波数成分をさらに低減し、出力リップルを抑える。[ブロック1: 降圧チョッパ本体（SW+D+L+C）、ブロック2: 追加LCフィルタ段]",
-      "function_tags": ["converter", "dc_dc", "switching", "step_down", "power", "filter", "lowpass", "lc", "noise_reduction"],
-      "components": [
-        {"id": "SW1", "type": "SW", "terminals": {"p": "VIN", "n": "N1"}},
-        {"id": "D1",  "type": "D",  "terminals": {"anode": "GND", "cathode": "N1"}},
-        {"id": "L1",  "type": "L",  "value": "10u", "terminals": {"p": "N1",  "n": "N2"}},
-        {"id": "C1",  "type": "C",  "value": "100u", "terminals": {"p": "N2",  "n": "GND"}},
-        {"id": "L2",  "type": "L",  "value": "10u", "terminals": {"p": "N2",  "n": "N3"}},
-        {"id": "C2",  "type": "C",  "value": "100u", "terminals": {"p": "N3",  "n": "GND"}}
+      "function_tags": [
+        "converter",
+        "dc_dc",
+        "switching",
+        "step_down",
+        "power",
+        "filter",
+        "lowpass",
+        "lc",
+        "noise_reduction"
       ],
-      "ports": {"input": "VIN", "output": "N3", "gnd": "GND"}
+      "components": [
+        {
+          "id": "SW1",
+          "type": "SW",
+          "terminals": {
+            "p": "VIN",
+            "n": "N1"
+          }
+        },
+        {
+          "id": "D1",
+          "type": "D",
+          "terminals": {
+            "anode": "GND",
+            "cathode": "N1"
+          }
+        },
+        {
+          "id": "L1",
+          "type": "L",
+          "value": "10u",
+          "terminals": {
+            "p": "N1",
+            "n": "N2"
+          }
+        },
+        {
+          "id": "C1",
+          "type": "C",
+          "value": "100u",
+          "terminals": {
+            "p": "N2",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "L2",
+          "type": "L",
+          "value": "10u",
+          "terminals": {
+            "p": "N2",
+            "n": "N3"
+          }
+        },
+        {
+          "id": "C2",
+          "type": "C",
+          "value": "100u",
+          "terminals": {
+            "p": "N3",
+            "n": "GND"
+          }
+        }
+      ],
+      "ports": {
+        "input": "VIN",
+        "output": "N3",
+        "gnd": "GND"
+      }
     },
     {
       "id": "rc_cascade_lpf_001",
       "name": "RC 2段カスケードローパスフィルタ",
       "description": "RCローパスフィルタを2段縦続接続した2次フィルタ。単段より急峻な減衰特性を持つ。[ブロック1: 1段目RC、ブロック2: 2段目RC]",
-      "function_tags": ["filter", "lowpass", "rc", "passive", "frequency_selective", "second_order", "cascade"],
-      "components": [
-        {"id": "R1", "type": "R", "value": "1k", "terminals": {"p": "IN",  "n": "N1"}},
-        {"id": "C1", "type": "C", "value": "100n", "terminals": {"p": "N1",  "n": "GND"}},
-        {"id": "R2", "type": "R", "value": "1k", "terminals": {"p": "N1",  "n": "OUT"}},
-        {"id": "C2", "type": "C", "value": "100n", "terminals": {"p": "OUT", "n": "GND"}}
+      "function_tags": [
+        "filter",
+        "lowpass",
+        "rc",
+        "passive",
+        "frequency_selective",
+        "second_order",
+        "cascade"
       ],
-      "ports": {"input": "IN", "output": "OUT", "gnd": "GND"}
+      "components": [
+        {
+          "id": "R1",
+          "type": "R",
+          "value": "1k",
+          "terminals": {
+            "p": "IN",
+            "n": "N1"
+          }
+        },
+        {
+          "id": "C1",
+          "type": "C",
+          "value": "100n",
+          "terminals": {
+            "p": "N1",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "R2",
+          "type": "R",
+          "value": "1k",
+          "terminals": {
+            "p": "N1",
+            "n": "OUT"
+          }
+        },
+        {
+          "id": "C2",
+          "type": "C",
+          "value": "100n",
+          "terminals": {
+            "p": "OUT",
+            "n": "GND"
+          }
+        }
+      ],
+      "ports": {
+        "input": "IN",
+        "output": "OUT",
+        "gnd": "GND"
+      }
     },
     {
       "id": "sw_freewheel_001",
       "name": "スイッチング段（SW＋フリーホイールD）",
       "description": "降圧チョッパの入力スイッチング段。直列スイッチとフリーホイールダイオードで構成される最小スイッチング単位。",
-      "function_tags": ["switching", "power", "dc_dc"],
-      "components": [
-        {"id": "SW1", "type": "SW", "terminals": {"p": "IN",  "n": "OUT"}},
-        {"id": "D1",  "type": "D",  "terminals": {"anode": "GND", "cathode": "OUT"}}
+      "function_tags": [
+        "switching",
+        "power",
+        "dc_dc"
       ],
-      "ports": {"input": "IN", "output": "OUT", "gnd": "GND"}
+      "components": [
+        {
+          "id": "SW1",
+          "type": "SW",
+          "terminals": {
+            "p": "IN",
+            "n": "OUT"
+          }
+        },
+        {
+          "id": "D1",
+          "type": "D",
+          "terminals": {
+            "anode": "GND",
+            "cathode": "OUT"
+          }
+        }
+      ],
+      "ports": {
+        "input": "IN",
+        "output": "OUT",
+        "gnd": "GND"
+      }
     },
     {
       "id": "boost_input_stage_001",
       "name": "昇圧入力段（L＋SW）",
       "description": "昇圧チョッパの入力エネルギー蓄積段。直列インダクタとシャントスイッチで構成。スイッチONでインダクタにエネルギーを蓄積し、スイッチOFFで放出する。",
-      "function_tags": ["switching", "power", "dc_dc", "energy_storage"],
-      "components": [
-        {"id": "L1",  "type": "L",  "value": "10u", "terminals": {"p": "IN",  "n": "OUT"}},
-        {"id": "SW1", "type": "SW", "terminals": {"p": "OUT", "n": "GND"}}
+      "function_tags": [
+        "switching",
+        "power",
+        "dc_dc",
+        "energy_storage"
       ],
-      "ports": {"input": "IN", "output": "OUT", "gnd": "GND"}
+      "components": [
+        {
+          "id": "L1",
+          "type": "L",
+          "value": "10u",
+          "terminals": {
+            "p": "IN",
+            "n": "OUT"
+          }
+        },
+        {
+          "id": "SW1",
+          "type": "SW",
+          "terminals": {
+            "p": "OUT",
+            "n": "GND"
+          }
+        }
+      ],
+      "ports": {
+        "input": "IN",
+        "output": "OUT",
+        "gnd": "GND"
+      }
     },
     {
       "id": "rectifier_cap_stage_001",
       "name": "整流・平滑段（D＋C）",
       "description": "昇圧チョッパの出力整流・平滑段。順方向ダイオードで整流し、平滑コンデンサで出力電圧を保持する。",
-      "function_tags": ["rectifier", "smoothing", "power", "diode"],
-      "components": [
-        {"id": "D1", "type": "D", "terminals": {"anode": "IN",  "cathode": "OUT"}},
-        {"id": "C1", "type": "C", "value": "100u", "terminals": {"p": "OUT", "n": "GND"}}
+      "function_tags": [
+        "rectifier",
+        "smoothing",
+        "power",
+        "diode"
       ],
-      "ports": {"input": "IN", "output": "OUT", "gnd": "GND"}
+      "components": [
+        {
+          "id": "D1",
+          "type": "D",
+          "terminals": {
+            "anode": "IN",
+            "cathode": "OUT"
+          }
+        },
+        {
+          "id": "C1",
+          "type": "C",
+          "value": "100u",
+          "terminals": {
+            "p": "OUT",
+            "n": "GND"
+          }
+        }
+      ],
+      "ports": {
+        "input": "IN",
+        "output": "OUT",
+        "gnd": "GND"
+      }
     },
     {
       "id": "ce_amp_npn_001",
       "name": "エミッタ接地増幅回路（NPN）",
       "description": "NPNトランジスタによる接地エミッタ増幅回路。入力を結合コンデンサ経由でベースに与え、コレクタから反転増幅した信号を取り出す。分圧バイアスとエミッタ抵抗で動作点を安定化する。",
-      "function_tags": ["amplifier", "common_emitter", "bjt", "npn", "active", "inverting"],
-      "components": [
-        {"id": "Cin", "type": "C", "value": "1u",  "terminals": {"p": "VIN", "n": "NB"}},
-        {"id": "R1",  "type": "R", "value": "47k", "terminals": {"p": "VCC", "n": "NB"}},
-        {"id": "R2",  "type": "R", "value": "10k", "terminals": {"p": "NB",  "n": "GND"}},
-        {"id": "Q1",  "type": "NPN", "terminals": {"base": "NB", "collector": "NC", "emitter": "NE"}},
-        {"id": "Rc",  "type": "R", "value": "4.7k", "terminals": {"p": "VCC", "n": "NC"}},
-        {"id": "Re",  "type": "R", "value": "1k",  "terminals": {"p": "NE",  "n": "GND"}}
+      "function_tags": [
+        "amplifier",
+        "common_emitter",
+        "bjt",
+        "npn",
+        "active",
+        "inverting"
       ],
-      "ports": {"input": "VIN", "output": "NC", "gnd": "GND"}
+      "components": [
+        {
+          "id": "Cin",
+          "type": "C",
+          "value": "1u",
+          "terminals": {
+            "p": "VIN",
+            "n": "NB"
+          }
+        },
+        {
+          "id": "R1",
+          "type": "R",
+          "value": "47k",
+          "terminals": {
+            "p": "VCC",
+            "n": "NB"
+          }
+        },
+        {
+          "id": "R2",
+          "type": "R",
+          "value": "10k",
+          "terminals": {
+            "p": "NB",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "Q1",
+          "type": "NPN",
+          "terminals": {
+            "base": "NB",
+            "collector": "NC",
+            "emitter": "NE"
+          }
+        },
+        {
+          "id": "Rc",
+          "type": "R",
+          "value": "4.7k",
+          "terminals": {
+            "p": "VCC",
+            "n": "NC"
+          }
+        },
+        {
+          "id": "Re",
+          "type": "R",
+          "value": "1k",
+          "terminals": {
+            "p": "NE",
+            "n": "GND"
+          }
+        }
+      ],
+      "ports": {
+        "input": "VIN",
+        "output": "NC",
+        "gnd": "GND"
+      }
     },
     {
       "id": "ce_amp_pnp_001",
       "name": "エミッタ接地増幅回路（PNP）",
       "description": "PNPトランジスタによる接地エミッタ増幅回路。エミッタを正電源側、コレクタを負荷抵抗経由でGND側に配置する。NPN版と構造は鏡像だが極性が反転する。",
-      "function_tags": ["amplifier", "common_emitter", "bjt", "pnp", "active", "inverting"],
-      "components": [
-        {"id": "Cin", "type": "C", "value": "1u",  "terminals": {"p": "VIN", "n": "NB"}},
-        {"id": "R1",  "type": "R", "value": "47k", "terminals": {"p": "VCC", "n": "NB"}},
-        {"id": "R2",  "type": "R", "value": "10k", "terminals": {"p": "NB",  "n": "GND"}},
-        {"id": "Q1",  "type": "PNP", "terminals": {"base": "NB", "emitter": "NE", "collector": "NC"}},
-        {"id": "Re",  "type": "R", "value": "1k",  "terminals": {"p": "VCC", "n": "NE"}},
-        {"id": "Rc",  "type": "R", "value": "4.7k", "terminals": {"p": "NC",  "n": "GND"}}
+      "function_tags": [
+        "amplifier",
+        "common_emitter",
+        "bjt",
+        "pnp",
+        "active",
+        "inverting"
       ],
-      "ports": {"input": "VIN", "output": "NC", "gnd": "GND"}
+      "components": [
+        {
+          "id": "Cin",
+          "type": "C",
+          "value": "1u",
+          "terminals": {
+            "p": "VIN",
+            "n": "NB"
+          }
+        },
+        {
+          "id": "R1",
+          "type": "R",
+          "value": "47k",
+          "terminals": {
+            "p": "VCC",
+            "n": "NB"
+          }
+        },
+        {
+          "id": "R2",
+          "type": "R",
+          "value": "10k",
+          "terminals": {
+            "p": "NB",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "Q1",
+          "type": "PNP",
+          "terminals": {
+            "base": "NB",
+            "emitter": "NE",
+            "collector": "NC"
+          }
+        },
+        {
+          "id": "Re",
+          "type": "R",
+          "value": "1k",
+          "terminals": {
+            "p": "VCC",
+            "n": "NE"
+          }
+        },
+        {
+          "id": "Rc",
+          "type": "R",
+          "value": "4.7k",
+          "terminals": {
+            "p": "NC",
+            "n": "GND"
+          }
+        }
+      ],
+      "ports": {
+        "input": "VIN",
+        "output": "NC",
+        "gnd": "GND"
+      }
     },
     {
       "id": "emitter_follower_npn_001",
       "name": "エミッタフォロワ（NPN）",
       "description": "NPNトランジスタによるコレクタ接地増幅回路（エミッタフォロワ）。コレクタを電源に直結し、エミッタから出力する。電圧利得は約1で非反転、低出力インピーダンスのバッファとして使われる。",
-      "function_tags": ["amplifier", "common_collector", "follower", "buffer", "bjt", "npn", "active", "non_inverting"],
-      "components": [
-        {"id": "Cin", "type": "C", "value": "1u",  "terminals": {"p": "VIN", "n": "NB"}},
-        {"id": "R1",  "type": "R", "value": "47k", "terminals": {"p": "VCC", "n": "NB"}},
-        {"id": "R2",  "type": "R", "value": "47k", "terminals": {"p": "NB",  "n": "GND"}},
-        {"id": "Q1",  "type": "NPN", "terminals": {"base": "NB", "collector": "VCC", "emitter": "NE"}},
-        {"id": "Re",  "type": "R", "value": "1k",  "terminals": {"p": "NE",  "n": "GND"}}
+      "function_tags": [
+        "amplifier",
+        "common_collector",
+        "follower",
+        "buffer",
+        "bjt",
+        "npn",
+        "active",
+        "non_inverting"
       ],
-      "ports": {"input": "VIN", "output": "NE", "gnd": "GND"}
+      "components": [
+        {
+          "id": "Cin",
+          "type": "C",
+          "value": "1u",
+          "terminals": {
+            "p": "VIN",
+            "n": "NB"
+          }
+        },
+        {
+          "id": "R1",
+          "type": "R",
+          "value": "47k",
+          "terminals": {
+            "p": "VCC",
+            "n": "NB"
+          }
+        },
+        {
+          "id": "R2",
+          "type": "R",
+          "value": "47k",
+          "terminals": {
+            "p": "NB",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "Q1",
+          "type": "NPN",
+          "terminals": {
+            "base": "NB",
+            "collector": "VCC",
+            "emitter": "NE"
+          }
+        },
+        {
+          "id": "Re",
+          "type": "R",
+          "value": "1k",
+          "terminals": {
+            "p": "NE",
+            "n": "GND"
+          }
+        }
+      ],
+      "ports": {
+        "input": "VIN",
+        "output": "NE",
+        "gnd": "GND"
+      }
     },
     {
       "id": "cs_amp_nmos_001",
       "name": "ソース接地増幅回路（NMOS）",
       "description": "NMOSトランジスタによる接地ソース増幅回路。ゲートに入力を与え、ドレインから反転増幅した信号を取り出す。BJTの接地エミッタに対応するMOS版。",
-      "function_tags": ["amplifier", "common_source", "mosfet", "nmos", "active", "inverting"],
-      "components": [
-        {"id": "Cin", "type": "C", "value": "1u",  "terminals": {"p": "VIN", "n": "NG"}},
-        {"id": "Rg1", "type": "R", "value": "1M",  "terminals": {"p": "VDD", "n": "NG"}},
-        {"id": "Rg2", "type": "R", "value": "1M",  "terminals": {"p": "NG",  "n": "GND"}},
-        {"id": "M1",  "type": "NMOS", "terminals": {"gate": "NG", "drain": "ND", "source": "NS"}},
-        {"id": "Rd",  "type": "R", "value": "4.7k", "terminals": {"p": "VDD", "n": "ND"}},
-        {"id": "Rs",  "type": "R", "value": "1k",  "terminals": {"p": "NS",  "n": "GND"}}
+      "function_tags": [
+        "amplifier",
+        "common_source",
+        "mosfet",
+        "nmos",
+        "active",
+        "inverting"
       ],
-      "ports": {"input": "VIN", "output": "ND", "gnd": "GND"}
+      "components": [
+        {
+          "id": "Cin",
+          "type": "C",
+          "value": "1u",
+          "terminals": {
+            "p": "VIN",
+            "n": "NG"
+          }
+        },
+        {
+          "id": "Rg1",
+          "type": "R",
+          "value": "1M",
+          "terminals": {
+            "p": "VDD",
+            "n": "NG"
+          }
+        },
+        {
+          "id": "Rg2",
+          "type": "R",
+          "value": "1M",
+          "terminals": {
+            "p": "NG",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "M1",
+          "type": "NMOS",
+          "terminals": {
+            "gate": "NG",
+            "drain": "ND",
+            "source": "NS"
+          }
+        },
+        {
+          "id": "Rd",
+          "type": "R",
+          "value": "4.7k",
+          "terminals": {
+            "p": "VDD",
+            "n": "ND"
+          }
+        },
+        {
+          "id": "Rs",
+          "type": "R",
+          "value": "1k",
+          "terminals": {
+            "p": "NS",
+            "n": "GND"
+          }
+        }
+      ],
+      "ports": {
+        "input": "VIN",
+        "output": "ND",
+        "gnd": "GND"
+      }
     },
     {
       "id": "source_follower_nmos_001",
       "name": "ソースフォロワ（NMOS）",
       "description": "NMOSトランジスタによるドレイン接地増幅回路（ソースフォロワ）。ドレインを電源に直結し、ソースから出力する。電圧利得は約1で非反転のバッファ。",
-      "function_tags": ["amplifier", "common_drain", "follower", "buffer", "mosfet", "nmos", "active", "non_inverting"],
-      "components": [
-        {"id": "Cin", "type": "C", "value": "1u",  "terminals": {"p": "VIN", "n": "NG"}},
-        {"id": "Rg",  "type": "R", "value": "1M",  "terminals": {"p": "NG",  "n": "GND"}},
-        {"id": "M1",  "type": "NMOS", "terminals": {"gate": "NG", "drain": "VDD", "source": "NS"}},
-        {"id": "Rs",  "type": "R", "value": "1k",  "terminals": {"p": "NS",  "n": "GND"}}
+      "function_tags": [
+        "amplifier",
+        "common_drain",
+        "follower",
+        "buffer",
+        "mosfet",
+        "nmos",
+        "active",
+        "non_inverting"
       ],
-      "ports": {"input": "VIN", "output": "NS", "gnd": "GND"}
+      "components": [
+        {
+          "id": "Cin",
+          "type": "C",
+          "value": "1u",
+          "terminals": {
+            "p": "VIN",
+            "n": "NG"
+          }
+        },
+        {
+          "id": "Rg",
+          "type": "R",
+          "value": "1M",
+          "terminals": {
+            "p": "NG",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "M1",
+          "type": "NMOS",
+          "terminals": {
+            "gate": "NG",
+            "drain": "VDD",
+            "source": "NS"
+          }
+        },
+        {
+          "id": "Rs",
+          "type": "R",
+          "value": "1k",
+          "terminals": {
+            "p": "NS",
+            "n": "GND"
+          }
+        }
+      ],
+      "ports": {
+        "input": "VIN",
+        "output": "NS",
+        "gnd": "GND"
+      }
     },
     {
       "id": "opamp_inverting_001",
       "name": "反転増幅回路（OpAmp）",
       "description": "オペアンプによる反転増幅回路。入力抵抗を介して反転入力に信号を与え、出力から反転入力へ帰還抵抗で負帰還をかける。非反転入力はGNDに接地。利得は -Rf/Rin。",
-      "function_tags": ["amplifier", "opamp", "inverting", "active", "feedback", "negative_feedback"],
-      "components": [
-        {"id": "Rin", "type": "R", "value": "10k", "terminals": {"p": "VIN", "n": "NINV"}},
-        {"id": "Rf",  "type": "R", "value": "100k", "terminals": {"p": "NINV", "n": "OUT"}},
-        {"id": "OA1", "type": "OPAMP", "terminals": {"in_p": "GND", "in_n": "NINV", "out": "OUT"}}
+      "function_tags": [
+        "amplifier",
+        "opamp",
+        "inverting",
+        "active",
+        "feedback",
+        "negative_feedback"
       ],
-      "ports": {"input": "VIN", "output": "OUT", "gnd": "GND"}
+      "components": [
+        {
+          "id": "Rin",
+          "type": "R",
+          "value": "10k",
+          "terminals": {
+            "p": "VIN",
+            "n": "NINV"
+          }
+        },
+        {
+          "id": "Rf",
+          "type": "R",
+          "value": "100k",
+          "terminals": {
+            "p": "NINV",
+            "n": "OUT"
+          }
+        },
+        {
+          "id": "OA1",
+          "type": "OPAMP",
+          "terminals": {
+            "in_p": "GND",
+            "in_n": "NINV",
+            "out": "OUT"
+          }
+        }
+      ],
+      "ports": {
+        "input": "VIN",
+        "output": "OUT",
+        "gnd": "GND"
+      }
     },
     {
       "id": "opamp_noninverting_001",
       "name": "非反転増幅回路（OpAmp）",
       "description": "オペアンプによる非反転増幅回路。入力を非反転入力に直接与え、出力から反転入力への帰還分圧で利得を決める。利得は 1+Rf/R1。高入力インピーダンス。",
-      "function_tags": ["amplifier", "opamp", "non_inverting", "active", "feedback", "negative_feedback"],
-      "components": [
-        {"id": "R1",  "type": "R", "value": "10k", "terminals": {"p": "NINV", "n": "GND"}},
-        {"id": "Rf",  "type": "R", "value": "90k", "terminals": {"p": "OUT",  "n": "NINV"}},
-        {"id": "OA1", "type": "OPAMP", "terminals": {"in_p": "VIN", "in_n": "NINV", "out": "OUT"}}
+      "function_tags": [
+        "amplifier",
+        "opamp",
+        "non_inverting",
+        "active",
+        "feedback",
+        "negative_feedback"
       ],
-      "ports": {"input": "VIN", "output": "OUT", "gnd": "GND"}
+      "components": [
+        {
+          "id": "R1",
+          "type": "R",
+          "value": "10k",
+          "terminals": {
+            "p": "NINV",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "Rf",
+          "type": "R",
+          "value": "90k",
+          "terminals": {
+            "p": "OUT",
+            "n": "NINV"
+          }
+        },
+        {
+          "id": "OA1",
+          "type": "OPAMP",
+          "terminals": {
+            "in_p": "VIN",
+            "in_n": "NINV",
+            "out": "OUT"
+          }
+        }
+      ],
+      "ports": {
+        "input": "VIN",
+        "output": "OUT",
+        "gnd": "GND"
+      }
     },
     {
       "id": "opamp_buffer_001",
       "name": "ボルテージフォロワ（OpAmp）",
       "description": "オペアンプによるボルテージフォロワ（バッファ）。出力を反転入力に直結した100%負帰還で、利得1・非反転。高入力／低出力インピーダンスのインピーダンス変換に用いる。",
-      "function_tags": ["opamp", "buffer", "follower", "active", "feedback", "unity_gain"],
-      "components": [
-        {"id": "OA1", "type": "OPAMP", "terminals": {"in_p": "VIN", "in_n": "OUT", "out": "OUT"}}
+      "function_tags": [
+        "opamp",
+        "buffer",
+        "follower",
+        "active",
+        "feedback",
+        "unity_gain"
       ],
-      "ports": {"input": "VIN", "output": "OUT", "gnd": "GND"}
+      "components": [
+        {
+          "id": "OA1",
+          "type": "OPAMP",
+          "terminals": {
+            "in_p": "VIN",
+            "in_n": "OUT",
+            "out": "OUT"
+          }
+        }
+      ],
+      "ports": {
+        "input": "VIN",
+        "output": "OUT",
+        "gnd": "GND"
+      }
     },
     {
       "id": "two_stage_ce_001",
       "name": "2段エミッタ接地増幅回路（NPN）",
       "description": "接地エミッタ増幅段を結合コンデンサで2段縦続接続した多段増幅回路。各段は分圧バイアスとエミッタ抵抗で安定化される。総合利得は各段の積になる。",
-      "function_tags": ["amplifier", "multistage", "two_stage", "common_emitter", "bjt", "npn", "active", "cascade"],
-      "components": [
-        {"id": "Cin", "type": "C", "value": "1u",  "terminals": {"p": "VIN", "n": "NB1"}},
-        {"id": "R1",  "type": "R", "value": "47k", "terminals": {"p": "VCC", "n": "NB1"}},
-        {"id": "R2",  "type": "R", "value": "10k", "terminals": {"p": "NB1", "n": "GND"}},
-        {"id": "Q1",  "type": "NPN", "terminals": {"base": "NB1", "collector": "NC1", "emitter": "NE1"}},
-        {"id": "Rc1", "type": "R", "value": "4.7k", "terminals": {"p": "VCC", "n": "NC1"}},
-        {"id": "Re1", "type": "R", "value": "1k",  "terminals": {"p": "NE1", "n": "GND"}},
-        {"id": "Cc",  "type": "C", "value": "1u",  "terminals": {"p": "NC1", "n": "NB2"}},
-        {"id": "R3",  "type": "R", "value": "47k", "terminals": {"p": "VCC", "n": "NB2"}},
-        {"id": "R4",  "type": "R", "value": "10k", "terminals": {"p": "NB2", "n": "GND"}},
-        {"id": "Q2",  "type": "NPN", "terminals": {"base": "NB2", "collector": "NC2", "emitter": "NE2"}},
-        {"id": "Rc2", "type": "R", "value": "4.7k", "terminals": {"p": "VCC", "n": "NC2"}},
-        {"id": "Re2", "type": "R", "value": "1k",  "terminals": {"p": "NE2", "n": "GND"}}
+      "function_tags": [
+        "amplifier",
+        "multistage",
+        "two_stage",
+        "common_emitter",
+        "bjt",
+        "npn",
+        "active",
+        "cascade"
       ],
-      "ports": {"input": "VIN", "output": "NC2", "gnd": "GND"}
+      "components": [
+        {
+          "id": "Cin",
+          "type": "C",
+          "value": "1u",
+          "terminals": {
+            "p": "VIN",
+            "n": "NB1"
+          }
+        },
+        {
+          "id": "R1",
+          "type": "R",
+          "value": "47k",
+          "terminals": {
+            "p": "VCC",
+            "n": "NB1"
+          }
+        },
+        {
+          "id": "R2",
+          "type": "R",
+          "value": "10k",
+          "terminals": {
+            "p": "NB1",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "Q1",
+          "type": "NPN",
+          "terminals": {
+            "base": "NB1",
+            "collector": "NC1",
+            "emitter": "NE1"
+          }
+        },
+        {
+          "id": "Rc1",
+          "type": "R",
+          "value": "4.7k",
+          "terminals": {
+            "p": "VCC",
+            "n": "NC1"
+          }
+        },
+        {
+          "id": "Re1",
+          "type": "R",
+          "value": "1k",
+          "terminals": {
+            "p": "NE1",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "Cc",
+          "type": "C",
+          "value": "1u",
+          "terminals": {
+            "p": "NC1",
+            "n": "NB2"
+          }
+        },
+        {
+          "id": "R3",
+          "type": "R",
+          "value": "47k",
+          "terminals": {
+            "p": "VCC",
+            "n": "NB2"
+          }
+        },
+        {
+          "id": "R4",
+          "type": "R",
+          "value": "10k",
+          "terminals": {
+            "p": "NB2",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "Q2",
+          "type": "NPN",
+          "terminals": {
+            "base": "NB2",
+            "collector": "NC2",
+            "emitter": "NE2"
+          }
+        },
+        {
+          "id": "Rc2",
+          "type": "R",
+          "value": "4.7k",
+          "terminals": {
+            "p": "VCC",
+            "n": "NC2"
+          }
+        },
+        {
+          "id": "Re2",
+          "type": "R",
+          "value": "1k",
+          "terminals": {
+            "p": "NE2",
+            "n": "GND"
+          }
+        }
+      ],
+      "ports": {
+        "input": "VIN",
+        "output": "NC2",
+        "gnd": "GND"
+      }
     },
     {
       "id": "ce_follower_001",
       "name": "エミッタ接地＋エミッタフォロワ（NPN 2段）",
       "description": "接地エミッタ増幅段の後段にエミッタフォロワを縦続した多段回路。前段で電圧増幅し、後段のフォロワで低出力インピーダンス化して負荷を駆動する。",
-      "function_tags": ["amplifier", "multistage", "two_stage", "common_emitter", "common_collector", "follower", "bjt", "npn", "active", "cascade"],
-      "components": [
-        {"id": "Cin", "type": "C", "value": "1u",  "terminals": {"p": "VIN", "n": "NB1"}},
-        {"id": "R1",  "type": "R", "value": "47k", "terminals": {"p": "VCC", "n": "NB1"}},
-        {"id": "R2",  "type": "R", "value": "10k", "terminals": {"p": "NB1", "n": "GND"}},
-        {"id": "Q1",  "type": "NPN", "terminals": {"base": "NB1", "collector": "NC1", "emitter": "NE1"}},
-        {"id": "Rc1", "type": "R", "value": "4.7k", "terminals": {"p": "VCC", "n": "NC1"}},
-        {"id": "Re1", "type": "R", "value": "1k",  "terminals": {"p": "NE1", "n": "GND"}},
-        {"id": "Cc",  "type": "C", "value": "1u",  "terminals": {"p": "NC1", "n": "NB2"}},
-        {"id": "R3",  "type": "R", "value": "47k", "terminals": {"p": "VCC", "n": "NB2"}},
-        {"id": "R4",  "type": "R", "value": "47k", "terminals": {"p": "NB2", "n": "GND"}},
-        {"id": "Q2",  "type": "NPN", "terminals": {"base": "NB2", "collector": "VCC", "emitter": "NE2"}},
-        {"id": "Re2", "type": "R", "value": "1k",  "terminals": {"p": "NE2", "n": "GND"}}
+      "function_tags": [
+        "amplifier",
+        "multistage",
+        "two_stage",
+        "common_emitter",
+        "common_collector",
+        "follower",
+        "bjt",
+        "npn",
+        "active",
+        "cascade"
       ],
-      "ports": {"input": "VIN", "output": "NE2", "gnd": "GND"}
+      "components": [
+        {
+          "id": "Cin",
+          "type": "C",
+          "value": "1u",
+          "terminals": {
+            "p": "VIN",
+            "n": "NB1"
+          }
+        },
+        {
+          "id": "R1",
+          "type": "R",
+          "value": "47k",
+          "terminals": {
+            "p": "VCC",
+            "n": "NB1"
+          }
+        },
+        {
+          "id": "R2",
+          "type": "R",
+          "value": "10k",
+          "terminals": {
+            "p": "NB1",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "Q1",
+          "type": "NPN",
+          "terminals": {
+            "base": "NB1",
+            "collector": "NC1",
+            "emitter": "NE1"
+          }
+        },
+        {
+          "id": "Rc1",
+          "type": "R",
+          "value": "4.7k",
+          "terminals": {
+            "p": "VCC",
+            "n": "NC1"
+          }
+        },
+        {
+          "id": "Re1",
+          "type": "R",
+          "value": "1k",
+          "terminals": {
+            "p": "NE1",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "Cc",
+          "type": "C",
+          "value": "1u",
+          "terminals": {
+            "p": "NC1",
+            "n": "NB2"
+          }
+        },
+        {
+          "id": "R3",
+          "type": "R",
+          "value": "47k",
+          "terminals": {
+            "p": "VCC",
+            "n": "NB2"
+          }
+        },
+        {
+          "id": "R4",
+          "type": "R",
+          "value": "47k",
+          "terminals": {
+            "p": "NB2",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "Q2",
+          "type": "NPN",
+          "terminals": {
+            "base": "NB2",
+            "collector": "VCC",
+            "emitter": "NE2"
+          }
+        },
+        {
+          "id": "Re2",
+          "type": "R",
+          "value": "1k",
+          "terminals": {
+            "p": "NE2",
+            "n": "GND"
+          }
+        }
+      ],
+      "ports": {
+        "input": "VIN",
+        "output": "NE2",
+        "gnd": "GND"
+      }
     },
     {
       "id": "current_mirror_npn_001",
       "name": "カレントミラー（NPN）",
       "description": "ダイオード接続した参照トランジスタと出力トランジスタでベースを共有し、参照電流を出力側に複製する電流源回路。バイアス回路の基本構成。",
-      "function_tags": ["current_mirror", "current_source", "bias", "bjt", "npn", "active"],
-      "components": [
-        {"id": "Rref", "type": "R", "value": "10k", "terminals": {"p": "VCC", "n": "NREF"}},
-        {"id": "Q1",   "type": "NPN", "terminals": {"collector": "NREF", "base": "NREF", "emitter": "GND"}},
-        {"id": "Q2",   "type": "NPN", "terminals": {"base": "NREF", "collector": "NOUT", "emitter": "GND"}},
-        {"id": "Rload","type": "R", "value": "4.7k", "terminals": {"p": "VCC", "n": "NOUT"}}
+      "function_tags": [
+        "current_mirror",
+        "current_source",
+        "bias",
+        "bjt",
+        "npn",
+        "active"
       ],
-      "ports": {"input": "NREF", "output": "NOUT", "gnd": "GND"}
+      "components": [
+        {
+          "id": "Rref",
+          "type": "R",
+          "value": "10k",
+          "terminals": {
+            "p": "VCC",
+            "n": "NREF"
+          }
+        },
+        {
+          "id": "Q1",
+          "type": "NPN",
+          "terminals": {
+            "collector": "NREF",
+            "base": "NREF",
+            "emitter": "GND"
+          }
+        },
+        {
+          "id": "Q2",
+          "type": "NPN",
+          "terminals": {
+            "base": "NREF",
+            "collector": "NOUT",
+            "emitter": "GND"
+          }
+        },
+        {
+          "id": "Rload",
+          "type": "R",
+          "value": "4.7k",
+          "terminals": {
+            "p": "VCC",
+            "n": "NOUT"
+          }
+        }
+      ],
+      "ports": {
+        "input": "NREF",
+        "output": "NOUT",
+        "gnd": "GND"
+      }
     },
     {
       "id": "diff_pair_npn_001",
       "name": "差動対（NPN ロングテールペア）",
       "description": "エミッタを共通テール抵抗で結合した2つのNPNトランジスタによる差動増幅回路。2入力の差を増幅し同相成分を除去する。オペアンプ入力段の基本構成。",
-      "function_tags": ["differential", "long_tailed_pair", "amplifier", "bjt", "npn", "active"],
-      "components": [
-        {"id": "Q1",  "type": "NPN", "terminals": {"base": "VIN", "collector": "NC1", "emitter": "NTAIL"}},
-        {"id": "Q2",  "type": "NPN", "terminals": {"base": "VIN2", "collector": "NC2", "emitter": "NTAIL"}},
-        {"id": "Rc1", "type": "R", "value": "4.7k", "terminals": {"p": "VCC", "n": "NC1"}},
-        {"id": "Rc2", "type": "R", "value": "4.7k", "terminals": {"p": "VCC", "n": "NC2"}},
-        {"id": "Rtail","type": "R", "value": "10k", "terminals": {"p": "NTAIL", "n": "GND"}}
+      "function_tags": [
+        "differential",
+        "long_tailed_pair",
+        "amplifier",
+        "bjt",
+        "npn",
+        "active"
       ],
-      "ports": {"input": "VIN", "input2": "VIN2", "output": "NC1", "gnd": "GND"}
+      "components": [
+        {
+          "id": "Q1",
+          "type": "NPN",
+          "terminals": {
+            "base": "VIN",
+            "collector": "NC1",
+            "emitter": "NTAIL"
+          }
+        },
+        {
+          "id": "Q2",
+          "type": "NPN",
+          "terminals": {
+            "base": "VIN2",
+            "collector": "NC2",
+            "emitter": "NTAIL"
+          }
+        },
+        {
+          "id": "Rc1",
+          "type": "R",
+          "value": "4.7k",
+          "terminals": {
+            "p": "VCC",
+            "n": "NC1"
+          }
+        },
+        {
+          "id": "Rc2",
+          "type": "R",
+          "value": "4.7k",
+          "terminals": {
+            "p": "VCC",
+            "n": "NC2"
+          }
+        },
+        {
+          "id": "Rtail",
+          "type": "R",
+          "value": "10k",
+          "terminals": {
+            "p": "NTAIL",
+            "n": "GND"
+          }
+        }
+      ],
+      "ports": {
+        "input": "VIN",
+        "input2": "VIN2",
+        "output": "NC1",
+        "gnd": "GND"
+      }
+    },
+    {
+      "id": "fullwave_ct_rect_001",
+      "name": "全波整流回路（センタータップ）",
+      "description": "センタータップ付き二次巻線と2本のダイオードで交流の両半サイクルを整流し、平滑コンデンサでリップルを抑える全波整流回路。",
+      "function_tags": [
+        "rectifier",
+        "fullwave",
+        "center_tapped",
+        "ac_dc",
+        "diode",
+        "smoothing",
+        "power"
+      ],
+      "components": [
+        {
+          "id": "D1",
+          "type": "D",
+          "terminals": {
+            "anode": "IN1",
+            "cathode": "OUT"
+          }
+        },
+        {
+          "id": "D2",
+          "type": "D",
+          "terminals": {
+            "anode": "IN2",
+            "cathode": "OUT"
+          }
+        },
+        {
+          "id": "C1",
+          "type": "C",
+          "value": "100u",
+          "terminals": {
+            "p": "OUT",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "R1",
+          "type": "R",
+          "value": "1k",
+          "terminals": {
+            "p": "OUT",
+            "n": "GND"
+          }
+        }
+      ],
+      "ports": {
+        "input": "IN1",
+        "input2": "IN2",
+        "output": "OUT",
+        "gnd": "GND"
+      }
+    },
+    {
+      "id": "bridge_rect_001",
+      "name": "ブリッジ整流回路",
+      "description": "4本のダイオードをブリッジ接続し、単一の二次巻線で交流の両半サイクルを全波整流する回路。出力に平滑コンデンサと負荷抵抗を備える。",
+      "function_tags": [
+        "rectifier",
+        "fullwave",
+        "bridge",
+        "ac_dc",
+        "diode",
+        "smoothing",
+        "power"
+      ],
+      "components": [
+        {
+          "id": "D1",
+          "type": "D",
+          "terminals": {
+            "anode": "IN1",
+            "cathode": "OUT"
+          }
+        },
+        {
+          "id": "D2",
+          "type": "D",
+          "terminals": {
+            "anode": "IN2",
+            "cathode": "OUT"
+          }
+        },
+        {
+          "id": "D3",
+          "type": "D",
+          "terminals": {
+            "anode": "GND",
+            "cathode": "IN1"
+          }
+        },
+        {
+          "id": "D4",
+          "type": "D",
+          "terminals": {
+            "anode": "GND",
+            "cathode": "IN2"
+          }
+        },
+        {
+          "id": "C1",
+          "type": "C",
+          "value": "100u",
+          "terminals": {
+            "p": "OUT",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "R1",
+          "type": "R",
+          "value": "1k",
+          "terminals": {
+            "p": "OUT",
+            "n": "GND"
+          }
+        }
+      ],
+      "ports": {
+        "input": "IN1",
+        "input2": "IN2",
+        "output": "OUT",
+        "gnd": "GND"
+      }
+    },
+    {
+      "id": "voltage_doubler_001",
+      "name": "倍電圧整流回路（グライナッヘル）",
+      "description": "結合コンデンサとクランプダイオードで入力を昇圧し、ピーク整流により入力ピークの約2倍の直流電圧を得るグライナッヘル型倍電圧整流回路。",
+      "function_tags": [
+        "rectifier",
+        "voltage_doubler",
+        "villard",
+        "greinacher",
+        "ac_dc",
+        "diode",
+        "voltage_multiplier",
+        "power"
+      ],
+      "components": [
+        {
+          "id": "C1",
+          "type": "C",
+          "value": "1u",
+          "terminals": {
+            "p": "IN",
+            "n": "N1"
+          }
+        },
+        {
+          "id": "D1",
+          "type": "D",
+          "terminals": {
+            "anode": "GND",
+            "cathode": "N1"
+          }
+        },
+        {
+          "id": "D2",
+          "type": "D",
+          "terminals": {
+            "anode": "N1",
+            "cathode": "OUT"
+          }
+        },
+        {
+          "id": "C2",
+          "type": "C",
+          "value": "1u",
+          "terminals": {
+            "p": "OUT",
+            "n": "GND"
+          }
+        }
+      ],
+      "ports": {
+        "input": "IN",
+        "output": "OUT",
+        "gnd": "GND"
+      }
+    },
+    {
+      "id": "sallen_key_lpf_001",
+      "name": "サレンキー型ローパスフィルタ（OpAmp）",
+      "description": "オペアンプ非反転構成による2次アクティブローパスフィルタ。直列2抵抗の中間ノードから帰還コンデンサで出力へ戻し、非反転入力のシャントコンデンサと合わせて2極のVCVS構成を作る。",
+      "function_tags": [
+        "filter",
+        "lowpass",
+        "active",
+        "sallen_key",
+        "opamp",
+        "second_order",
+        "feedback",
+        "frequency_selective"
+      ],
+      "components": [
+        {
+          "id": "R1",
+          "type": "R",
+          "value": "1k",
+          "terminals": {
+            "p": "VIN",
+            "n": "N1"
+          }
+        },
+        {
+          "id": "R2",
+          "type": "R",
+          "value": "1k",
+          "terminals": {
+            "p": "N1",
+            "n": "NP"
+          }
+        },
+        {
+          "id": "C1",
+          "type": "C",
+          "value": "100n",
+          "terminals": {
+            "p": "N1",
+            "n": "OUT"
+          }
+        },
+        {
+          "id": "C2",
+          "type": "C",
+          "value": "100n",
+          "terminals": {
+            "p": "NP",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "OA1",
+          "type": "OPAMP",
+          "terminals": {
+            "in_p": "NP",
+            "in_n": "OUT",
+            "out": "OUT"
+          }
+        }
+      ],
+      "ports": {
+        "input": "VIN",
+        "output": "OUT",
+        "gnd": "GND"
+      }
+    },
+    {
+      "id": "sallen_key_hpf_001",
+      "name": "サレンキー型ハイパスフィルタ（OpAmp）",
+      "description": "サレンキー型ローパスのRとCを入れ替えた2次アクティブハイパスフィルタ。直列2コンデンサの中間ノードから帰還抵抗で出力へ戻し、非反転入力のシャント抵抗と合わせて2極のVCVS構成を作る。",
+      "function_tags": [
+        "filter",
+        "highpass",
+        "active",
+        "sallen_key",
+        "opamp",
+        "second_order",
+        "feedback",
+        "frequency_selective"
+      ],
+      "components": [
+        {
+          "id": "C1",
+          "type": "C",
+          "value": "100n",
+          "terminals": {
+            "p": "VIN",
+            "n": "N1"
+          }
+        },
+        {
+          "id": "C2",
+          "type": "C",
+          "value": "100n",
+          "terminals": {
+            "p": "N1",
+            "n": "NP"
+          }
+        },
+        {
+          "id": "R1",
+          "type": "R",
+          "value": "1k",
+          "terminals": {
+            "p": "N1",
+            "n": "OUT"
+          }
+        },
+        {
+          "id": "R2",
+          "type": "R",
+          "value": "1k",
+          "terminals": {
+            "p": "NP",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "OA1",
+          "type": "OPAMP",
+          "terminals": {
+            "in_p": "NP",
+            "in_n": "OUT",
+            "out": "OUT"
+          }
+        }
+      ],
+      "ports": {
+        "input": "VIN",
+        "output": "OUT",
+        "gnd": "GND"
+      }
+    },
+    {
+      "id": "mfb_bpf_001",
+      "name": "多重帰還バンドパスフィルタ（OpAmp）",
+      "description": "オペアンプ反転構成による多重帰還型2次バンドパスフィルタ。入力抵抗と接地抵抗で中間ノードを作り、2つのコンデンサと帰還抵抗で2つの帰還経路を形成して帯域選択する。",
+      "function_tags": [
+        "filter",
+        "bandpass",
+        "active",
+        "multiple_feedback",
+        "mfb",
+        "opamp",
+        "inverting",
+        "second_order",
+        "feedback",
+        "frequency_selective"
+      ],
+      "components": [
+        {
+          "id": "R1",
+          "type": "R",
+          "value": "10k",
+          "terminals": {
+            "p": "VIN",
+            "n": "N1"
+          }
+        },
+        {
+          "id": "R2",
+          "type": "R",
+          "value": "1k",
+          "terminals": {
+            "p": "N1",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "C1",
+          "type": "C",
+          "value": "10n",
+          "terminals": {
+            "p": "N1",
+            "n": "NINV"
+          }
+        },
+        {
+          "id": "C2",
+          "type": "C",
+          "value": "10n",
+          "terminals": {
+            "p": "N1",
+            "n": "OUT"
+          }
+        },
+        {
+          "id": "Rf",
+          "type": "R",
+          "value": "100k",
+          "terminals": {
+            "p": "NINV",
+            "n": "OUT"
+          }
+        },
+        {
+          "id": "OA1",
+          "type": "OPAMP",
+          "terminals": {
+            "in_p": "GND",
+            "in_n": "NINV",
+            "out": "OUT"
+          }
+        }
+      ],
+      "ports": {
+        "input": "VIN",
+        "output": "OUT",
+        "gnd": "GND"
+      }
+    },
+    {
+      "id": "phase_shift_osc_001",
+      "name": "位相シフト発振器（OpAmp）",
+      "description": "オペアンプ反転増幅器に3段のRCハイパス移相回路を帰還させた正弦波発振器。各RC段が60度ずつ計180度の位相を回し、反転増幅の180度と合わせて発振条件を満たす。",
+      "function_tags": [
+        "oscillator",
+        "phase_shift",
+        "sine",
+        "active",
+        "opamp",
+        "inverting",
+        "feedback",
+        "rc"
+      ],
+      "components": [
+        {
+          "id": "Rf",
+          "type": "R",
+          "value": "1.2M",
+          "terminals": {
+            "p": "NINV",
+            "n": "OUT"
+          }
+        },
+        {
+          "id": "C1",
+          "type": "C",
+          "value": "10n",
+          "terminals": {
+            "p": "OUT",
+            "n": "N1"
+          }
+        },
+        {
+          "id": "R1",
+          "type": "R",
+          "value": "10k",
+          "terminals": {
+            "p": "N1",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "C2",
+          "type": "C",
+          "value": "10n",
+          "terminals": {
+            "p": "N1",
+            "n": "N2"
+          }
+        },
+        {
+          "id": "R2",
+          "type": "R",
+          "value": "10k",
+          "terminals": {
+            "p": "N2",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "C3",
+          "type": "C",
+          "value": "10n",
+          "terminals": {
+            "p": "N2",
+            "n": "NINV"
+          }
+        },
+        {
+          "id": "R3",
+          "type": "R",
+          "value": "10k",
+          "terminals": {
+            "p": "NINV",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "OA1",
+          "type": "OPAMP",
+          "terminals": {
+            "in_p": "GND",
+            "in_n": "NINV",
+            "out": "OUT"
+          }
+        }
+      ],
+      "ports": {
+        "input": "N1",
+        "output": "OUT",
+        "gnd": "GND"
+      }
+    },
+    {
+      "id": "wien_bridge_osc_001",
+      "name": "ウィーンブリッジ発振器（OpAmp）",
+      "description": "オペアンプ非反転増幅器に直列RCと並列RCから成るウィーンブリッジ帯域選択網を正帰還させた正弦波発振器。共振周波数で位相0度・利得1/3となり、非反転利得3で発振条件を満たす。",
+      "function_tags": [
+        "oscillator",
+        "wien_bridge",
+        "sine",
+        "active",
+        "opamp",
+        "non_inverting",
+        "feedback",
+        "rc",
+        "frequency_selective"
+      ],
+      "components": [
+        {
+          "id": "Rs",
+          "type": "R",
+          "value": "10k",
+          "terminals": {
+            "p": "OUT",
+            "n": "NS"
+          }
+        },
+        {
+          "id": "Cs",
+          "type": "C",
+          "value": "10n",
+          "terminals": {
+            "p": "NS",
+            "n": "NP"
+          }
+        },
+        {
+          "id": "Rp",
+          "type": "R",
+          "value": "10k",
+          "terminals": {
+            "p": "NP",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "Cp",
+          "type": "C",
+          "value": "10n",
+          "terminals": {
+            "p": "NP",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "R1",
+          "type": "R",
+          "value": "10k",
+          "terminals": {
+            "p": "NINV",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "Rf",
+          "type": "R",
+          "value": "20k",
+          "terminals": {
+            "p": "OUT",
+            "n": "NINV"
+          }
+        },
+        {
+          "id": "OA1",
+          "type": "OPAMP",
+          "terminals": {
+            "in_p": "NP",
+            "in_n": "NINV",
+            "out": "OUT"
+          }
+        }
+      ],
+      "ports": {
+        "input": "NP",
+        "output": "OUT",
+        "gnd": "GND"
+      }
+    },
+    {
+      "id": "opamp_summing_001",
+      "name": "反転加算回路（OpAmp）",
+      "description": "オペアンプ反転構成による加算増幅回路。複数の入力抵抗を共通の反転入力（仮想接地）に集め、帰還抵抗で各入力の重み付き和の反転を出力する。",
+      "function_tags": [
+        "amplifier",
+        "summing",
+        "adder",
+        "active",
+        "opamp",
+        "inverting",
+        "feedback",
+        "negative_feedback"
+      ],
+      "components": [
+        {
+          "id": "R1",
+          "type": "R",
+          "value": "10k",
+          "terminals": {
+            "p": "VIN1",
+            "n": "NINV"
+          }
+        },
+        {
+          "id": "R2",
+          "type": "R",
+          "value": "10k",
+          "terminals": {
+            "p": "VIN2",
+            "n": "NINV"
+          }
+        },
+        {
+          "id": "R3",
+          "type": "R",
+          "value": "10k",
+          "terminals": {
+            "p": "VIN3",
+            "n": "NINV"
+          }
+        },
+        {
+          "id": "Rf",
+          "type": "R",
+          "value": "10k",
+          "terminals": {
+            "p": "NINV",
+            "n": "OUT"
+          }
+        },
+        {
+          "id": "OA1",
+          "type": "OPAMP",
+          "terminals": {
+            "in_p": "GND",
+            "in_n": "NINV",
+            "out": "OUT"
+          }
+        }
+      ],
+      "ports": {
+        "input": "VIN1",
+        "output": "OUT",
+        "gnd": "GND"
+      }
+    },
+    {
+      "id": "buck_boost_001",
+      "name": "反転型昇降圧チョッパ（Buck-Boost Converter）",
+      "description": "スイッチ・インダクタ・ダイオード・コンデンサで構成される昇降圧DC-DCコンバータ。入力に対し極性が反転した、入力より高くも低くもできる電圧を出力する。",
+      "function_tags": [
+        "converter",
+        "dc_dc",
+        "switching",
+        "buck_boost",
+        "step_up_down",
+        "inverting",
+        "power"
+      ],
+      "components": [
+        {
+          "id": "SW1",
+          "type": "SW",
+          "terminals": {
+            "p": "VIN",
+            "n": "N1"
+          }
+        },
+        {
+          "id": "L1",
+          "type": "L",
+          "value": "10u",
+          "terminals": {
+            "p": "N1",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "D1",
+          "type": "D",
+          "terminals": {
+            "anode": "NOUT",
+            "cathode": "N1"
+          }
+        },
+        {
+          "id": "C1",
+          "type": "C",
+          "value": "100u",
+          "terminals": {
+            "p": "NOUT",
+            "n": "GND"
+          }
+        }
+      ],
+      "ports": {
+        "input": "VIN",
+        "output": "NOUT",
+        "gnd": "GND"
+      }
+    },
+    {
+      "id": "sync_buck_001",
+      "name": "同期整流降圧チョッパ（Synchronous Buck Converter）",
+      "description": "ハイサイドとローサイドの2つのスイッチでフリーホイールダイオードを置き換えた同期整流型の降圧DC-DCコンバータ。ダイオード順方向損失を低減し高効率化する。",
+      "function_tags": [
+        "converter",
+        "dc_dc",
+        "switching",
+        "step_down",
+        "synchronous_rectification",
+        "power"
+      ],
+      "components": [
+        {
+          "id": "SW1",
+          "type": "SW",
+          "terminals": {
+            "p": "VIN",
+            "n": "N1"
+          }
+        },
+        {
+          "id": "SW2",
+          "type": "SW",
+          "terminals": {
+            "p": "N1",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "L1",
+          "type": "L",
+          "value": "10u",
+          "terminals": {
+            "p": "N1",
+            "n": "N2"
+          }
+        },
+        {
+          "id": "C1",
+          "type": "C",
+          "value": "100u",
+          "terminals": {
+            "p": "N2",
+            "n": "GND"
+          }
+        }
+      ],
+      "ports": {
+        "input": "VIN",
+        "output": "N2",
+        "gnd": "GND"
+      }
+    },
+    {
+      "id": "push_pull_001",
+      "name": "プッシュプル出力段（NPN/PNP コンプリメンタリ・Class-B）",
+      "description": "NPNをハイサイド、PNPをローサイドに配したコンプリメンタリ・エミッタフォロワ出力段。正側半周期でNPNが負荷へ電流を供給し、負側半周期でPNPが負荷から電流を引き込む。",
+      "function_tags": [
+        "output_stage",
+        "push_pull",
+        "complementary",
+        "class_b",
+        "amplifier",
+        "bjt",
+        "npn",
+        "pnp",
+        "active",
+        "follower"
+      ],
+      "components": [
+        {
+          "id": "Q1",
+          "type": "NPN",
+          "terminals": {
+            "base": "VIN",
+            "collector": "VCC",
+            "emitter": "NOUT"
+          }
+        },
+        {
+          "id": "Q2",
+          "type": "PNP",
+          "terminals": {
+            "base": "VIN",
+            "emitter": "NOUT",
+            "collector": "VEE"
+          }
+        },
+        {
+          "id": "RL",
+          "type": "R",
+          "value": "8",
+          "terminals": {
+            "p": "NOUT",
+            "n": "GND"
+          }
+        }
+      ],
+      "ports": {
+        "input": "VIN",
+        "output": "NOUT",
+        "gnd": "GND"
+      }
+    },
+    {
+      "id": "class_ab_001",
+      "name": "Class-AB出力段（NPN/PNP＋バイアスダイオード2個）",
+      "description": "コンプリメンタリ出力段の2つのベース間にバイアスダイオード2個を挿入し、無信号時にわずかなアイドル電流を流してクロスオーバ歪みを抑えたClass-AB出力段。",
+      "function_tags": [
+        "output_stage",
+        "push_pull",
+        "complementary",
+        "class_ab",
+        "amplifier",
+        "bjt",
+        "npn",
+        "pnp",
+        "active",
+        "follower",
+        "bias",
+        "crossover_distortion"
+      ],
+      "components": [
+        {
+          "id": "Rbias1",
+          "type": "R",
+          "value": "1k",
+          "terminals": {
+            "p": "VCC",
+            "n": "NBN"
+          }
+        },
+        {
+          "id": "D1",
+          "type": "D",
+          "terminals": {
+            "anode": "NBN",
+            "cathode": "VIN"
+          }
+        },
+        {
+          "id": "D2",
+          "type": "D",
+          "terminals": {
+            "anode": "VIN",
+            "cathode": "NBP"
+          }
+        },
+        {
+          "id": "Rbias2",
+          "type": "R",
+          "value": "1k",
+          "terminals": {
+            "p": "NBP",
+            "n": "VEE"
+          }
+        },
+        {
+          "id": "Q1",
+          "type": "NPN",
+          "terminals": {
+            "base": "NBN",
+            "collector": "VCC",
+            "emitter": "NOUT"
+          }
+        },
+        {
+          "id": "Q2",
+          "type": "PNP",
+          "terminals": {
+            "base": "NBP",
+            "emitter": "NOUT",
+            "collector": "VEE"
+          }
+        },
+        {
+          "id": "RL",
+          "type": "R",
+          "value": "8",
+          "terminals": {
+            "p": "NOUT",
+            "n": "GND"
+          }
+        }
+      ],
+      "ports": {
+        "input": "VIN",
+        "output": "NOUT",
+        "gnd": "GND"
+      }
+    },
+    {
+      "id": "darlington_npn_001",
+      "name": "ダーリントン接続（NPN 2段直結）",
+      "description": "1段目NPNのエミッタを2段目NPNのベースに直結し、両コレクタを共通電源に接続したダーリントン接続。電流増幅率が各トランジスタの積となり、極めて高い入力インピーダンスと大電流駆動を実現する。",
+      "function_tags": [
+        "darlington",
+        "amplifier",
+        "buffer",
+        "follower",
+        "high_gain",
+        "bjt",
+        "npn",
+        "active",
+        "non_inverting"
+      ],
+      "components": [
+        {
+          "id": "Cin",
+          "type": "C",
+          "value": "1u",
+          "terminals": {
+            "p": "VIN",
+            "n": "NB1"
+          }
+        },
+        {
+          "id": "Rb",
+          "type": "R",
+          "value": "1M",
+          "terminals": {
+            "p": "VCC",
+            "n": "NB1"
+          }
+        },
+        {
+          "id": "Q1",
+          "type": "NPN",
+          "terminals": {
+            "base": "NB1",
+            "collector": "VCC",
+            "emitter": "NB2"
+          }
+        },
+        {
+          "id": "Q2",
+          "type": "NPN",
+          "terminals": {
+            "base": "NB2",
+            "collector": "VCC",
+            "emitter": "NE2"
+          }
+        },
+        {
+          "id": "Re",
+          "type": "R",
+          "value": "1k",
+          "terminals": {
+            "p": "NE2",
+            "n": "GND"
+          }
+        }
+      ],
+      "ports": {
+        "input": "VIN",
+        "output": "NE2",
+        "gnd": "GND"
+      }
+    },
+    {
+      "id": "widlar_mirror_001",
+      "name": "ワイドラーカレントミラー（NPN＋エミッタ抵抗）",
+      "description": "ダイオード接続の参照トランジスタと出力トランジスタでベースを共有し、出力側エミッタに抵抗を挿入したワイドラー電流源。小さな素子で大きな電流比を得て微小な定電流を生成する。",
+      "function_tags": [
+        "current_mirror",
+        "current_source",
+        "widlar",
+        "bias",
+        "bjt",
+        "npn",
+        "active"
+      ],
+      "components": [
+        {
+          "id": "Rref",
+          "type": "R",
+          "value": "10k",
+          "terminals": {
+            "p": "VCC",
+            "n": "NREF"
+          }
+        },
+        {
+          "id": "Q1",
+          "type": "NPN",
+          "terminals": {
+            "collector": "NREF",
+            "base": "NREF",
+            "emitter": "GND"
+          }
+        },
+        {
+          "id": "Q2",
+          "type": "NPN",
+          "terminals": {
+            "base": "NREF",
+            "collector": "NOUT",
+            "emitter": "NE2"
+          }
+        },
+        {
+          "id": "Re2",
+          "type": "R",
+          "value": "1k",
+          "terminals": {
+            "p": "NE2",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "Rload",
+          "type": "R",
+          "value": "4.7k",
+          "terminals": {
+            "p": "VCC",
+            "n": "NOUT"
+          }
+        }
+      ],
+      "ports": {
+        "input": "NREF",
+        "output": "NOUT",
+        "gnd": "GND"
+      }
+    },
+    {
+      "id": "cascode_npn_001",
+      "name": "カスコード増幅回路（NPN 2段縦積み）",
+      "description": "接地エミッタ段の上に接地ベース段を縦積みしたカスコード増幅回路。下段のコレクタを上段のエミッタへ接続し、ミラー効果を抑制して広帯域・高出力インピーダンスを得る。",
+      "function_tags": [
+        "amplifier",
+        "cascode",
+        "common_emitter",
+        "common_base",
+        "wideband",
+        "bjt",
+        "npn",
+        "active",
+        "inverting"
+      ],
+      "components": [
+        {
+          "id": "Cin",
+          "type": "C",
+          "value": "1u",
+          "terminals": {
+            "p": "VIN",
+            "n": "NB1"
+          }
+        },
+        {
+          "id": "R1",
+          "type": "R",
+          "value": "47k",
+          "terminals": {
+            "p": "VCC",
+            "n": "NB1"
+          }
+        },
+        {
+          "id": "R2",
+          "type": "R",
+          "value": "10k",
+          "terminals": {
+            "p": "NB1",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "Q1",
+          "type": "NPN",
+          "terminals": {
+            "base": "NB1",
+            "collector": "NC1",
+            "emitter": "NE1"
+          }
+        },
+        {
+          "id": "Re",
+          "type": "R",
+          "value": "1k",
+          "terminals": {
+            "p": "NE1",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "Q2",
+          "type": "NPN",
+          "terminals": {
+            "base": "NB2",
+            "emitter": "NC1",
+            "collector": "NC2"
+          }
+        },
+        {
+          "id": "Rb1",
+          "type": "R",
+          "value": "22k",
+          "terminals": {
+            "p": "VCC",
+            "n": "NB2"
+          }
+        },
+        {
+          "id": "Rb2",
+          "type": "R",
+          "value": "22k",
+          "terminals": {
+            "p": "NB2",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "Rc",
+          "type": "R",
+          "value": "4.7k",
+          "terminals": {
+            "p": "VCC",
+            "n": "NC2"
+          }
+        }
+      ],
+      "ports": {
+        "input": "VIN",
+        "output": "NC2",
+        "gnd": "GND"
+      }
     }
   ]
 }

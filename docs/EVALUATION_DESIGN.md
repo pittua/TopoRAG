@@ -196,10 +196,10 @@ boost_001:
   simulation_type: skipped_switch
 
 halfwave_rect_001:
-  simulation_type: ac_with_diode
+  simulation_type: skipped_nonlinear
 
 zener_regulator_001:
-  simulation_type: ac_with_diode
+  simulation_type: skipped_nonlinear
 ```
 
 ---
@@ -351,7 +351,7 @@ result = sim.extract_simulation_features()
 
 ```python
 {
-    "simulation_type": "ac_passive",   # or "ac_with_diode" / "skipped_switch" / "skipped_missing_values"
+    "simulation_type": "ac_passive",   # or "skipped_nonlinear" / "skipped_switch" / "skipped_missing_values"
     "dc_gain_db":      0.0,
     "hf_gain_db":      -61.94,
     "peak_gain_db":    0.0,
@@ -429,10 +429,10 @@ for circuit in sample_circuits:
 | `rlc_notch_001` | `ac_passive` | `is_bandstop: true` | — |
 | `lc_pi_filter_001` | `ac_passive` | `is_lowpass: true` | [30000, 80000] |
 | `lc_t_filter_001` | `ac_passive` | `is_lowpass: true` | [30000, 80000] |
-| `halfwave_rect_001` | `ac_with_diode` | — | — |
-| `positive_clipper_001` | `ac_with_diode` | — | — |
-| `negative_clipper_001` | `ac_with_diode` | — | — |
-| `zener_regulator_001` | `ac_with_diode` | — | — |
+| `halfwave_rect_001` | `skipped_nonlinear` | — | — |
+| `positive_clipper_001` | `skipped_nonlinear` | — | — |
+| `negative_clipper_001` | `skipped_nonlinear` | — | — |
+| `zener_regulator_001` | `skipped_nonlinear` | — | — |
 | `buck_001` | `skipped_switch` | — | — |
 | `boost_001` | `skipped_switch` | — | — |
 | `buck_lc_filter_001` | `skipped_switch` | — | — |
@@ -461,12 +461,13 @@ Section 6 が PASS になれば実装完了。失敗した場合は：
 
 | 項目 | 設計書の想定 | 実コード（採用した実態） |
 |---|---|---|
-| ダイオード回路の `simulation_type` | `ac_with_diode` | **`skipped_nonlinear`**（`circuit_simulator.py:311`。AC解析せず過渡解析送り＝未実装） |
+| ダイオード回路の `simulation_type` | `ac_with_diode`（当初設計値） | **`skipped_nonlinear`**（`circuit_simulator.py` の `CircuitSimulator.extract_simulation_features()` 内、ダイオード分岐。AC解析せず過渡解析送り＝未実装） |
 | LC ローパスのフラグ | `is_lowpass: true` のみ | 無損失共振により `is_lowpass` と **`is_bandpass` が同時に true**。`eval_expected.yaml` では `is_lowpass` のみ照合 |
 | LC 系のカットオフ範囲 | lc_lowpass `[30000, 80000]` 等 | 実測と乖離。実測値で再校正（下表） |
 
-> `eval_expected.yaml` は上記実態に合わせて作成済み。設計書 §3〜§8 の `ac_with_diode` 表記は
-> 「当初想定」であり、実装は `skipped_nonlinear` である点に注意。
+> `eval_expected.yaml` は上記実態に合わせて作成済み。本書 §3〜§8 はかつて `ac_with_diode` を
+> 「当初想定」として記載していたが、実装（`skipped_nonlinear`）に合わせて統一済み。ダイオード回路は
+> AC 解析を行わず過渡解析（未実装）送りでスキップする。
 
 ### 実測値（KiCad 10.0 同梱 ngspice-46 + PySpice 1.5）
 
@@ -486,12 +487,14 @@ Section 6 が PASS になれば実装完了。失敗した場合は：
 
 ### 評価結果（alpha=0.7）
 
-> 注: 以下は evaluate.py 実装直後（受動19回路・19次元）の記録。その後 DB を能動素子まで拡張し、
-> 現在は **31回路・38次元**（トポロジーのみ Hit@1 = 77.4%）。最新の構成・実機検証は README.md を参照。
+> 注: 以下は evaluate.py 実装直後（受動19回路・受動19次元のみ）の記録。その後 DB を能動素子まで拡張し、
+> 現在は **31回路・38次元**（index 0-37。受動 0-18 / 能動 D 19-33 / ダイオード役割 34-37。
+> トポロジーのみ Hit@1 = 74.2%）。最新の構成・実機検証は README.md を参照。
 
 - **Section 1 自己検索**: Hit@1 19/19 = 100%、Hit@3 100%、MRR 1.000
 - **Section 2 alpha スイープ**: alpha 0.0〜0.9 が同率 100%。**トポロジーのみ(alpha=1.0)は 57.9%（8件取り違え）**。
-  → タグが識別を担っており、19次元の構造ベクトル単独の識別力には拡張余地がある（タスク「DB拡張」の定量的根拠）。
+  → タグが識別を担っており、当時の受動19次元の構造ベクトル単独の識別力には拡張余地がある（タスク「DB拡張」の定量的根拠。
+    この拡張の結果が現在の 38 次元）。
   推奨 alpha は同率プラトー内で最もトポロジー寄りの **0.9**（タグ欠落クエリへの頑健性のため）。
 - **Section 3 摂動**: ノード名変更 19/19・部品ID変更 19/19 PASS（特徴抽出はノード名/ID非依存）。
 - **Section 4 棄却閾値**: min(self)=1.0000、max(LOO)=0.9571（lc_lowpass が lc_t_filter になりすまし）、**推奨 θ=0.9786**。

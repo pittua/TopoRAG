@@ -1,0 +1,9 @@
+# TopoRAG コア依存
+numpy
+networkx
+PyYAML
+scipy            # circuit_rag: ブロック割当 (linear_sum_assignment)
+scikit-learn     # reject_eval: 棄却シグナル融合 (LogisticRegression, LOO/nested CV)
+
+# 任意: 回路シミュレーション (circuit_simulator) を使う場合のみ
+# PySpice         # ngspice 連携。未導入時はシミュレーション経路をスキップする
