@@ -9,7 +9,7 @@ KiCad .kicad_sch → TopoRAG query_netlists.json コンバータ
   5. 部品種別・terminals・ports を解決して TopoRAG 形式に変換
 
 対応部品:
-  R / C / L / SW / D / DZ / BJT(NPN/PNP) / MOSFET(NMOS/PMOS) / OpAmp
+  R / C / L / SW(スイッチ・リレー) / D / DZ / BJT(NPN/PNP) / MOSFET(NMOS/PMOS) / OpAmp
 
 スキップ:
   電圧源・電流源・論理ゲート 等
@@ -73,12 +73,13 @@ def _find_kicad_cli() -> str:
 # Sim.Device プロパティ値 → TopoRAG 種別
 SIM_DEVICE_MAP: dict[str, str | None] = {
     "R": "R", "C": "C", "L": "L",
-    "SW": "SW",                     # スイッチ（スイッチング変換器の開閉素子）
     "D": "D", "DZ": "DZ",
     "NPN": "NPN", "PNP": "PNP",     # BJT
     "NMOS": "NMOS", "PMOS": "PMOS", # MOSFET
     "VDMOS": "NMOS",                # パワーMOSFET（極性不明時は N 既定。pchan は未判定）
     "OPAMP": "OPAMP",
+    "SW": "SW", "SWITCH": "SW",     # スイッチ（電圧/電流制御スイッチ・理想開閉）
+    "CSW": "SW",                    # 電流制御スイッチ（ngspice W 素子）も SW 扱い
     "V": None, "I": None,          # 電源・電流源スキップ
     # OpAmp は Sim.Device が "SUBCKT" のことが多い → part 名キーワードで解決する
 }
@@ -89,11 +90,15 @@ PART_KEYWORD_MAP = [
     ("ZENER",    "DZ"),
     ("SCHOTTKY", "D"),
     ("DIODE",    "D"),
-    ("SWITCH",   "SW"),
     ("INDUCTOR", "L"),
     ("CAPACITOR","C"),
     ("RESISTOR", "R"),
     ("OPAMP",    "OPAMP"),
+    # スイッチ/リレー（KiCad Switch ライブラリ: SW_SPST/SW_SPDT/SW_Push、Relay 等）。
+    # 能動素子(NPN/NMOS 等)より先に判定して取りこぼしを防ぐ。
+    ("SW_",      "SW"),
+    ("SWITCH",   "SW"),
+    ("RELAY",    "SW"),
     ("NPN",      "NPN"),
     ("PNP",      "PNP"),
     ("NMOS",     "NMOS"),
@@ -105,8 +110,11 @@ PART_KEYWORD_MAP = [
 
 # ref 頭文字 → TopoRAG 種別（最終フォールバック）
 # Q/M は極性（NPN/PNP・NMOS/PMOS）を頭文字から決められないため None（Sim.Device 依存）。
+# 注: _resolve_type は挿入順に startswith で判定するため、多文字プレフィックスは
+#     衝突しうる単文字より前に置く（SW は S 単独キーが無いため Q 系とは衝突しない）。
 REF_PREFIX_MAP = {
-    "SW": "SW",                          # スイッチ（KiCad の標準リファレンス SW*）
+    "SW": "SW",                     # スイッチ（KiCad RefDes "SW"）
+    "K": "SW",                      # リレー（KiCad RefDes "K"。SW として扱う）
     "R": "R", "C": "C", "L": "L",
     "D": "D", "Z": "DZ",
     "V": None, "I": None,
@@ -348,7 +356,33 @@ def _build_terminals(ttype: str, pin_role: dict[str, str],
             return {"in_p": in_p, "in_n": in_n, "out": out}
         return None
 
-    # R / C / L / SW（2 端子素子）
+    if ttype == "SW":
+        # スイッチ/リレー接点は DB の SW 規約に合わせ 2 端子 {p, n} で表現する
+        # （build_graph は SW を 2 端子の辺として扱い、3 端子だと能動素子側に分岐して
+        #   SW_before_L 等の順序判定が壊れるため、必ず 2 端子に正規化する）。
+        # SPST: 接点 2 ピン。SPDT/3 ピン以上: コモン + 最初のスロー（残りは捨象）。
+        p = n = None
+        # 役割名がある場合（A/B/COM/NO/NC 等）を優先的に解釈する
+        common = no_nc = None
+        for pnum, net in pin_nets.items():
+            role = pin_role.get(pnum, "")
+            if role in ("A", "1", "+", "COM", "COMMON", "P", "IN", "POLE"):
+                p = p or net
+                common = common or net
+            elif role in ("B", "2", "-", "NO", "NC", "N", "OUT", "THROW", "T1"):
+                n = n or net
+                no_nc = no_nc or net
+        if common and no_nc:
+            return {"p": common, "n": no_nc}
+        if p and n:
+            return {"p": p, "n": n}
+        # フォールバック: ピン番号昇順で先頭 2 本（SPDT は pin1=コモン, pin2=スロー1）
+        pnums = sorted(pin_nets, key=lambda x: (len(x), x))
+        if len(pnums) >= 2:
+            return {"p": pin_nets[pnums[0]], "n": pin_nets[pnums[1]]}
+        return None
+
+    # R / C / L
     p = n = None
     for pnum, net in pin_nets.items():
         role = pin_role.get(pnum, "")
