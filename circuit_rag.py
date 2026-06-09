@@ -202,6 +202,17 @@ RECOMMENDED_REJECT_THRESHOLD = 0.83
 # 解消する。WL を厚くすると実機汎化が落ち、コサインのみ(beta=1.0)では自己検索が 79% に低下。
 DEFAULT_BETA = 0.95
 
+# alpha: トポロジースコアの重み。score = alpha*topo + (1-alpha)*tag。
+# 既定は 1.0（トポロジーのみ＝タグ非使用）。理由:
+#   - 実機クエリ（KiCad 変換）はタグを持たず、タグ項は元々寄与しない。
+#   - WL カーネル導入後はトポロジー単独でも自己検索 Hit@1=100%（alpha 0.0〜1.0 全て同率。
+#     evaluate.py --alpha-sweep で確認済み）→ タグは識別に不要。
+#   - タグ込みだと DB 自己一致だけスコアが底上げされ、自己検索の水増しと、実機クエリとの
+#     スコア二分布化（棄却θ校正の阻害）を招く。トポロジー単独に統一すると同一スケールに乗る。
+# function_tags は DB 側の任意メタデータとして温存する。alpha<1.0 を明示指定すれば
+# タグ類似度をブレンドに復活できる（後方互換・タグ付きクエリを投げる将来用途のため）。
+DEFAULT_ALPHA = 1.0
+
 
 # ─────────────────────────────────────────────────────────
 # CircuitRAG
@@ -282,10 +293,12 @@ class CircuitRAG:
     # ── 類似検索 ─────────────────────────────────────────
 
     def search(self, query_features: dict, top_k: int = 3,
-               alpha: float = 0.7, beta: float = DEFAULT_BETA) -> list[dict]:
+               alpha: float = DEFAULT_ALPHA, beta: float = DEFAULT_BETA) -> list[dict]:
         """
-        alpha: トポロジースコアの重み（0.0〜1.0）。残り (1-alpha) がタグスコア。
-               クエリにタグがなければ alpha=1.0 と同じ結果になる。
+        alpha: トポロジースコアの重み（0.0〜1.0、既定 DEFAULT_ALPHA=1.0＝トポロジーのみ）。
+               残り (1-alpha) がタグ類似度の重み。既定ではタグを使わない（理由は DEFAULT_ALPHA
+               のコメント参照）。タグ付きクエリで意図を効かせたい場合のみ alpha<1.0 を明示する。
+               クエリにタグが無ければ alpha 値に関わらずタグ項は 0（順位は alpha に不感）。
         beta : トポロジースコア内での コサイン vs WL カーネルの配合
                （topo = beta*cosine + (1-beta)*wl_kernel）。
                クエリが wl_features を持たない（旧DB互換）場合はコサインのみ。
@@ -311,7 +324,7 @@ class CircuitRAG:
         ]
 
     def search_with_rejection(self, query_features: dict, top_k: int = 3,
-                              alpha: float = 0.7,
+                              alpha: float = DEFAULT_ALPHA,
                               reject_threshold: float = RECOMMENDED_REJECT_THRESHOLD
                               ) -> tuple[list[dict], bool, float]:
         """
@@ -379,7 +392,7 @@ class CircuitRAG:
 
     def build_prompt(self, query_circuit: dict, hits: list[dict] | None = None,
                      sim_result: dict | None = None,
-                     top_k: int = 3, alpha: float = 0.7) -> tuple[str, str]:
+                     top_k: int = 3, alpha: float = DEFAULT_ALPHA) -> tuple[str, str]:
         q_feat = extract_hierarchical_features(query_circuit)
 
         # 複合回路はブロック単位 RAG に切り替え
@@ -419,7 +432,7 @@ class CircuitRAG:
     def _build_hierarchical_prompt(self, q_feat: dict,
                                    sim_result: dict | None = None,
                                    top_k: int = 2,
-                                   alpha: float = 0.7) -> tuple[str, str]:
+                                   alpha: float = DEFAULT_ALPHA) -> tuple[str, str]:
         """
         複合回路向けプロンプト。
         ブロック単位で DB 照合し、各ブロックの照合結果を並べて提示する。
@@ -471,7 +484,7 @@ class CircuitRAG:
 
     def judge(self, circuit: dict, hits: list[dict] | None = None,
               sim_result: dict | None = None,
-              top_k: int = 3, alpha: float = 0.7) -> str:
+              top_k: int = 3, alpha: float = DEFAULT_ALPHA) -> str:
         if self.llm is None:
             raise RuntimeError(
                 "LLMが設定されていません。\n"
@@ -483,7 +496,7 @@ class CircuitRAG:
 
     # ── シミュレーション統合判定 ──────────────────────────
 
-    def analyze(self, circuit: dict, top_k: int = 3, alpha: float = 0.7) -> dict:
+    def analyze(self, circuit: dict, top_k: int = 3, alpha: float = DEFAULT_ALPHA) -> dict:
         """
         シミュレーション解析 → RAG 検索 → LLM 判定 の順に実行し、結果を統合して返す。
         RAG 検索は 1 回だけ実行し、その結果を judge() に渡す（二重検索を避ける）。
@@ -543,8 +556,9 @@ if __name__ == "__main__":
     parser.add_argument(
         "--alpha", "-a",
         type=float,
-        default=0.7,
-        help="トポロジースコアの重み（0.0〜1.0、デフォルト: 0.7）。残り(1-alpha)がタグスコアの重み",
+        default=DEFAULT_ALPHA,
+        help="トポロジースコアの重み（0.0〜1.0、デフォルト: 1.0＝トポロジーのみ）。"
+             "残り(1-alpha)がタグ類似度の重み。タグ付きクエリで意図を効かせる場合のみ <1.0 を指定",
     )
     args = parser.parse_args()
 

@@ -42,7 +42,7 @@ except (AttributeError, OSError):
     pass
 
 from feature_extractor import extract_hierarchical_features
-from circuit_rag import CircuitRAG
+from circuit_rag import CircuitRAG, DEFAULT_ALPHA
 
 SAMPLES_PATH = "sample_netlists.json"
 EXPECTED_PATH = "eval_expected.yaml"
@@ -463,8 +463,8 @@ def main():
     parser = argparse.ArgumentParser(description="TopoRAG 評価スクリプト")
     parser.add_argument("--samples", default=SAMPLES_PATH,
                         help=f"評価対象ネットリスト（デフォルト: {SAMPLES_PATH}）")
-    parser.add_argument("--alpha", "-a", type=float, default=0.7,
-                        help="トポロジースコアの重み（デフォルト: 0.7）")
+    parser.add_argument("--alpha", "-a", type=float, default=DEFAULT_ALPHA,
+                        help="トポロジースコアの重み（デフォルト: 1.0＝トポロジーのみ。タグ非使用）")
     parser.add_argument("--top-k", "-k", type=int, default=3,
                         help="LLM 判定で参照する上位件数（デフォルト: 3）")
     parser.add_argument("--alpha-sweep", action="store_true",

@@ -1,0 +1,88 @@
+# scope_taxonomy.yaml — TopoRAG の in-scope 定義（DB から独立した機能分類）
+#
+# 【目的・§7.1】
+#   従来 scope は real_expected.yaml 冒頭で「in = DB にカテゴリが存在」と *DB 相対* に
+#   定義されていた。これは循環的で、DB を足すたびに scope ラベルが動く
+#   （例: sallen_key は sallen_key_lpf_001 を DB 追加した途端 out→in に変わった）。
+#   さらに「スコアを見る前に scope を決める」ブラインドラベリング（HANDOFF §4）は、
+#   DB の中身に依存しない scope 定義が無いと原理的に実行できない。
+#
+#   本ファイルは in-scope を **機能カテゴリ（family）の集合** として定義する。
+#   - family は「回路がどんな機能を果たすか／どんな構造を持つか」で決まり、
+#     その family が DB に収録済みかどうかとは無関係。
+#   - あるクエリが下記いずれかの family の defining_criteria を満たせば in-scope。
+#     どれにも当てはまらなければ out-of-scope。
+#   - example_db_ids は「現状その family を代表する DB 回路」の*参考*であって、
+#     family の定義ではない（DB が空でも family の定義は変わらない）。
+#
+#   check_scope.py がこのファイルと real_expected.yaml の整合を検証する。
+
+version: 1
+updated: 2026-06-09
+
+# in-scope と認める機能カテゴリ。各 family は DB の有無と独立に定義する。
+families:
+
+  filter_passive:
+    title: 受動周波数フィルタ
+    defining_criteria: >
+      R/L/C のみ（能動素子なし）で構成され、周波数選択（低域/高域/帯域通過・阻止・共振）を
+      主機能とする回路。単段 RC/RL/RLC およびその縦続を含む。
+    example_db_ids: [rc_lowpass_001, rc_highpass_001, rlc_bandpass_001,
+                     lc_lowpass_001, lc_highpass_001, rc_cascade_lpf_001]
+
+  filter_active:
+    title: アクティブフィルタ
+    defining_criteria: >
+      OpAmp（またはトランジスタ）を1つ用い、RC 帰還で2次以上の周波数応答を実現する
+      フィルタ（Sallen-Key、多重帰還 等）。能動素子は信号増幅ではなくフィルタ整形が主目的。
+    example_db_ids: [sallen_key_lpf_001, sallen_key_hpf_001, mfb_bandpass_001]
+
+  rectifier:
+    title: 整流（ダイオード＋平滑）
+    defining_criteria: >
+      ダイオードで交流を直流に変換する回路。半波・全波（センタータップ）・ブリッジ・
+      倍電圧を含み、平滑 C を伴ってよい。能動制御は持たない。
+    example_db_ids: [halfwave_rect_001, fullwave_rect_001, bridge_rect_001,
+                     rectifier_cap_stage_001, voltage_doubler_001]
+
+  amp_single_stage:
+    title: 単段トランジスタ増幅
+    defining_criteria: >
+      BJT または MOSFET 1石の単段増幅段（接地エミッタ/ソース=CE/CS、コレクタ/ドレイン接地=CC/CD、
+      ベース/ゲート接地=CB/CG）。構成分類（tcfg）が定まる単一トランジスタ段。
+    example_db_ids: [ce_amp_npn_001, cs_amp_nmos_001, ce_follower_001]
+
+  amp_multi_stage:
+    title: 多段ディスクリート増幅
+    defining_criteria: >
+      単段増幅段を2段以上縦続したディスクリート増幅器（多段 CE、差動＋出力段 等）。
+      個々の段は amp_single_stage の構成だが、全体として多段の信号増幅が主機能。
+    example_db_ids: [two_stage_ce_001]
+
+  opamp_linear:
+    title: OpAmp 線形構成
+    defining_criteria: >
+      OpAmp を負帰還で用いる線形信号処理（反転/非反転増幅、ボルテージフォロワ、加算）。
+      ocfg（inverting/non_inverting/buffer）が定まり、フィルタ整形が主目的でないもの。
+    example_db_ids: [opamp_inverting_001, opamp_noninverting_001,
+                     opamp_buffer_001, opamp_summing_001]
+
+  smps_converter:
+    title: スイッチング電力変換
+    defining_criteria: >
+      スイッチ（MOSFET/SW）＋インダクタ＋ダイオード（または同期整流）で電圧変換する
+      コンバータ（buck/boost/buck-boost）。簡略制御〜OpAmp 制御まで含むが、
+      電力変換が主機能であること。
+    example_db_ids: [buck_001, boost_001, buck_lc_filter_001, boost_input_stage_001]
+
+# out-of-scope の定義（family に当てはまらないものは全て out）。
+# 特に「構造的に in と紛らわしいが上記いずれの family の主機能にも該当しない」ものを
+# 明示的に out とする。これらが in/out 境界を定義する最も価値の高いケース（HANDOFF §4）。
+out_definition: >
+  上記いずれの family の defining_criteria も満たさない回路は out-of-scope。
+  代表例:
+   - トランジスタレベルのデバイスマクロモデル試験回路（generic_opamp_bip）
+     … 単一の機能カテゴリに帰属しない（OpAmp の内部等価回路であって OpAmp 応用ではない）。
+   - 複数 family を複合した一体回路で単一カテゴリに分解できないもの（class-d, laser_driver）。
+   - DB が想定する単機能ブロックの粒度を超える多段電力系（hv_converter, royer1）。

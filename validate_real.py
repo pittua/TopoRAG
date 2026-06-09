@@ -33,7 +33,7 @@ import json
 import argparse
 
 from feature_extractor import extract_hierarchical_features
-from circuit_rag import CircuitRAG
+from circuit_rag import CircuitRAG, DEFAULT_ALPHA
 from evaluate import wilson_ci, fmt_hit_ci  # 二項比率の Wilson 95%CI（評価の統計的厳密化）
 
 CORPUS_PATH = "real_corpus.json"
@@ -103,8 +103,9 @@ def main() -> int:
     ap.add_argument("--corpus", default=CORPUS_PATH)
     ap.add_argument("--expected", default=EXPECTED_PATH)
     ap.add_argument("--db", default=DB_PATH)
-    ap.add_argument("--alpha", "-a", type=float, default=0.9,
-                    help="トポロジー重み（実機クエリはタグ無しのため既定0.9）")
+    ap.add_argument("--alpha", "-a", type=float, default=DEFAULT_ALPHA,
+                    help="トポロジー重み（既定1.0＝トポロジーのみ。実機クエリはタグ無しで"
+                         "順位は alpha 不感だが、絶対スコアを reject_eval/自己検索と同一スケールに揃える）")
     ap.add_argument("--top-k", "-k", type=int, default=3)
     ap.add_argument("--sim", action="store_true",
                     help="受動回路のシミュレーション種別も表示")

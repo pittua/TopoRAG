@@ -39,6 +39,50 @@ SEP = "─" * 64
 SEED = 42
 N_BOOT = 1000  # ブートストラップ反復回数
 
+# ── 棄却の撤退基準（事前登録）/ HANDOFF §7.3 ────────────────────────
+# データを見て後付けで基準を作ると過適合する（HANDOFF §3 の反省）。そこで
+# 「コーパス拡充後に硬い棄却（二値判定）を続けるか、ランカーへ撤退するか」の判定基準を
+# 結果を見る前にコードへ固定しておく。閾値の根拠:
+#   - GATE_MIN_N_OUT: out が少ないと AUC/TNR の CI が無情報（n_out=5 で TNR CI≈[0.38,0.96]）。
+#     比率CI幅が実用最低ラインに入る n=20 をゲート到達の前提とする（HANDOFF §4 の目標表）。
+#   - GATE_AUC_CI_LO: AUC の 95%CI 下限が 0.5 超 = 「分離は偶然でない」と統計的に言える線。
+#   - GATE_NESTED_BACC: ネストCV（楽観バイアス除去後）の balanced acc。0.65 は
+#     「実用的に意味のある分離」の最低線（0.5=コイン投げ、1.0=完全）。
+GATE_MIN_N_OUT = 20
+GATE_AUC_CI_LO = 0.50
+GATE_NESTED_BACC = 0.65
+
+
+def rejection_gate_verdict(
+    n_out: int, best_auc_lo: float, best_nested_bacc: float,
+    best_signal: str,
+) -> tuple[str, str]:
+    """
+    事前登録した撤退基準を適用し (判定コード, 説明文) を返す。
+    判定コード: "INSUFFICIENT" / "KEEP_REJECTION" / "RETREAT_TO_RANKER"
+
+    - n_out < GATE_MIN_N_OUT      → INSUFFICIENT（ゲート未到達。コーパス拡充を継続し
+                                      識別ロジックには手を付けない＝HANDOFF §0/§5 の方針）
+    - 到達済み かつ 分離が有意      → KEEP_REJECTION（硬い受理/棄却の二値判定を継続）
+    - 到達済み かつ 分離が不十分    → RETREAT_TO_RANKER（二値棄却を捨て、top-3＋スコア提示の
+                                      ランカーへ。受理判断は人に委ねる）
+    """
+    if n_out < GATE_MIN_N_OUT:
+        return ("INSUFFICIENT",
+                f"out-of-scope={n_out} < {GATE_MIN_N_OUT}。撤退基準ゲート未到達。"
+                f"コーパス拡充を継続し、識別アルゴリズムは判断保留（HANDOFF §0/§5）。")
+    separable = (best_auc_lo > GATE_AUC_CI_LO) and (best_nested_bacc >= GATE_NESTED_BACC)
+    if separable:
+        return ("KEEP_REJECTION",
+                f"最良シグナル={best_signal}: AUC 95%CI 下限 {best_auc_lo:.3f} > {GATE_AUC_CI_LO} "
+                f"かつ nested bacc {best_nested_bacc:.3f} ≥ {GATE_NESTED_BACC}。"
+                f"棄却は有意に機能 → 硬い二値判定を継続。")
+    return ("RETREAT_TO_RANKER",
+            f"最良シグナル={best_signal}: AUC 95%CI 下限 {best_auc_lo:.3f} / "
+            f"nested bacc {best_nested_bacc:.3f} が基準（>{GATE_AUC_CI_LO} かつ ≥{GATE_NESTED_BACC}）"
+            f"に届かない。n を満たしてもなお分離不能 → 硬い棄却を捨て、ランカー"
+            f"（top-3＋スコア提示, 受理判断は人）へ撤退（HANDOFF §7.3）。")
+
 
 def auc(pos: list[float], neg: list[float]) -> float:
     """pos（in-scope）が neg（out-of-scope）より高い確率。0.5=分離不能, 1.0=完全分離。"""
@@ -226,6 +270,8 @@ def main() -> int:
         "margin (top1-top2)": 3,
         "ratio_gap (1-top2/top1)": 4,
     }
+    # 撤退基準ゲート（§7.3）に渡すため、シグナルごとに AUC CI 下限と nested bacc を保持
+    gate_stats: dict[str, dict] = {}
     print("\n" + "=" * 66)
     print("[シグナル別 分離性能]")
     for name, idx in signals.items():
@@ -233,6 +279,7 @@ def main() -> int:
         neg = [r[idx] for r in rows if r[1] == "out"]
         a = auc(pos, neg)
         a_lo, a_hi = auc_bootstrap_ci(pos, neg)
+        gate_stats[name] = {"auc": a, "auc_lo": a_lo}
         th, bacc, cm = best_threshold(pos, neg)
         # 最良閾値での TPR/TNR に Wilson 95%CI（小標本なので必須）
         tpr_lo, tpr_hi = wilson_ci(cm["tp"], len(pos))
@@ -298,6 +345,7 @@ def main() -> int:
         neg = [r[idx] for r in rows if r[1] == "out"]
         _, naive_bacc, _ = best_threshold(pos, neg)
         nest_bacc, ncm = nested_loo_bacc(pos, neg)
+        gate_stats.setdefault(name, {})["nested_bacc"] = nest_bacc
         print(f"  {name:28} {naive_bacc:>11.3f} {nest_bacc:>12.3f} "
               f"{naive_bacc - nest_bacc:>+9.3f}")
     # 融合シグナル（LOO予測確率）にも同じ外側LOO閾値分離を適用
@@ -321,6 +369,24 @@ def main() -> int:
         if s < 0.9786:
             rej_all += 1
     print(f"   {rej_all}/{n_in + n_out} 件が棄却される（in-scope 含め大半を誤棄却＝実用不能）")
+
+    # ── 撤退基準ゲート（事前登録 / §7.3）─────────────────────────
+    # 最良シグナル（点 AUC 最大）の AUC CI 下限と nested bacc で判定する。
+    best_signal = max(gate_stats, key=lambda k: gate_stats[k].get("auc", 0.0))
+    best_auc_lo = gate_stats[best_signal].get("auc_lo", float("nan"))
+    best_nested = gate_stats[best_signal].get("nested_bacc", float("nan"))
+    code, msg = rejection_gate_verdict(n_out, best_auc_lo, best_nested, best_signal)
+    print("\n" + "=" * 66)
+    print("[撤退基準ゲート（事前登録 §7.3）]")
+    print(f"  事前登録パラメータ: n_out≥{GATE_MIN_N_OUT} / AUC CI下限>{GATE_AUC_CI_LO} / "
+          f"nested bacc≥{GATE_NESTED_BACC}")
+    print(f"  現状: n_out={n_out}  最良シグナル={best_signal}"
+          f"（AUC CI下限={best_auc_lo:.3f}, nested bacc={best_nested:.3f}）")
+    _LABEL = {"INSUFFICIENT": "▸ ゲート未到達",
+              "KEEP_REJECTION": "▸ 棄却継続",
+              "RETREAT_TO_RANKER": "▸ ランカーへ撤退"}
+    print(f"  判定: {_LABEL.get(code, code)}  [{code}]")
+    print(f"  {msg}")
     return 0
 
 
