@@ -1,0 +1,59 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "toporag"
+version = "0.1.0"
+description = "回路ネットリストのグラフ特徴ベース トポロジー分類器（+LLM 整形）"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { file = "LICENSE" }
+authors = [{ name = "pittua" }]
+keywords = ["circuit", "netlist", "topology", "classification", "kicad"]
+
+# 中核（検索・特徴抽出・評価）に必要な実行時依存
+dependencies = [
+    "numpy>=1.24",
+    "networkx>=3.0",
+    "scipy>=1.10",   # _block_match_optimal の Hungarian 割当 (linear_sum_assignment)
+    "pyyaml>=6.0",   # eval_expected.yaml / scope_taxonomy.yaml / real_expected.yaml
+]
+
+[project.optional-dependencies]
+sim = ["PySpice>=1.5"]            # circuit_simulator の ngspice AC 解析（任意）
+anthropic = ["anthropic>=0.40"]  # Claude SDK 経由の LLM 段（任意。CLI/Mock なら不要）
+gemini = ["google-genai>=0.3"]   # Gemini SDK 経由の LLM 段（任意）
+dev = ["pytest>=7.4", "ruff>=0.5"]
+
+[tool.setuptools]
+# フラット配置（src レイアウト無し）。公開する中核モジュールのみを列挙する。
+py-modules = [
+    "circuit_graph",
+    "feature_extractor",
+    "topo_kernel",
+    "block_decomposer",
+    "circuit_rag",
+    "circuit_simulator",
+    "llm_client",
+    "kicad_sch_to_toporag",
+    "evaluate",
+    "validate_real",
+    "reject_eval",
+    "ablation",
+    "check_scope",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+pythonpath = ["."]   # フラット配置の中核モジュールを tests/ から import 可能にする
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+# トイ評価スクリプト主体のため、まずは基本的な静的検査のみ有効化する。
+select = ["E", "F", "W", "I"]
+ignore = ["E501"]  # 行長は line-length で管理（日本語コメントが多く厳格化しない）

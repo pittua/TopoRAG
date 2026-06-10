@@ -48,7 +48,7 @@
 `circuit_rag.search` で `topo = beta·cosine + (1-beta)·wl_kernel` とブレンド（既定 `beta=0.7`）。
 **自己検索（トポロジーのみ）が 77.4%→100% に。** WL は DB 内の構造衝突をすべて解消した。
 
-### 2. Hungarian 最適ブロック割当（`circuit_rag._block_match_greedy`）
+### 2. Hungarian 最適ブロック割当（`circuit_rag._block_match_optimal`）
 
 複合回路のブロックマッチングを、局所最適に陥るグリーディ法から
 `scipy.optimize.linear_sum_assignment`（Hungarian 法）による**割当全体の類似度和の大域最適化**に

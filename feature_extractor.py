@@ -9,47 +9,24 @@ import networkx as nx
 from collections import defaultdict
 
 
-# ── 能動素子（3端子以上）の種別定義 ───────────────────────
-ACTIVE_TYPES = {"NPN", "PNP", "NMOS", "PMOS", "OPAMP"}
-BJT_TYPES    = {"NPN", "PNP"}
-FET_TYPES    = {"NMOS", "PMOS"}
-PTYPE_TYPES  = {"PNP", "PMOS"}          # p 型（極性反転）
+# グラフ基盤プリミティブ・素子タクソノミーは circuit_graph に集約した
+# （feature_extractor ⇄ topo_kernel ⇄ block_decomposer の循環インポート解消）。
+# 後方互換のため本モジュールからも再エクスポートする
+# （`from feature_extractor import build_graph` 等の既存利用を維持）。
+from circuit_graph import (  # noqa: F401  re-export
+    ACTIVE_TYPES, BJT_TYPES, FET_TYPES, PTYPE_TYPES,
+    is_device, build_graph, bounded_simple_paths,
+)
+
+# 高水準抽出は WL カーネルとブロック分解を使う。circuit_graph 経由で循環が
+# 解けたため、モジュール先頭で通常 import できる（旧: 関数内 import の握り潰し）。
+from topo_kernel import wl_histogram
+from block_decomposer import decompose_blocks
 
 # トランジスタの端子別名 → 役割（制御端子 / 出力側 / 共通側）への正規化
 _CTRL_PINS   = {"base", "gate"}                  # 入力制御端子
 _OUTPUT_PINS = {"collector", "drain"}            # 主出力端子
 _COMMON_PINS = {"emitter", "source"}             # 共通／帰還端子
-
-
-def is_device(comp: dict) -> bool:
-    """3 端子以上（=辺で表現できない）能動素子か。"""
-    return comp["type"] in ACTIVE_TYPES or len(comp.get("terminals", {})) >= 3
-
-
-def build_graph(circuit: dict) -> nx.Graph:
-    """
-    ネットリストを無向グラフ化する。
-
-    2 端子素子（R/C/L/SW/D/DZ など）: 従来通り「ネット間の辺」として表現する。
-      → 既存の 2 端子回路のグラフは一切変化しない（後方互換）。
-    3 端子以上の素子（NPN/PNP/NMOS/PMOS/OPAMP など）: 辺では表せないため、
-      デバイスノード `__dev_<id>` を作り、各端子ネットへ放射状に辺を張る。
-      各辺には pin（端子名）を持たせ、能動素子の構成解析に用いる。
-    """
-    G = nx.Graph()
-    for comp in circuit["components"]:
-        terminals = list(comp["terminals"].values())
-        if len(terminals) == 2 and comp["type"] not in ACTIVE_TYPES:
-            u, v = terminals[0], terminals[1]
-            G.add_edge(u, v, type=comp["type"], id=comp["id"],
-                       terminals=comp["terminals"])
-        else:
-            dev = f"__dev_{comp['id']}"
-            G.add_node(dev, is_device=True, type=comp["type"], id=comp["id"])
-            for pin, net in comp["terminals"].items():
-                G.add_edge(dev, net, type=comp["type"], id=comp["id"],
-                           pin=pin, terminals=comp["terminals"])
-    return G
 
 
 # ── スイッチング素子の正規化 ─────────────────────────────
@@ -158,10 +135,7 @@ def extract_b1_component_order(circuit: dict, G: nx.Graph) -> dict:
     if inp not in G or out not in G:
         return result
 
-    try:
-        paths = list(nx.all_simple_paths(G, inp, out, cutoff=10))
-    except (nx.NetworkXNoPath, nx.NodeNotFound):
-        return result
+    paths = bounded_simple_paths(G, inp, out, cutoff=10)  # 指数爆発ガード
 
     # GND を経由しないパスを優先（等長の GND 経由パスが選ばれるのを防ぐ）
     signal_paths = [p for p in paths if gnd not in p]
@@ -500,7 +474,6 @@ def extract_active_features(circuit: dict) -> dict:
 # ── まとめて抽出 ──────────────────────────────────────────
 
 def extract_all_features(circuit: dict) -> dict:
-    from topo_kernel import wl_histogram  # 循環インポート回避
     G = build_graph(circuit)
     return {
         "circuit_id":         circuit["id"],
@@ -527,8 +500,6 @@ def extract_hierarchical_features(circuit: dict) -> dict:
     単一ブロック回路: is_hierarchical=False, blocks=[]
     複数ブロック回路: is_hierarchical=True,  blocks=[各ブロックのextract_all_features結果]
     """
-    from block_decomposer import decompose_blocks  # 循環インポート回避
-
     base = extract_all_features(circuit)
     blocks = decompose_blocks(circuit)
 

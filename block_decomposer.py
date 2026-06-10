@@ -13,7 +13,7 @@ TopoSizing 的な考え方との対応:
 """
 
 import networkx as nx
-from feature_extractor import build_graph, ACTIVE_TYPES
+from circuit_graph import build_graph, ACTIVE_TYPES, bounded_simple_paths
 
 
 def decompose_blocks(circuit: dict) -> list[dict]:
@@ -44,10 +44,7 @@ def decompose_blocks(circuit: dict) -> list[dict]:
     # ── 主経路探索（GND を通らない最短パス） ─────────────
     # GND 経由の等長パスが選ばれると境界検出が誤動作するため、
     # GND ノードを通らないパスを優先する
-    try:
-        paths = list(nx.all_simple_paths(G, inp, out, cutoff=20))
-    except (nx.NetworkXNoPath, nx.NodeNotFound, KeyError):
-        return [circuit]
+    paths = bounded_simple_paths(G, inp, out, cutoff=20)  # 指数爆発ガード
     if not paths:
         return [circuit]
 

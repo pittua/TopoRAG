@@ -246,7 +246,7 @@ class CircuitRAG:
     # ── トポロジー類似度（階層対応） ─────────────────────
 
     @staticmethod
-    def _block_match_greedy(q_vecs: list, d_vecs: list) -> float:
+    def _block_match_optimal(q_vecs: list, d_vecs: list) -> float:
         """
         ブロック単位の最適割当（Hungarian 法 / scipy.linear_sum_assignment）。
 
@@ -276,7 +276,7 @@ class CircuitRAG:
         両方フラット                  従来のコサイン類似度
         クエリがブロック / DBがフラット  各クエリブロック vs DB回路のコサイン最大値
         クエリがフラット / DBがブロック  クエリ vs 各DBブロックのコサイン最大値
-        両方ブロック                  グリーディブロックマッチング
+        両方ブロック                  最適割当（Hungarian）ブロックマッチング
         """
         has_q = len(q_bvecs) > 0
         has_d = len(d_bvecs) > 0
@@ -293,7 +293,7 @@ class CircuitRAG:
         elif not has_q and has_d:
             block = max(cosine_similarity(q_vec, bv) for bv in d_bvecs)
         else:
-            block = self._block_match_greedy(q_bvecs, d_bvecs)
+            block = self._block_match_optimal(q_bvecs, d_bvecs)
         return max(whole, block)
 
     # ── 類似検索 ─────────────────────────────────────────

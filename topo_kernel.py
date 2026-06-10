@@ -31,7 +31,7 @@ Weisfeiler-Lehman (WL) サブツリーカーネルで回路トポロジーの構
 import math
 from collections import Counter
 
-from feature_extractor import build_graph
+from circuit_graph import build_graph
 
 WL_ITERATIONS = 3
 
