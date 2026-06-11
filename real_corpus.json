@@ -1873,6 +1873,1622 @@
         "output": "out",
         "gnd": "GND"
       }
+    },
+    {
+      "id": "lc-parallell-resonance",
+      "name": "LC-Parallell-resonance",
+      "description": "",
+      "components": [
+        {
+          "id": "C1",
+          "type": "C",
+          "value": 1e-06,
+          "terminals": {
+            "p": "Out",
+            "n": "In"
+          }
+        },
+        {
+          "id": "L1",
+          "type": "L",
+          "value": 1e-06,
+          "terminals": {
+            "p": "Out",
+            "n": "In"
+          }
+        },
+        {
+          "id": "R1",
+          "type": "R",
+          "value": 10.0,
+          "terminals": {
+            "p": "Out",
+            "n": "GND"
+          }
+        }
+      ],
+      "ports": {
+        "input": "In",
+        "output": "Out",
+        "gnd": "GND"
+      }
+    },
+    {
+      "id": "rc-charge",
+      "name": "RC-Charge",
+      "description": "",
+      "components": [
+        {
+          "id": "C1",
+          "type": "C",
+          "value": 9.999999999999999e-05,
+          "terminals": {
+            "p": "Out",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "R1",
+          "type": "R",
+          "value": 1000.0,
+          "terminals": {
+            "p": "Out",
+            "n": "In"
+          }
+        }
+      ],
+      "ports": {
+        "input": "In",
+        "output": "Out",
+        "gnd": "GND"
+      }
+    },
+    {
+      "id": "rc-discharge",
+      "name": "RC-Discharge",
+      "description": "",
+      "components": [
+        {
+          "id": "C1",
+          "type": "C",
+          "value": 9.999999999999999e-05,
+          "terminals": {
+            "p": "Out",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "R1",
+          "type": "R",
+          "value": 1000.0,
+          "terminals": {
+            "p": "Out",
+            "n": "In"
+          }
+        }
+      ],
+      "ports": {
+        "input": "In",
+        "output": "Out",
+        "gnd": "GND"
+      }
+    },
+    {
+      "id": "rc-voltage-current",
+      "name": "RC-Voltage-Current",
+      "description": "",
+      "components": [
+        {
+          "id": "C1",
+          "type": "C",
+          "value": 1e-06,
+          "terminals": {
+            "p": "Out",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "R1",
+          "type": "R",
+          "value": 1000.0,
+          "terminals": {
+            "p": "Out",
+            "n": "In"
+          }
+        }
+      ],
+      "ports": {
+        "input": "In",
+        "output": "Out",
+        "gnd": "GND"
+      }
+    },
+    {
+      "id": "simulation-ac-sweep",
+      "name": "Simulation-AC-sweep",
+      "description": "",
+      "components": [
+        {
+          "id": "C1",
+          "type": "C",
+          "value": 9.999999999999999e-06,
+          "terminals": {
+            "p": "Out",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "R1",
+          "type": "R",
+          "value": 100.0,
+          "terminals": {
+            "p": "Out",
+            "n": "In"
+          }
+        }
+      ],
+      "ports": {
+        "input": "In",
+        "output": "Out",
+        "gnd": "GND"
+      }
+    },
+    {
+      "id": "simulation-transient-pulse",
+      "name": "Simulation-Transient-pulse",
+      "description": "",
+      "components": [
+        {
+          "id": "C1",
+          "type": "C",
+          "value": 9.999999999999999e-06,
+          "terminals": {
+            "p": "Out",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "R1",
+          "type": "R",
+          "value": 1000.0,
+          "terminals": {
+            "p": "Out",
+            "n": "In"
+          }
+        }
+      ],
+      "ports": {
+        "input": "In",
+        "output": "Out",
+        "gnd": "GND"
+      }
+    },
+    {
+      "id": "simulation-transient-sine",
+      "name": "Simulation-Transient-sine",
+      "description": "",
+      "components": [
+        {
+          "id": "C1",
+          "type": "C",
+          "value": 9.999999999999999e-06,
+          "terminals": {
+            "p": "Out",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "R1",
+          "type": "R",
+          "value": 1000.0,
+          "terminals": {
+            "p": "Out",
+            "n": "In"
+          }
+        }
+      ],
+      "ports": {
+        "input": "In",
+        "output": "Out",
+        "gnd": "GND"
+      }
+    },
+    {
+      "id": "rectifier-2d",
+      "name": "Rectifier-2D",
+      "description": "",
+      "components": [
+        {
+          "id": "C1",
+          "type": "C",
+          "value": 0.0033,
+          "terminals": {
+            "p": "Out",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "D1",
+          "type": "D",
+          "value": null,
+          "terminals": {
+            "anode": "In1",
+            "cathode": "Out"
+          }
+        },
+        {
+          "id": "D2",
+          "type": "D",
+          "value": null,
+          "terminals": {
+            "anode": "In2",
+            "cathode": "Out"
+          }
+        },
+        {
+          "id": "R1",
+          "type": "R",
+          "value": 100.0,
+          "terminals": {
+            "p": "Out",
+            "n": "GND"
+          }
+        }
+      ],
+      "ports": {
+        "input": "In1",
+        "output": "Out",
+        "gnd": "GND"
+      }
+    },
+    {
+      "id": "rectifier-4d",
+      "name": "Rectifier-4D",
+      "description": "",
+      "components": [
+        {
+          "id": "C1",
+          "type": "C",
+          "value": 0.0033,
+          "terminals": {
+            "p": "Out",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "D1",
+          "type": "D",
+          "value": null,
+          "terminals": {
+            "anode": "In1",
+            "cathode": "Out"
+          }
+        },
+        {
+          "id": "D2",
+          "type": "D",
+          "value": null,
+          "terminals": {
+            "anode": "In2",
+            "cathode": "Out"
+          }
+        },
+        {
+          "id": "D3",
+          "type": "D",
+          "value": null,
+          "terminals": {
+            "anode": "GND",
+            "cathode": "In1"
+          }
+        },
+        {
+          "id": "D4",
+          "type": "D",
+          "value": null,
+          "terminals": {
+            "anode": "GND",
+            "cathode": "In2"
+          }
+        },
+        {
+          "id": "R1",
+          "type": "R",
+          "value": 100.0,
+          "terminals": {
+            "p": "Out",
+            "n": "GND"
+          }
+        }
+      ],
+      "ports": {
+        "input": "In1",
+        "output": "Out",
+        "gnd": "GND"
+      }
+    },
+    {
+      "id": "rectifier-6d",
+      "name": "Rectifier-6D",
+      "description": "",
+      "components": [
+        {
+          "id": "C1",
+          "type": "C",
+          "value": 0.0033,
+          "terminals": {
+            "p": "Out",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "D1",
+          "type": "D",
+          "value": null,
+          "terminals": {
+            "anode": "In1",
+            "cathode": "Out"
+          }
+        },
+        {
+          "id": "D2",
+          "type": "D",
+          "value": null,
+          "terminals": {
+            "anode": "In2",
+            "cathode": "Out"
+          }
+        },
+        {
+          "id": "D3",
+          "type": "D",
+          "value": null,
+          "terminals": {
+            "anode": "In3",
+            "cathode": "Out"
+          }
+        },
+        {
+          "id": "D4",
+          "type": "D",
+          "value": null,
+          "terminals": {
+            "anode": "GND",
+            "cathode": "In1"
+          }
+        },
+        {
+          "id": "D5",
+          "type": "D",
+          "value": null,
+          "terminals": {
+            "anode": "GND",
+            "cathode": "In2"
+          }
+        },
+        {
+          "id": "D6",
+          "type": "D",
+          "value": null,
+          "terminals": {
+            "anode": "GND",
+            "cathode": "In3"
+          }
+        },
+        {
+          "id": "R1",
+          "type": "R",
+          "value": 100.0,
+          "terminals": {
+            "p": "Out",
+            "n": "GND"
+          }
+        }
+      ],
+      "ports": {
+        "input": "In1",
+        "output": "Out",
+        "gnd": "GND"
+      }
+    },
+    {
+      "id": "rectifier-4d-regulator",
+      "name": "Rectifier-4D-Regulator",
+      "description": "",
+      "components": [
+        {
+          "id": "C1",
+          "type": "C",
+          "value": 0.0047,
+          "terminals": {
+            "p": "/Vin",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "C2",
+          "type": "C",
+          "value": 1e-06,
+          "terminals": {
+            "p": "/Vin",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "C3",
+          "type": "C",
+          "value": 9.999999999999999e-06,
+          "terminals": {
+            "p": "/Adj",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "D1",
+          "type": "D",
+          "value": null,
+          "terminals": {
+            "anode": "In1",
+            "cathode": "/Vin"
+          }
+        },
+        {
+          "id": "D2",
+          "type": "D",
+          "value": null,
+          "terminals": {
+            "anode": "In2",
+            "cathode": "/Vin"
+          }
+        },
+        {
+          "id": "D3",
+          "type": "D",
+          "value": null,
+          "terminals": {
+            "anode": "GND",
+            "cathode": "In1"
+          }
+        },
+        {
+          "id": "D4",
+          "type": "D",
+          "value": null,
+          "terminals": {
+            "anode": "GND",
+            "cathode": "In2"
+          }
+        },
+        {
+          "id": "R1",
+          "type": "R",
+          "value": 120.0,
+          "terminals": {
+            "p": "Out",
+            "n": "/Adj"
+          }
+        },
+        {
+          "id": "R2",
+          "type": "R",
+          "value": 746.0,
+          "terminals": {
+            "p": "/Adj",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "Rload1",
+          "type": "R",
+          "value": 8.0,
+          "terminals": {
+            "p": "Out",
+            "n": "GND"
+          }
+        }
+      ],
+      "ports": {
+        "input": "/Vin",
+        "output": "Out",
+        "gnd": "GND"
+      }
+    },
+    {
+      "id": "opamp-adding",
+      "name": "OPamp-adding",
+      "description": "",
+      "components": [
+        {
+          "id": "R1",
+          "type": "R",
+          "value": 1000.0,
+          "terminals": {
+            "p": "Net-(U1--)",
+            "n": "In1"
+          }
+        },
+        {
+          "id": "R2",
+          "type": "R",
+          "value": 1000.0,
+          "terminals": {
+            "p": "Net-(U1--)",
+            "n": "In2"
+          }
+        },
+        {
+          "id": "R3",
+          "type": "R",
+          "value": 10000.0,
+          "terminals": {
+            "p": "Out",
+            "n": "Net-(U1--)"
+          }
+        },
+        {
+          "id": "U1",
+          "type": "OPAMP",
+          "value": null,
+          "terminals": {
+            "in_p": "GND",
+            "in_n": "Net-(U1--)",
+            "out": "Out"
+          }
+        }
+      ],
+      "ports": {
+        "input": "In1",
+        "output": "Out",
+        "gnd": "GND"
+      }
+    },
+    {
+      "id": "opamp-headphone",
+      "name": "OPamp-headphone",
+      "description": "",
+      "components": [
+        {
+          "id": "C1",
+          "type": "C",
+          "value": 1e-06,
+          "terminals": {
+            "p": "In",
+            "n": "/Vi"
+          }
+        },
+        {
+          "id": "R1",
+          "type": "R",
+          "value": 100000.0,
+          "terminals": {
+            "p": "/Vi",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "R2",
+          "type": "R",
+          "value": 1000.0,
+          "terminals": {
+            "p": "GND",
+            "n": "Net-(U1--)"
+          }
+        },
+        {
+          "id": "R3",
+          "type": "R",
+          "value": 4700.0,
+          "terminals": {
+            "p": "Out",
+            "n": "Net-(U1--)"
+          }
+        },
+        {
+          "id": "R4",
+          "type": "R",
+          "value": 47.0,
+          "terminals": {
+            "p": "Out",
+            "n": "/Vo"
+          }
+        },
+        {
+          "id": "U1",
+          "type": "OPAMP",
+          "value": null,
+          "terminals": {
+            "in_p": "/Vi",
+            "in_n": "Net-(U1--)",
+            "out": "/Vo"
+          }
+        }
+      ],
+      "ports": {
+        "input": "In",
+        "output": "Out",
+        "gnd": "GND"
+      }
+    },
+    {
+      "id": "actuator-npn-switch-led",
+      "name": "Actuator-NPN-switch-LED",
+      "description": "",
+      "components": [
+        {
+          "id": "D1",
+          "type": "D",
+          "value": null,
+          "terminals": {
+            "anode": "3.3v",
+            "cathode": "Net-(D1-K)"
+          }
+        },
+        {
+          "id": "Q1",
+          "type": "NPN",
+          "value": null,
+          "terminals": {
+            "base": "/Ub",
+            "collector": "/Uc",
+            "emitter": "GND"
+          }
+        },
+        {
+          "id": "Rb1",
+          "type": "R",
+          "value": 1000.0,
+          "terminals": {
+            "p": "uC",
+            "n": "/Ub"
+          }
+        },
+        {
+          "id": "Rk1",
+          "type": "R",
+          "value": 150.0,
+          "terminals": {
+            "p": "Net-(D1-K)",
+            "n": "/Uc"
+          }
+        }
+      ],
+      "ports": {
+        "input": "uC",
+        "output": "/Ub",
+        "gnd": "GND"
+      }
+    },
+    {
+      "id": "actuator-pnp-switch-led",
+      "name": "Actuator-PNP-switch-LED",
+      "description": "",
+      "components": [
+        {
+          "id": "D1",
+          "type": "D",
+          "value": null,
+          "terminals": {
+            "anode": "/Uc",
+            "cathode": "Net-(D1-K)"
+          }
+        },
+        {
+          "id": "Q1",
+          "type": "PNP",
+          "value": null,
+          "terminals": {
+            "base": "/Ub",
+            "collector": "/Uc",
+            "emitter": "3.3v"
+          }
+        },
+        {
+          "id": "Rb1",
+          "type": "R",
+          "value": 1000.0,
+          "terminals": {
+            "p": "uC",
+            "n": "/Ub"
+          }
+        },
+        {
+          "id": "Rk1",
+          "type": "R",
+          "value": 150.0,
+          "terminals": {
+            "p": "Net-(D1-K)",
+            "n": "GND"
+          }
+        }
+      ],
+      "ports": {
+        "input": "uC",
+        "output": "/Ub",
+        "gnd": "GND"
+      }
+    },
+    {
+      "id": "opamp-freerunning",
+      "name": "OPamp-freerunning",
+      "description": "",
+      "components": [
+        {
+          "id": "R1",
+          "type": "R",
+          "value": 0.001,
+          "terminals": {
+            "p": "Out",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "U1",
+          "type": "OPAMP",
+          "value": null,
+          "terminals": {
+            "in_p": "In",
+            "in_n": "GND",
+            "out": "Out"
+          }
+        }
+      ],
+      "ports": {
+        "input": "In",
+        "output": "Out",
+        "gnd": "GND"
+      }
+    },
+    {
+      "id": "rectifier-4d-opamp-npn",
+      "name": "Rectifier-4D-OPamp-NPN",
+      "description": "",
+      "components": [
+        {
+          "id": "C1",
+          "type": "C",
+          "value": 0.0047,
+          "terminals": {
+            "p": "/Vin",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "C2",
+          "type": "C",
+          "value": 1e-06,
+          "terminals": {
+            "p": "/Vin",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "C3",
+          "type": "C",
+          "value": 1e-06,
+          "terminals": {
+            "p": "Out",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "D1",
+          "type": "D",
+          "value": null,
+          "terminals": {
+            "anode": "In1",
+            "cathode": "/Vin"
+          }
+        },
+        {
+          "id": "D2",
+          "type": "D",
+          "value": null,
+          "terminals": {
+            "anode": "In2",
+            "cathode": "/Vin"
+          }
+        },
+        {
+          "id": "D3",
+          "type": "D",
+          "value": null,
+          "terminals": {
+            "anode": "GND",
+            "cathode": "In1"
+          }
+        },
+        {
+          "id": "D4",
+          "type": "D",
+          "value": null,
+          "terminals": {
+            "anode": "GND",
+            "cathode": "In2"
+          }
+        },
+        {
+          "id": "D5",
+          "type": "DZ",
+          "value": null,
+          "terminals": {
+            "anode": "GND",
+            "cathode": "/Uz"
+          }
+        },
+        {
+          "id": "Q1",
+          "type": "NPN",
+          "value": null,
+          "terminals": {
+            "base": "/Ub",
+            "collector": "/Vin",
+            "emitter": "Out"
+          }
+        },
+        {
+          "id": "R1",
+          "type": "R",
+          "value": 1629.0,
+          "terminals": {
+            "p": "Net-(U1--)",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "R3",
+          "type": "R",
+          "value": 1000.0,
+          "terminals": {
+            "p": "Out",
+            "n": "Net-(U1--)"
+          }
+        },
+        {
+          "id": "Rload1",
+          "type": "R",
+          "value": 8.0,
+          "terminals": {
+            "p": "Out",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "Rz1",
+          "type": "R",
+          "value": 4700.0,
+          "terminals": {
+            "p": "/Vin",
+            "n": "/Uz"
+          }
+        },
+        {
+          "id": "U1",
+          "type": "OPAMP",
+          "value": null,
+          "terminals": {
+            "in_p": "/Uz",
+            "in_n": "Net-(U1--)",
+            "out": "/Ub"
+          }
+        }
+      ],
+      "ports": {
+        "input": "/Vin",
+        "output": "Out",
+        "gnd": "GND"
+      }
+    },
+    {
+      "id": "rectifier-4d-regulator-npn",
+      "name": "Rectifier-4D-Regulator-NPN",
+      "description": "",
+      "components": [
+        {
+          "id": "C1",
+          "type": "C",
+          "value": 0.0047,
+          "terminals": {
+            "p": "/Vin",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "C2",
+          "type": "C",
+          "value": 1e-06,
+          "terminals": {
+            "p": "/Vin",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "C3",
+          "type": "C",
+          "value": 9.999999999999999e-06,
+          "terminals": {
+            "p": "/Uadj",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "D1",
+          "type": "D",
+          "value": null,
+          "terminals": {
+            "anode": "In1",
+            "cathode": "/Vin"
+          }
+        },
+        {
+          "id": "D2",
+          "type": "D",
+          "value": null,
+          "terminals": {
+            "anode": "In2",
+            "cathode": "/Vin"
+          }
+        },
+        {
+          "id": "D3",
+          "type": "D",
+          "value": null,
+          "terminals": {
+            "anode": "GND",
+            "cathode": "In1"
+          }
+        },
+        {
+          "id": "D4",
+          "type": "D",
+          "value": null,
+          "terminals": {
+            "anode": "GND",
+            "cathode": "In2"
+          }
+        },
+        {
+          "id": "Q1",
+          "type": "NPN",
+          "value": null,
+          "terminals": {
+            "base": "/Ub",
+            "collector": "/Vin",
+            "emitter": "Out"
+          }
+        },
+        {
+          "id": "R1",
+          "type": "R",
+          "value": 120.0,
+          "terminals": {
+            "p": "/Ub",
+            "n": "/Uadj"
+          }
+        },
+        {
+          "id": "R2",
+          "type": "R",
+          "value": 843.0,
+          "terminals": {
+            "p": "/Uadj",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "Rload1",
+          "type": "R",
+          "value": 8.0,
+          "terminals": {
+            "p": "Out",
+            "n": "GND"
+          }
+        }
+      ],
+      "ports": {
+        "input": "/Vin",
+        "output": "Out",
+        "gnd": "GND"
+      }
+    },
+    {
+      "id": "rectifier-4d-regulator-pnp",
+      "name": "Rectifier-4D-Regulator-PNP",
+      "description": "",
+      "components": [
+        {
+          "id": "C1",
+          "type": "C",
+          "value": 0.0047,
+          "terminals": {
+            "p": "/Vin",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "C2",
+          "type": "C",
+          "value": 1e-06,
+          "terminals": {
+            "p": "/Vin",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "C3",
+          "type": "C",
+          "value": 9.999999999999999e-06,
+          "terminals": {
+            "p": "/Uadj",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "D1",
+          "type": "D",
+          "value": null,
+          "terminals": {
+            "anode": "In1",
+            "cathode": "/Vin"
+          }
+        },
+        {
+          "id": "D2",
+          "type": "D",
+          "value": null,
+          "terminals": {
+            "anode": "In2",
+            "cathode": "/Vin"
+          }
+        },
+        {
+          "id": "D3",
+          "type": "D",
+          "value": null,
+          "terminals": {
+            "anode": "GND",
+            "cathode": "In1"
+          }
+        },
+        {
+          "id": "D4",
+          "type": "D",
+          "value": null,
+          "terminals": {
+            "anode": "GND",
+            "cathode": "In2"
+          }
+        },
+        {
+          "id": "Q1",
+          "type": "PNP",
+          "value": null,
+          "terminals": {
+            "base": "/Ub",
+            "emitter": "/Vin",
+            "collector": "Out"
+          }
+        },
+        {
+          "id": "R1",
+          "type": "R",
+          "value": 120.0,
+          "terminals": {
+            "p": "Out",
+            "n": "/Uadj"
+          }
+        },
+        {
+          "id": "R2",
+          "type": "R",
+          "value": 744.0,
+          "terminals": {
+            "p": "/Uadj",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "R3",
+          "type": "R",
+          "value": 5.0,
+          "terminals": {
+            "p": "/Vin",
+            "n": "/Ub"
+          }
+        },
+        {
+          "id": "Rload1",
+          "type": "R",
+          "value": 8.0,
+          "terminals": {
+            "p": "Out",
+            "n": "GND"
+          }
+        }
+      ],
+      "ports": {
+        "input": "/Vin",
+        "output": "Out",
+        "gnd": "GND"
+      }
+    },
+    {
+      "id": "rectifier-4d-zener-npn",
+      "name": "Rectifier-4D-Zener-NPN",
+      "description": "",
+      "components": [
+        {
+          "id": "C1",
+          "type": "C",
+          "value": 0.0047,
+          "terminals": {
+            "p": "/Vin",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "C2",
+          "type": "C",
+          "value": 1e-06,
+          "terminals": {
+            "p": "/Vin",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "C3",
+          "type": "C",
+          "value": 1e-06,
+          "terminals": {
+            "p": "Out",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "D1",
+          "type": "D",
+          "value": null,
+          "terminals": {
+            "anode": "In1",
+            "cathode": "/Vin"
+          }
+        },
+        {
+          "id": "D2",
+          "type": "D",
+          "value": null,
+          "terminals": {
+            "anode": "In2",
+            "cathode": "/Vin"
+          }
+        },
+        {
+          "id": "D3",
+          "type": "D",
+          "value": null,
+          "terminals": {
+            "anode": "GND",
+            "cathode": "In1"
+          }
+        },
+        {
+          "id": "D4",
+          "type": "D",
+          "value": null,
+          "terminals": {
+            "anode": "GND",
+            "cathode": "In2"
+          }
+        },
+        {
+          "id": "D5",
+          "type": "DZ",
+          "value": null,
+          "terminals": {
+            "anode": "GND",
+            "cathode": "/Uz"
+          }
+        },
+        {
+          "id": "Q1",
+          "type": "NPN",
+          "value": null,
+          "terminals": {
+            "base": "/Uz",
+            "collector": "/Vin",
+            "emitter": "Out"
+          }
+        },
+        {
+          "id": "Rload1",
+          "type": "R",
+          "value": 8.0,
+          "terminals": {
+            "p": "Out",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "Rz1",
+          "type": "R",
+          "value": 470.0,
+          "terminals": {
+            "p": "/Vin",
+            "n": "/Uz"
+          }
+        }
+      ],
+      "ports": {
+        "input": "/Vin",
+        "output": "Out",
+        "gnd": "GND"
+      }
+    },
+    {
+      "id": "transformer-1p-1s",
+      "name": "Transformer-1P-1S",
+      "description": "",
+      "components": [
+        {
+          "id": "L1",
+          "type": "L",
+          "value": 0.001,
+          "terminals": {
+            "p": "/Vp",
+            "n": "Net-(L1-Pad2)"
+          }
+        },
+        {
+          "id": "L2",
+          "type": "L",
+          "value": 9.999999999999999e-06,
+          "terminals": {
+            "p": "/Vs",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "R1",
+          "type": "R",
+          "value": 1.0,
+          "terminals": {
+            "p": "Net-(L1-Pad2)",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "Rload1",
+          "type": "R",
+          "value": 100.0,
+          "terminals": {
+            "p": "/Vs",
+            "n": "GND"
+          }
+        }
+      ],
+      "ports": {
+        "input": "/Vp",
+        "output": "Net-(L1-Pad2)",
+        "gnd": "GND"
+      }
+    },
+    {
+      "id": "transformer-1p-2s",
+      "name": "Transformer-1P-2S",
+      "description": "",
+      "components": [
+        {
+          "id": "L1",
+          "type": "L",
+          "value": 0.001,
+          "terminals": {
+            "p": "/Vp",
+            "n": "Net-(L1-Pad2)"
+          }
+        },
+        {
+          "id": "L2",
+          "type": "L",
+          "value": 9.999999999999999e-06,
+          "terminals": {
+            "p": "Us1",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "L3",
+          "type": "L",
+          "value": 9.999999999999999e-06,
+          "terminals": {
+            "p": "GND",
+            "n": "Us2"
+          }
+        },
+        {
+          "id": "R1",
+          "type": "R",
+          "value": 1.0,
+          "terminals": {
+            "p": "Net-(L1-Pad2)",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "Rl1",
+          "type": "R",
+          "value": 1000.0,
+          "terminals": {
+            "p": "Us1",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "Rl2",
+          "type": "R",
+          "value": 1000.0,
+          "terminals": {
+            "p": "Us2",
+            "n": "GND"
+          }
+        }
+      ],
+      "ports": {
+        "input": "/Vp",
+        "output": "Net-(L1-Pad2)",
+        "gnd": "GND"
+      }
+    },
+    {
+      "id": "rl-voltage-current",
+      "name": "RL-Voltage-Current",
+      "description": "",
+      "components": [
+        {
+          "id": "L1",
+          "type": "L",
+          "value": 9.999999999999999e-05,
+          "terminals": {
+            "p": "Out",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "R1",
+          "type": "R",
+          "value": 100.0,
+          "terminals": {
+            "p": "Out",
+            "n": "In"
+          }
+        }
+      ],
+      "ports": {
+        "input": "In",
+        "output": "Out",
+        "gnd": "GND"
+      }
+    },
+    {
+      "id": "simulation-diode-characteristics",
+      "name": "Simulation-Diode-characteristics",
+      "description": "",
+      "components": [
+        {
+          "id": "D1",
+          "type": "D",
+          "value": null,
+          "terminals": {
+            "anode": "/a",
+            "cathode": "/k"
+          }
+        },
+        {
+          "id": "R1",
+          "type": "R",
+          "value": 100.0,
+          "terminals": {
+            "p": "/k",
+            "n": "GND"
+          }
+        }
+      ],
+      "ports": {
+        "input": "/a",
+        "output": "/k",
+        "gnd": "GND"
+      }
+    },
+    {
+      "id": "simulation-npn-characteristics",
+      "name": "Simulation-NPN-characteristics",
+      "description": "",
+      "components": [
+        {
+          "id": "Q1",
+          "type": "NPN",
+          "value": null,
+          "terminals": {
+            "collector": "/Vce",
+            "emitter": "GND",
+            "base": "Net-(Q1-B)"
+          }
+        },
+        {
+          "id": "R1",
+          "type": "R",
+          "value": 100.0,
+          "terminals": {
+            "p": "Net-(R1-Pad1)",
+            "n": "/Vce"
+          }
+        }
+      ],
+      "ports": {
+        "input": "Net-(R1-Pad1)",
+        "output": "/Vce",
+        "gnd": "GND"
+      }
+    },
+    {
+      "id": "simulation-dc-operational-point",
+      "name": "Simulation-DC-operational-point",
+      "description": "",
+      "components": [
+        {
+          "id": "R1",
+          "type": "R",
+          "value": 100.0,
+          "terminals": {
+            "p": "Out",
+            "n": "In"
+          }
+        },
+        {
+          "id": "R2",
+          "type": "R",
+          "value": 100.0,
+          "terminals": {
+            "p": "Out",
+            "n": "GND"
+          }
+        }
+      ],
+      "ports": {
+        "input": "In",
+        "output": "Out",
+        "gnd": "GND"
+      }
+    },
+    {
+      "id": "simulation-dc-sweep",
+      "name": "Simulation-DC-sweep",
+      "description": "",
+      "components": [
+        {
+          "id": "R1",
+          "type": "R",
+          "value": 100.0,
+          "terminals": {
+            "p": "Out",
+            "n": "In"
+          }
+        },
+        {
+          "id": "R2",
+          "type": "R",
+          "value": 100.0,
+          "terminals": {
+            "p": "Out",
+            "n": "GND"
+          }
+        }
+      ],
+      "ports": {
+        "input": "In",
+        "output": "Out",
+        "gnd": "GND"
+      }
+    },
+    {
+      "id": "kicad-simulation-commands",
+      "name": "KiCad-Simulation-commands",
+      "description": "",
+      "components": [
+        {
+          "id": "R1",
+          "type": "R",
+          "value": 1000.0,
+          "terminals": {
+            "p": "Out1",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "R2",
+          "type": "R",
+          "value": 1000.0,
+          "terminals": {
+            "p": "Out2",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "R3",
+          "type": "R",
+          "value": 1000.0,
+          "terminals": {
+            "p": "Out3",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "R4",
+          "type": "R",
+          "value": 1000.0,
+          "terminals": {
+            "p": "Out4",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "R5",
+          "type": "R",
+          "value": 1000.0,
+          "terminals": {
+            "p": "Out5",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "R6",
+          "type": "R",
+          "value": 1000.0,
+          "terminals": {
+            "p": "Out6",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "R7",
+          "type": "R",
+          "value": 1000.0,
+          "terminals": {
+            "p": "Out7",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "R8",
+          "type": "R",
+          "value": 1000.0,
+          "terminals": {
+            "p": "Out8",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "R9",
+          "type": "R",
+          "value": 1000.0,
+          "terminals": {
+            "p": "Out9",
+            "n": "GND"
+          }
+        },
+        {
+          "id": "R10",
+          "type": "R",
+          "value": 1000.0,
+          "terminals": {
+            "p": "Out10",
+            "n": "GND"
+          }
+        }
+      ],
+      "ports": {
+        "input": "Out1",
+        "output": "Out10",
+        "gnd": "GND"
+      }
     }
   ]
 }

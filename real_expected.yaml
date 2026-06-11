@@ -15,96 +15,111 @@
 # 整合性は `python check_scope.py` で検証する（family が taxonomy に存在し scope と一致するか）。
 
 # ── 受動フィルタ（feastorg 由来。自作 DB と素性が近い）──────────
+
 rc-lowpass:
   scope: in
   family: filter_passive
-  expect: [rc_lowpass_001, rc_cascade_lpf_001]
+  expect:
+  - rc_lowpass_001
+  - rc_cascade_lpf_001
 rc-highpass:
   scope: in
   family: filter_passive
-  expect: [rc_highpass_001]
+  expect:
+  - rc_highpass_001
 rc-bandpass:
   scope: in
   family: filter_passive
-  expect: [rlc_bandpass_001, rc_highpass_001, rc_lowpass_001]
+  expect:
+  - rlc_bandpass_001
+  - rc_highpass_001
+  - rc_lowpass_001
   note: RC バンドパス。DB に厳密一致は無く CR-RC 縦続。近縁を許容。
 lc-series-resonance:
   scope: in
   family: filter_passive
-  expect: [lc_highpass_001, lc_lowpass_001, rlc_bandpass_001]
+  expect:
+  - lc_highpass_001
+  - lc_lowpass_001
+  - rlc_bandpass_001
   note: 直列 LC 共振。負荷条件次第でハイパス/バンドパス的。近縁を許容。
-
-# ── 整流（D+C）────────────────────────────────────────────
 rectifier-1d:
   scope: in
   family: rectifier
-  expect: [halfwave_rect_001, rectifier_cap_stage_001]
+  expect:
+  - halfwave_rect_001
+  - rectifier_cap_stage_001
 rectifier:
   scope: in
   family: rectifier
-  expect: [halfwave_rect_001, rectifier_cap_stage_001]
+  expect:
+  - halfwave_rect_001
+  - rectifier_cap_stage_001
   note: KiCad demo。signal_in→D→rect_out、平滑 C 付き。
-
-# ── 能動・単段（feastorg 由来。構成分類の頑健性テスト）──────────
 npn-amplifier-ce:
   scope: in
   family: amp_single_stage
-  expect: [ce_amp_npn_001]
+  expect:
+  - ce_amp_npn_001
   note: 構成分類 tcfg=CE を期待。
 nmos-amplifier-cs:
   scope: in
   family: amp_single_stage
-  expect: [cs_amp_nmos_001]
+  expect:
+  - cs_amp_nmos_001
   note: 構成分類 tcfg=CE(=ソース接地/反転) を期待。
 opamp-inverting:
   scope: in
   family: opamp_linear
-  expect: [opamp_inverting_001]
+  expect:
+  - opamp_inverting_001
   note: ocfg=inverting, fb を期待。
 opamp-noninverting:
   scope: in
   family: opamp_linear
-  expect: [opamp_noninverting_001]
+  expect:
+  - opamp_noninverting_001
   note: ocfg=non_inverting, fb を期待。
 opamp-voltage-follower:
   scope: in
   family: opamp_linear
-  expect: [opamp_buffer_001]
+  expect:
+  - opamp_buffer_001
   note: ocfg=buffer, fb を期待。
-
-# ── 能動・複雑（KiCad demo。自作 DB より遥かに複雑＝汎化ストレス）──
 amplifier-ac:
   scope: in
   family: amp_multi_stage
-  expect: [two_stage_ce_001, ce_amp_npn_001, ce_follower_001]
+  expect:
+  - two_stage_ce_001
+  - ce_amp_npn_001
+  - ce_follower_001
   note: NPN×3 の多段ディスクリート増幅。多段 CE 近縁を許容。
 buck_conv:
   scope: in
   family: smps_converter
-  expect: [buck_001, buck_lc_filter_001]
+  expect:
+  - buck_001
+  - buck_lc_filter_001
   note: NMOS+D+L の降圧コンバータ（制御は簡略）。
 smps-com:
   scope: in
   family: smps_converter
-  expect: [boost_001, boost_input_stage_001]
+  expect:
+  - boost_001
+  - boost_input_stage_001
   note: OPAMP+SUBCKT 制御付き昇圧 SMPS。15 部品。同定難。
-
-# ── アクティブフィルタ ───────────────────────────────────
 sallen_key:
   scope: in
   family: filter_active
-  expect: [sallen_key_lpf_001]
-  note: 2次アクティブ(Sallen-Key)LPF。in 根拠は family=filter_active への該当であって
-        DB に sallen_key_lpf_001 がある事実ではない（DB が空でも family は in）。
-        実機と構造完全一致し、トポロジーのみ score=1.000 で rank1。
-
-# ── out-of-scope（どの family にも該当しない。棄却が正解）──────
-# 「DB 未収録だから out」ではなく「どの family の defining_criteria も満たさないから out」。
+  expect:
+  - sallen_key_lpf_001
+  note: 2次アクティブ(Sallen-Key)LPF。in 根拠は family=filter_active への該当であって DB に sallen_key_lpf_001
+    がある事実ではない（DB が空でも family は in）。 実機と構造完全一致し、トポロジーのみ score=1.000 で rank1。
 generic_opamp_bip:
   scope: out
   family: none
-  note: OpAmp の内部トランジスタ・マクロモデル試験回路。opamp_linear の応用ではなく
-        OpAmp の内部等価回路なので、いずれの family の主機能にも非該当。境界ケース。
+  note: OpAmp の内部トランジスタ・マクロモデル試験回路。opamp_linear の応用ではなく OpAmp の内部等価回路なので、いずれの family
+    の主機能にも非該当。境界ケース。
 class-d:
   scope: out
   family: none
@@ -121,3 +136,150 @@ royer1:
   scope: out
   family: none
   note: Royer 自励発振コンバータ（SUBCKT トランジスタ）。単機能ブロックの粒度超過。
+lc-parallell-resonance:
+  scope: in
+  family: filter_passive
+  expect:
+  - rlc_bandpass_001
+  - lc_lowpass_001
+  - lc_highpass_001
+  note: 並列LC共振タンク。
+rc-charge:
+  scope: in
+  family: filter_passive
+  expect:
+  - rc_lowpass_001
+  note: 単極RC（充電）。topo は rc_lowpass と同一[easy]。
+rc-discharge:
+  scope: in
+  family: filter_passive
+  expect:
+  - rc_lowpass_001
+  - rc_highpass_001
+  note: 単極RC（放電）[easy]。
+rc-voltage-current:
+  scope: in
+  family: filter_passive
+  expect:
+  - rc_lowpass_001
+  note: RC測定デモだが topo は単極RC[easy]。
+simulation-ac-sweep:
+  scope: in
+  family: filter_passive
+  expect:
+  - rc_lowpass_001
+  - rc_highpass_001
+  note: AC解析デモ。topo は RC[easy]。
+simulation-transient-pulse:
+  scope: in
+  family: filter_passive
+  expect:
+  - rc_lowpass_001
+  note: 過渡解析デモ。topo は RC[easy]。
+simulation-transient-sine:
+  scope: in
+  family: filter_passive
+  expect:
+  - rc_lowpass_001
+  note: 過渡解析デモ。topo は RC[easy]。
+rectifier-2d:
+  scope: in
+  family: rectifier
+  expect:
+  - fullwave_ct_rect_001
+  - halfwave_rect_001
+  note: 2ダイオード全波整流。
+rectifier-4d:
+  scope: in
+  family: rectifier
+  expect:
+  - bridge_rect_001
+  note: ブリッジ整流(4D)。
+rectifier-6d:
+  scope: in
+  family: rectifier
+  expect:
+  - bridge_rect_001
+  - voltage_doubler_001
+  note: 6ダイオード整流。
+rectifier-4d-regulator:
+  scope: in
+  family: rectifier
+  expect:
+  - bridge_rect_001
+  - rectifier_cap_stage_001
+  note: ブリッジ＋多段RC平滑（能動制御なし＝受動）。
+opamp-adding:
+  scope: in
+  family: opamp_linear
+  expect:
+  - opamp_summing_001
+  - opamp_inverting_001
+  note: 加算アンプ。
+opamp-headphone:
+  scope: in
+  family: opamp_linear
+  expect:
+  - opamp_noninverting_001
+  - opamp_buffer_001
+  note: ヘッドホンアンプ（線形）。
+actuator-npn-switch-led:
+  scope: out
+  family: none
+  note: NPNスイッチでLED駆動。増幅でなくスイッチ/ドライバ。境界。
+actuator-pnp-switch-led:
+  scope: out
+  family: none
+  note: PNPスイッチでLED駆動。境界。
+opamp-freerunning:
+  scope: out
+  family: none
+  note: OpAmp 自走発振器（リラクゼーション）。線形構成でない。境界。
+rectifier-4d-opamp-npn:
+  scope: out
+  family: none
+  note: ブリッジ＋OpAmp制御NPNレギュレータ。複合。境界。
+rectifier-4d-regulator-npn:
+  scope: out
+  family: none
+  note: ブリッジ＋NPN直列レギュレータ（能動制御）。複合。
+rectifier-4d-regulator-pnp:
+  scope: out
+  family: none
+  note: ブリッジ＋PNP直列レギュレータ。複合。
+rectifier-4d-zener-npn:
+  scope: out
+  family: none
+  note: ブリッジ＋ツェナー基準NPNレギュレータ。複合。
+transformer-1p-1s:
+  scope: out
+  family: none
+  note: トランス(1次1次)。結合インダクタ family は DB 未定義。
+transformer-1p-2s:
+  scope: out
+  family: none
+  note: トランス(1次2次)。
+rl-voltage-current:
+  scope: out
+  family: none
+  note: RL測定デモ。単機能フィルタ family に非該当。境界。
+simulation-diode-characteristics:
+  scope: out
+  family: none
+  note: 単一ダイオードI-V特性試験。デバイス特性化(generic_opamp_bip 類似)。
+simulation-npn-characteristics:
+  scope: out
+  family: none
+  note: 単一NPN特性試験。デバイス特性化。
+simulation-dc-operational-point:
+  scope: out
+  family: none
+  note: 2抵抗分圧の動作点デモ。family 非該当。
+simulation-dc-sweep:
+  scope: out
+  family: none
+  note: 2抵抗DCスイープデモ。family 非該当。
+kicad-simulation-commands:
+  scope: out
+  family: none
+  note: 10抵抗のシミュコマンドdemo。機能回路でない。

@@ -27,9 +27,10 @@ def test_block_match_optimal_renamed():
     assert not hasattr(CircuitRAG, "_block_match_greedy")
 
 
-def test_reject_threshold_is_provisional():
-    # 棄却閾値は「未校正の暫定値」として明示的に改名されている
-    assert circuit_rag.PROVISIONAL_REJECT_THRESHOLD == 0.83
+def test_reject_threshold_is_calibrated():
+    # 棄却閾値は実機 in28/out20 で校正済み（ゲート合格）。旧名は残さない。
+    assert circuit_rag.CALIBRATED_REJECT_THRESHOLD == 0.8863
+    assert not hasattr(circuit_rag, "PROVISIONAL_REJECT_THRESHOLD")
     assert not hasattr(circuit_rag, "RECOMMENDED_REJECT_THRESHOLD")
 
 

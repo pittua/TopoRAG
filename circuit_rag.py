@@ -188,16 +188,23 @@ def tag_similarity(tags_a: list, tags_b: list) -> float:
     return len(a & b) / len(a | b)
 
 
-# ⚠ 未校正の暫定棄却閾値（製品の受理/棄却判定に使わないこと）。
-# 実機コーパスの out-of-scope は現状 5 件のみで統計的に無情報:
-#   - 分離余裕 −0.20（out 最高 generic_opamp_bip=0.8725 が in 最低正解 lc-series=0.8297 を上回る）
-#   - top-1 棄却 AUC 0.867 [95%CI 0.653–1.000] だが nested CV balanced acc 0.600
-#     ＝事前登録基準 0.65 未満（楽観バイアス +0.233）
-#   - reject_eval.py の撤退ゲート判定 = INSUFFICIENT（n_out=5 < 事前登録 20）
-# この既定 0.83 では generic_opamp_bip(out, 0.8725) を誤受理し lc-series(in, 0.8297) を誤棄却する。
-# out を 20 件以上に拡充して再校正するまで暫定値（docs/HANDOFF_2026-06-09.md §7.3）。
+# 棄却閾値（実機コーパス in28/out20 で reject_eval.py により校正）。
 # トポロジーのみ(alpha=1.0)の top-1 スコアに対して適用する。
-PROVISIONAL_REJECT_THRESHOLD = 0.83
+#
+# 事前登録ゲート（docs/HANDOFF_2026-06-09.md §7.3）を **合格**:
+#   - n_out=20（≥20 要件を満たす）
+#   - top-1 棄却 AUC 0.868 [95%CI 0.757–0.963]（CI 下限 > 0.5）
+#   - nested CV balanced acc 0.800（≥0.65 要件を満たす。楽観バイアスは +0.025 に縮小）
+#   → 判定: 「棄却は有意に機能・硬い二値判定を継続」
+#
+# θ=0.8863 での実績: in 受理 21/28（TPR 0.75）・out 棄却 18/20（TNR 0.90）。
+# ⚠ 残存する限界（過信しないこと）:
+#   - 誤受理 2/20: simulation-diode-characteristics(1.0000) と opamp-freerunning(0.9517) は
+#     DB 収録回路と構造が一致し閾値で切れない（分離余裕 −0.33）。前者は測定試験ベンチで
+#     コーパス品質寄り、後者は OpAmp 発振器。硬い棄却の構造的な天井を示す。
+#   - 誤棄却 7/28: DB に近傍が無い hard in-scope（多段アンプ・コンバータ）。
+#   - nested bacc は汎化推定であり完璧ではない。境界用途では top-k＋スコア提示（ランカー）も検討。
+CALIBRATED_REJECT_THRESHOLD = 0.8863
 
 # トポロジースコア内の配合: topo = beta*コサイン + (1-beta)*WLカーネル。
 # beta=1.0 で従来(コサインのみ)に一致。beta=0.8 で自己検索(トポロジーのみ)の
@@ -331,17 +338,16 @@ class CircuitRAG:
 
     def search_with_rejection(self, query_features: dict, top_k: int = 3,
                               alpha: float = DEFAULT_ALPHA,
-                              reject_threshold: float = PROVISIONAL_REJECT_THRESHOLD
+                              reject_threshold: float = CALIBRATED_REJECT_THRESHOLD
                               ) -> tuple[list[dict], bool, float]:
         """
         未知（DB 未収録）回路を棄却する検索。
 
-        ⚠ **既定の reject_threshold は未校正**（PROVISIONAL_REJECT_THRESHOLD のコメント参照）。
-        実機 out-of-scope が 5 件しかなく分離余裕が負（−0.20）のため、現データでは単一閾値で
-        in/out をクリーンに分離できない。この既定値は製品の受理/棄却判定として信頼しないこと。
-        硬い二値判定が必要なら呼び出し側で明示的に reject_threshold を渡し、その妥当性は
-        各自のコーパスで検証する。汎化が必要な用途では top-k＋スコアを人に提示するランカーとして
-        使う方が安全（docs/HANDOFF_2026-06-09.md §7.3 の撤退方針）。
+        既定の reject_threshold は実機 in28/out20 で校正済み（事前登録ゲート合格・
+        CALIBRATED_REJECT_THRESHOLD のコメント参照）。TNR 0.90 / TPR 0.75 で動作するが、
+        DB と構造が一致する out（測定試験ベンチ・発振器など）は誤受理し得る（分離余裕 −0.33）。
+        誤受理を絶対に避けたい用途や境界回路が多い用途では、硬い二値判定ではなく
+        top-k＋スコア提示（ランカー）を人が確認する運用も検討すること。
 
         棄却判定は **トポロジーのみ(alpha=1.0) の top-1 スコア** で行う。
         これは reject_eval.py の比較で最も分離性能が高かったシグナルで、margin/ratio は

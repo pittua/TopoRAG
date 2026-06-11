@@ -309,8 +309,8 @@ def section4_threshold(circuits: list[dict], alpha: float,
     print("  ⚠ 注意: この θ は『素のDB』の自己類似(スコア≈1.0)を基準にした LOO 近似で、")
     print("    タグ無しの実機クエリ(トポロジーのみ ≤ alpha)には過大で全件誤棄却になる。")
     print("    実運用の棄却閾値は reject_eval.py で実機コーパスに対し校正すること")
-    print("    （暫定値 circuit_rag.PROVISIONAL_REJECT_THRESHOLD は未校正＝n_out=5 で無情報。")
-    print("     CircuitRAG.search_with_rejection が使用するが製品判定には不可）。")
+    print("    （校正値 circuit_rag.CALIBRATED_REJECT_THRESHOLD＝実機 in28/out20 でゲート合格。")
+    print("     CircuitRAG.search_with_rejection が使用。TNR 0.90/TPR 0.75・残存誤受理あり）。")
     return theta
 
 

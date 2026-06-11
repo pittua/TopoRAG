@@ -540,11 +540,11 @@ Section 6 が PASS になれば実装完了。失敗した場合は：
 `reject_eval.py` で **トポロジーのみ(タグ非依存)** に複数シグナルを比較した結果、top-1 絶対スコアが
 最良（AUC 0.867）で margin/ratio はほぼ無力だった。
 
-> ⚠ **ただし棄却は未校正**：out-of-scope は現状 5 件で統計的に無情報。分離余裕 −0.20
-> （out 最高 `generic_opamp_bip`=0.8725 が in 最低正解 `lc-series`=0.8297 を上回る）、
-> nested CV balanced acc 0.600 < 事前登録基準 0.65、撤退ゲート判定 INSUFFICIENT（n_out=5<20）。
-> 実装は `CircuitRAG.search_with_rejection()`（閾値 `PROVISIONAL_REJECT_THRESHOLD`＝暫定）。
-> **既定 0.83 は `generic_opamp_bip`(out) を誤受理する**ため製品判定に使わないこと。
+> **棄却は校正済み（in28/out20・事前登録ゲート合格）**：AUC 0.868 [95%CI 0.757–0.963]、
+> nested CV balanced acc 0.800 ≥ 0.65、n_out=20 ≥ 20。θ=0.8863 で TPR 0.75 / TNR 0.90。
+> 実装は `CircuitRAG.search_with_rejection()`（閾値 `CALIBRATED_REJECT_THRESHOLD`）。
+> ただし分離余裕 −0.33 で `simulation-diode-characteristics`(1.0)・`opamp-freerunning`(0.95) など
+> DB と構造一致する out は誤受理が残る（最新値は README / `python reject_eval.py`）。
 > 撤退方針（ランカー化）は `docs/HANDOFF_2026-06-09.md` §7.3。
 
 ### 10.3 Ablation（特徴グループの寄与）
