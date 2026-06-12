@@ -1,0 +1,36 @@
+# 知識カード — 近縁回路の弁別知識（契約は docs/CARD_SPEC.md）
+#
+# 役割説明ではなく「識別の決め手・紛らわしい近縁との差分」を、知覚層が出す
+# IR フィールド（docs/IR_SPEC.md）に紐づけて書く。取り違えログが知識の種。
+#
+# 最小テスト（2026-06-12）: ダイオード族の文書化済み取り違え
+#   「半波整流 → 負クリッパ 誤マッチ」(toporag-eval-findings) を最初の弁別対象に。
+
+cards:
+  halfwave_rect_001:
+    name: 半波整流回路
+    role: 交流の片半サイクルのみを通す最も単純な AC-DC 整流段。
+    decisive:
+      - ダイオードが信号経路に直列で、アノードが入力側にある（IR diode.series=true / diode.anode_at_input=true）。入力電流をそのまま整流する向き。
+      - 出力にはシャント抵抗のみで平滑コンデンサを持たない（diode.rectifier_smoothing=false）。
+    confused_with:
+      - with: negative_clipper_001
+        difference: クリッパはダイオードが出力↔GND 間にシャント接続（diode.shunt=true, diode.series=false, diode.anode_to_gnd=true）。半波整流は直列（series=true, shunt=false）。決め手は「ダイオードが直列か、GND へのシャントか」。実機評価で半波整流が負クリッパへ誤マッチした既知の取り違え。
+      - with: rectifier_cap_stage_001
+        difference: 整流・平滑段は出力↔GND に平滑コンデンサを持つ（diode.rectifier_smoothing=true）。半波整流は平滑 C なし（false）。直列ダイオード＋アノード入力は共通なので、平滑 C の有無だけが差。
+    pitfalls: トポロジーのみだと「直列D＋出力平滑」を昇圧整流段と共有して近接衝突しやすい。anode_at_input と rectifier_smoothing の組で切り分ける。
+
+  negative_clipper_001:
+    name: 負クリッパ回路
+    role: 信号の負側ピークを切り取る波形整形回路（クランプ）。
+    decisive:
+      - ダイオードが出力ノードと GND の間にシャント接続される（IR diode.shunt=true / diode.anode_to_gnd=true / diode.cathode_to_out=true）。信号経路には直列ダイオードがない（diode.series=false）。
+      - 入力から出力へは直列抵抗で、ダイオードは「並列クランプ素子」として働く（topology.series_sequence に D を含まない）。
+    confused_with:
+      - with: halfwave_rect_001
+        difference: 半波整流はダイオードが信号経路に直列（diode.series=true, anode_at_input=true）。クリッパはシャント（series=false, shunt=true）。「直列＝整流／シャント＝クリッパ」が決め手。
+      - with: positive_clipper_001
+        difference: 同じシャントクリッパだがダイオードの向きが逆。負クリッパはアノードが GND 側（diode.anode_to_gnd=true）、正クリッパはアノードが GND 側でない（anode_to_gnd=false）。クリップする極性が反転する。
+      - with: zener_regulator_001
+        difference: ツェナー定電圧もシャント素子だが素子がツェナー（diode.has_zener=true）で、降伏電圧での定電圧化が目的。負クリッパは通常ダイオード（has_zener=false）で波形整形が目的。
+    pitfalls: 部品集合（R+D）は半波整流と同一。差は素子の配置（直列かシャントか）のみで、IR の diode.series/shunt を見ないと部品リストだけでは弁別できない。
