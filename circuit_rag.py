@@ -7,6 +7,7 @@
 import json
 import numpy as np
 from feature_extractor import extract_all_features, extract_hierarchical_features
+from circuit_ir import build_ir, render_ir
 from llm_client import LLMClient, CLILLMClient, MockLLMClient
 from circuit_simulator import CircuitSimulator
 from topo_kernel import wl_kernel
@@ -367,47 +368,8 @@ class CircuitRAG:
     # ── プロンプト生成 ────────────────────────────────────
 
     def _fmt(self, f: dict) -> str:
-        B1, B2 = f["B1_order"], f["B2_diode"]
-        tags = f.get("function_tags", [])
-        desc = f.get("description", "")
-        lines = []
-        if tags:
-            lines.append(f"  機能タグ        : {', '.join(tags)}")
-        if desc:
-            lines.append(f"  説明            : {desc}")
-        lines += [
-            f"  部品種別        : {f['A_component']['component_types']}",
-            f"  先頭直列部品    : {B1.get('first_series_type')}",
-            f"  直列シーケンス  : {B1['series_type_sequence']}",
-            f"  GND並列部品     : {B1.get('shunt_type_sequence', [])}",
-            f"  SW-L順序        : {B1['sw_l_order']}",
-            f"  Dアノード→GND  : {B2['diode_anode_to_gnd']}",
-            f"  Dカソード→OUT  : {B2['diode_cathode_to_out']}",
-            f"  ループ数        : {f['C_node']['cycle_count']}",
-        ]
-        D = f.get("D_active", {})
-        if D.get("has_active"):
-            _CFG = {"CE": "接地エミッタ/ソース(反転増幅)", "CC": "コレクタ/ドレイン接地(フォロワ)",
-                    "CB": "ベース/ゲート接地"}
-            parts = []
-            if D.get("transistor_config"):
-                parts.append(_CFG.get(D["transistor_config"], D["transistor_config"]))
-            if D.get("opamp_config"):
-                parts.append(f"OpAmp:{D['opamp_config']}")
-            lines.append(
-                f"  能動素子構成    : {' / '.join(parts) or '不明'}"
-                f"{'  (帰還あり)' if D.get('has_feedback') else ''}"
-                f"{'  (p型)' if D.get('p_type') else ''}"
-            )
-        if f.get("is_hierarchical") and f.get("blocks"):
-            lines.append(f"  ブロック構成     : {f['n_blocks']} ブロック")
-            for i, blk in enumerate(f["blocks"]):
-                lines.append(
-                    f"    ブロック{i + 1}: 部品={blk['A_component']['component_types']}"
-                    f"  直列={blk['B1_order']['series_type_sequence']}"
-                    f"  GND並列={blk['B1_order']['shunt_type_sequence']}"
-                )
-        return "\n".join(lines)
+        # 知覚層の構造IRに翻訳してから描画する（circuit_ir が唯一の契約・描画経路）
+        return render_ir(build_ir(f))
 
     def build_prompt(self, query_circuit: dict, hits: list[dict] | None = None,
                      sim_result: dict | None = None,
