@@ -8,6 +8,7 @@ import json
 import numpy as np
 from feature_extractor import extract_all_features, extract_hierarchical_features
 from circuit_ir import build_ir, render_ir
+from knowledge_cards import load_cards, render_card
 from llm_client import LLMClient, CLILLMClient, MockLLMClient
 from circuit_simulator import CircuitSimulator
 from topo_kernel import wl_kernel
@@ -239,6 +240,11 @@ class CircuitRAG:
         self.vectors: list[np.ndarray]        = []
         self.block_vectors: list[list[np.ndarray]] = []  # ブロック単位ベクトル（単一ブロック回路は []）
         self.llm = llm
+        self.cards = load_cards()             # circuit_id -> 弁別カード（docs/CARD_SPEC.md）
+
+    def _name_lookup(self) -> dict:
+        """circuit_id -> circuit_name（カードの confused_with 解決用）。"""
+        return {f.get("circuit_id"): f.get("circuit_name") for f in self.db}
 
     def add(self, features: dict):
         self.db.append(features)
@@ -367,9 +373,22 @@ class CircuitRAG:
 
     # ── プロンプト生成 ────────────────────────────────────
 
-    def _fmt(self, f: dict) -> str:
+    def _fmt(self, f: dict, reveal_labels: bool = True) -> str:
         # 知覚層の構造IRに翻訳してから描画する（circuit_ir が唯一の契約・描画経路）
-        return render_ir(build_ir(f))
+        # reveal_labels=False で機能タグ・説明を伏せる（判定対象クエリ側のカンニング防止）
+        return render_ir(build_ir(f), reveal_labels=reveal_labels)
+
+    def _render_candidate(self, hit: dict, name_lookup: dict) -> str:
+        """検索ヒットを候補として描画する。弁別カードがあればそれを、無ければ
+        ラベルを伏せた構造IRを示す。ヒットの正体（回路名）を見せること自体は
+        RAG の正常動作であり、伏せるのは判定対象クエリ側のラベルのみ。"""
+        cid = hit["features"].get("circuit_id")
+        card = self.cards.get(cid)
+        header = f"[{hit['rank']}位 類似度:{hit['score']:.2f}] {hit['features']['circuit_name']}"
+        if card:
+            return header + "\n" + render_card(card, name_lookup)
+        # カード未整備の回路: ラベル抑制した構造IRで構造だけ提示
+        return header + "\n" + self._fmt(hit["features"], reveal_labels=False)
 
     def build_prompt(self, query_circuit: dict, hits: list[dict] | None = None,
                      sim_result: dict | None = None,
@@ -386,27 +405,30 @@ class CircuitRAG:
             hits = self.search(q_feat, top_k=top_k, alpha=alpha)
 
         system = (
-            "あなたは電子回路の専門家です。\n"
-            "与えられたネットリストの特徴量、検索された類似回路の情報、"
-            "およびシミュレーション解析結果（あれば）をもとに、"
-            "入力回路のトポロジー（回路種別）を判定してください。\n"
+            "あなたは電子回路の認識器です。\n"
+            "判定対象回路の«構造IR»（決定的な知覚層の出力）と、構造検索で見つかった"
+            "近縁候補が与えられます。候補には«弁別カード»（識別の決め手・"
+            "紛らわしい近縁との差分）が付くことがあります。\n"
+            "回路をネットリストから推論する必要はありません——構造はIRが消化済みです。\n"
+            "あなたの仕事は、IR が示す構造事実とカードの«決め手»を一つずつ照合し、"
+            "どの候補に該当するか、どれにも当てはまらなければ『該当なし』を裁定する"
+            "ことです。最も紛らわしい候補は、カードの差分を使って明示的に退けてください。\n"
             "回答は必ず以下の形式で出力してください：\n"
-            "【判定】<回路名>\n"
-            "【根拠】<接続構造とシミュレーション特性に基づく理由を2〜3文>\n"
-            "【類似度の解釈】<検索結果との比較コメント>"
+            "【判定】<回路名 または 該当なし>\n"
+            "【根拠】<IR のどの事実がどの決め手と一致/不一致したか。2〜3文>\n"
+            "【近縁との区別】<最も紛らわしい候補をどの差分で退けたか>"
         )
 
+        name_lookup = self._name_lookup()
         refs = "\n\n".join(
-            f"[{h['rank']}位 類似度:{h['score']:.2f}] {h['features']['circuit_name']}\n"
-            + self._fmt(h["features"])
-            for h in hits
+            self._render_candidate(h, name_lookup) for h in hits
         )
 
         user = (
-            "## 参照：類似回路（RAG検索結果）\n\n" + refs
-            + "\n\n## 判定対象回路の特徴量\n\n" + self._fmt(q_feat)
+            "## 判定対象回路の構造IR\n\n" + self._fmt(q_feat, reveal_labels=False)
             + _format_sim_for_prompt(sim_result)
-            + "\n\n上記をもとに回路のトポロジーを判定してください。"
+            + "\n\n## 近縁候補（構造検索 top-{}）\n\n".format(len(hits)) + refs
+            + "\n\n上記の構造IRと候補カードを照合し、判定してください。"
         )
         return system, user
 
@@ -454,8 +476,8 @@ class CircuitRAG:
         user = (
             f"## 複合回路のブロック分解結果  ({q_feat['n_blocks']} ブロック)\n\n"
             + "\n\n".join(block_sections)
-            + "\n\n## 回路全体の特徴量\n\n"
-            + self._fmt(q_feat)
+            + "\n\n## 回路全体の構造IR\n\n"
+            + self._fmt(q_feat, reveal_labels=False)
             + _format_sim_for_prompt(sim_result)
             + "\n\n上記ブロック照合結果から、全体回路の種別と構成を特定してください。"
         )

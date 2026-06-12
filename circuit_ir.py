@@ -148,13 +148,19 @@ def _hierarchy_ir(features: dict) -> dict | None:
 
 # ── 描画（IR → LLM 可読テキスト）──────────────────────────────
 
-def render_ir(ir: dict) -> str:
-    """構造IR → テキスト。プロンプトに渡る唯一の描画経路。"""
+def render_ir(ir: dict, reveal_labels: bool = True) -> str:
+    """構造IR → テキスト。プロンプトに渡る唯一の描画経路。
+
+    reveal_labels=False で機能タグ・説明を伏せる（«ラベル抑制モード»）。
+    タグはこのプロジェクトでは実質ラベル（答え）であり、説明も答えを散文で
+    述べるため、判定対象クエリ側ではこれらを隠さないとカンニングになる。
+    構造事実（部品/直列列/シャント/ループ/能動/ダイオード役割）は常に残す。
+    """
     lines: list[str] = []
 
-    if ir.get("tags"):
+    if reveal_labels and ir.get("tags"):
         lines.append(f"  機能タグ        : {', '.join(ir['tags'])}")
-    if ir.get("description"):
+    if reveal_labels and ir.get("description"):
         lines.append(f"  説明            : {ir['description']}")
 
     comp = ir["components"]
