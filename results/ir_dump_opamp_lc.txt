@@ -1,0 +1,77 @@
+============================================================
+族2: OpAmp族 IR ダンプ
+============================================================
+
+--- opamp_noninverting_001 ---
+  active: {"devices": ["OpAmp"], "n_active": 1, "transistor_config": null, "opamp_config": "non_inverting", "p_type": false, "has_feedback": true, "is_inverting": false, "is_follower": false, "is_differential": false, "has_coupled_pair": false, "has_diode_connected": false}
+  topology: {"first_series": "OPAMP", "series_sequence": ["OPAMP", "OPAMP"], "shunt_to_gnd": [], "sw_l_order": null, "loop_count": 1, "has_parallel": false}
+  comp.types: ['OPAMP', 'R']
+  comp.norm_counts: {'R': 2, 'OPAMP': 1}
+  diode: None
+
+--- opamp_buffer_001 ---
+  active: {"devices": ["OpAmp"], "n_active": 1, "transistor_config": null, "opamp_config": "buffer", "p_type": false, "has_feedback": true, "is_inverting": false, "is_follower": true, "is_differential": false, "has_coupled_pair": false, "has_diode_connected": false}
+  topology: {"first_series": "OPAMP", "series_sequence": ["OPAMP", "OPAMP"], "shunt_to_gnd": [], "sw_l_order": null, "loop_count": 0, "has_parallel": false}
+  comp.types: ['OPAMP']
+  comp.norm_counts: {'OPAMP': 1}
+  diode: None
+
+--- opamp_inverting_001 ---
+  active: {"devices": ["OpAmp"], "n_active": 1, "transistor_config": null, "opamp_config": "inverting", "p_type": false, "has_feedback": true, "is_inverting": true, "is_follower": false, "is_differential": false, "has_coupled_pair": false, "has_diode_connected": false}
+  topology: {"first_series": "R", "series_sequence": ["R", "R"], "shunt_to_gnd": [], "sw_l_order": null, "loop_count": 1, "has_parallel": false}
+  comp.types: ['OPAMP', 'R']
+  comp.norm_counts: {'R': 2, 'OPAMP': 1}
+  diode: None
+
+--- phase_shift_osc_001 ---
+  active: {"devices": ["OpAmp"], "n_active": 1, "transistor_config": null, "opamp_config": "non_inverting", "p_type": false, "has_feedback": true, "is_inverting": false, "is_follower": false, "is_differential": false, "has_coupled_pair": false, "has_diode_connected": false}
+  topology: {"first_series": "C", "series_sequence": ["C"], "shunt_to_gnd": ["R"], "sw_l_order": null, "loop_count": 5, "has_parallel": false}
+  comp.types: ['C', 'OPAMP', 'R']
+  comp.norm_counts: {'R': 4, 'C': 3, 'OPAMP': 1}
+  diode: None
+
+--- wien_bridge_osc_001 ---
+  active: {"devices": ["OpAmp"], "n_active": 1, "transistor_config": null, "opamp_config": "non_inverting", "p_type": false, "has_feedback": true, "is_inverting": false, "is_follower": false, "is_differential": false, "has_coupled_pair": false, "has_diode_connected": false}
+  topology: {"first_series": "C", "series_sequence": ["C", "R"], "shunt_to_gnd": ["C"], "sw_l_order": null, "loop_count": 3, "has_parallel": true}
+  comp.types: ['C', 'OPAMP', 'R']
+  comp.norm_counts: {'R': 4, 'C': 2, 'OPAMP': 1}
+  diode: None
+
+--- mfb_bpf_001 ---
+  active: {"devices": ["OpAmp"], "n_active": 1, "transistor_config": null, "opamp_config": "non_inverting", "p_type": false, "has_feedback": true, "is_inverting": false, "is_follower": false, "is_differential": false, "has_coupled_pair": false, "has_diode_connected": false}
+  topology: {"first_series": "R", "series_sequence": ["R", "C"], "shunt_to_gnd": ["R"], "sw_l_order": null, "loop_count": 3, "has_parallel": false}
+  comp.types: ['C', 'OPAMP', 'R']
+  comp.norm_counts: {'R': 3, 'C': 2, 'OPAMP': 1}
+  diode: None
+
+============================================================
+族3: LC/RLC共振族 IR ダンプ
+============================================================
+
+--- rlc_bandpass_001 ---
+  topology: {"first_series": "L", "series_sequence": ["L", "C"], "shunt_to_gnd": ["R"], "sw_l_order": null, "loop_count": 0, "has_parallel": false}
+  comp.types: ['C', 'L', 'R']
+  comp.norm_counts: {'L': 1, 'C': 1, 'R': 1}
+  diode: None
+  active: None
+
+--- rlc_notch_001 ---
+  topology: {"first_series": "R", "series_sequence": ["R"], "shunt_to_gnd": [], "sw_l_order": null, "loop_count": 0, "has_parallel": false}
+  comp.types: ['C', 'L', 'R']
+  comp.norm_counts: {'R': 1, 'L': 1, 'C': 1}
+  diode: None
+  active: None
+
+--- lc_highpass_001 ---
+  topology: {"first_series": "C", "series_sequence": ["C"], "shunt_to_gnd": ["L"], "sw_l_order": null, "loop_count": 0, "has_parallel": false}
+  comp.types: ['C', 'L']
+  comp.norm_counts: {'C': 1, 'L': 1}
+  diode: None
+  active: None
+
+--- lc_lowpass_001 ---
+  topology: {"first_series": "L", "series_sequence": ["L"], "shunt_to_gnd": ["C"], "sw_l_order": null, "loop_count": 0, "has_parallel": false}
+  comp.types: ['C', 'L']
+  comp.norm_counts: {'L': 1, 'C': 1}
+  diode: None
+  active: None

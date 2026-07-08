@@ -1,0 +1,38 @@
+============================================================
+族1: 整流族 IR ダンプ
+============================================================
+
+--- halfwave_rect_001 ---
+  diode: {"anode_to_gnd": false, "cathode_to_out": true, "series": true, "anode_at_input": true, "shunt": false, "rectifier_smoothing": false, "has_zener": false}
+  topology: {"first_series": "D", "series_sequence": ["D"], "shunt_to_gnd": ["R"], "sw_l_order": null, "loop_count": 0, "has_parallel": false}
+  comp.types: ['D', 'R']
+  comp.norm_counts: {'D': 1, 'R': 1}
+  active: None
+
+--- fullwave_ct_rect_001 ---
+  diode: {"anode_to_gnd": false, "cathode_to_out": true, "series": true, "anode_at_input": true, "shunt": false, "rectifier_smoothing": true, "has_zener": false}
+  topology: {"first_series": "D", "series_sequence": ["D"], "shunt_to_gnd": ["R"], "sw_l_order": null, "loop_count": 0, "has_parallel": true}
+  comp.types: ['C', 'D', 'R']
+  comp.norm_counts: {'D': 2, 'C': 1, 'R': 1}
+  active: None
+
+--- bridge_rect_001 ---
+  diode: {"anode_to_gnd": true, "cathode_to_out": true, "series": true, "anode_at_input": true, "shunt": true, "rectifier_smoothing": true, "has_zener": false}
+  topology: {"first_series": "D", "series_sequence": ["D"], "shunt_to_gnd": ["D", "R"], "sw_l_order": null, "loop_count": 2, "has_parallel": true}
+  comp.types: ['C', 'D', 'R']
+  comp.norm_counts: {'D': 4, 'C': 1, 'R': 1}
+  active: None
+
+--- rectifier_cap_stage_001 ---
+  diode: {"anode_to_gnd": false, "cathode_to_out": true, "series": true, "anode_at_input": true, "shunt": false, "rectifier_smoothing": true, "has_zener": false}
+  topology: {"first_series": "D", "series_sequence": ["D"], "shunt_to_gnd": ["C"], "sw_l_order": null, "loop_count": 0, "has_parallel": false}
+  comp.types: ['C', 'D']
+  comp.norm_counts: {'D': 1, 'C': 1}
+  active: None
+
+--- voltage_doubler_001 ---
+  diode: {"anode_to_gnd": true, "cathode_to_out": true, "series": true, "anode_at_input": false, "shunt": true, "rectifier_smoothing": true, "has_zener": false}
+  topology: {"first_series": "C", "series_sequence": ["C", "D"], "shunt_to_gnd": ["D", "C"], "sw_l_order": null, "loop_count": 1, "has_parallel": false}
+  comp.types: ['C', 'D']
+  comp.norm_counts: {'C': 2, 'D': 2}
+  active: None

@@ -1,0 +1,21 @@
+
+=== 実機クエリ: rectifier ===
+  diode: {"anode_to_gnd": false, "cathode_to_out": true, "series": true, "anode_at_input": false, "shunt": false, "rectifier_smoothing": true, "has_zener": false}
+  active: null
+  topology: {"first_series": "R", "series_sequence": ["R", "D"], "shunt_to_gnd": ["R"], "sw_l_order": null, "loop_count": 0, "has_parallel": true}
+  comp.types: ['C', 'D', 'R']
+  comp.norm_counts: {'C': 1, 'D': 1, 'R': 2}
+
+=== 実機クエリ: rectifier-1d ===
+  diode: {"anode_to_gnd": false, "cathode_to_out": true, "series": true, "anode_at_input": true, "shunt": false, "rectifier_smoothing": true, "has_zener": false}
+  active: null
+  topology: {"first_series": "D", "series_sequence": ["D"], "shunt_to_gnd": ["R"], "sw_l_order": null, "loop_count": 0, "has_parallel": true}
+  comp.types: ['C', 'D', 'R']
+  comp.norm_counts: {'C': 1, 'D': 1, 'R': 1}
+
+=== 実機クエリ: opamp-headphone ===
+  diode: null
+  active: {"devices": ["OpAmp"], "n_active": 1, "transistor_config": null, "opamp_config": "non_inverting", "p_type": false, "has_feedback": true, "is_inverting": false, "is_follower": false, "is_differential": false, "has_coupled_pair": false, "has_diode_connected": false}
+  topology: {"first_series": "C", "series_sequence": ["C", "OPAMP", "OPAMP", "R"], "shunt_to_gnd": ["R", "R"], "sw_l_order": null, "loop_count": 2, "has_parallel": false}
+  comp.types: ['C', 'OPAMP', 'R']
+  comp.norm_counts: {'C': 1, 'R': 4, 'OPAMP': 1}

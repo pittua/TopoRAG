@@ -5,6 +5,8 @@
 #
 # 最小テスト（2026-06-12）: ダイオード族の文書化済み取り違え
 #   「半波整流 → 負クリッパ 誤マッチ」(toporag-eval-findings) を最初の弁別対象に。
+#
+# 実験B（2026-07-07）: 15枚に拡充。IRダンプに基づく実観察値で執筆。
 
 cards:
   halfwave_rect_001:
@@ -13,11 +15,14 @@ cards:
     decisive:
       - ダイオードが信号経路に直列で、アノードが入力側にある（IR diode.series=true / diode.anode_at_input=true）。入力電流をそのまま整流する向き。
       - 出力にはシャント抵抗のみで平滑コンデンサを持たない（diode.rectifier_smoothing=false）。
+      - ダイオード数は1本（comp.normalized_counts.D=1）。D=2 以上のクエリには選ばない。
     confused_with:
       - with: negative_clipper_001
         difference: クリッパはダイオードが出力↔GND 間にシャント接続（diode.shunt=true, diode.series=false, diode.anode_to_gnd=true）。半波整流は直列（series=true, shunt=false）。決め手は「ダイオードが直列か、GND へのシャントか」。実機評価で半波整流が負クリッパへ誤マッチした既知の取り違え。
       - with: rectifier_cap_stage_001
         difference: 整流・平滑段は出力↔GND に平滑コンデンサを持つ（diode.rectifier_smoothing=true）。半波整流は平滑 C なし（false）。直列ダイオード＋アノード入力は共通なので、平滑 C の有無だけが差。
+      - with: fullwave_ct_rect_001
+        difference: 全波整流（センタータップ）はダイオード 2 本（D=2）かつ rectifier_smoothing=true・has_parallel=true。半波整流は D=1・rectifier_smoothing=false。D 数が最も信頼できる決め手。実験 A で rectifier / rectifier-1d クエリが全波へ誤マッチした（距離計量起因）。
     pitfalls: トポロジーのみだと「直列D＋出力平滑」を昇圧整流段と共有して近接衝突しやすい。anode_at_input と rectifier_smoothing の組で切り分ける。
 
   negative_clipper_001:
@@ -34,3 +39,190 @@ cards:
       - with: zener_regulator_001
         difference: ツェナー定電圧もシャント素子だが素子がツェナー（diode.has_zener=true）で、降伏電圧での定電圧化が目的。負クリッパは通常ダイオード（has_zener=false）で波形整形が目的。
     pitfalls: 部品集合（R+D）は半波整流と同一。差は素子の配置（直列かシャントか）のみで、IR の diode.series/shunt を見ないと部品リストだけでは弁別できない。
+
+  fullwave_ct_rect_001:
+    name: 全波整流回路（センタータップ）
+    role: センタータップ付きトランスと 2 本のダイオードで両半サイクルを整流する AC-DC 変換段。
+    decisive:
+      - ダイオード 2 本（comp.normalized_counts.D=2）。半波（D=1）・ブリッジ（D=4）と明確に異なる。
+      - 平滑コンデンサを持つ（diode.rectifier_smoothing=true）かつ has_parallel=true（2 本のダイオードが並列経路を形成）。
+      - diode.anode_to_gnd=false かつ diode.shunt=false（ブリッジ整流とはシャントダイオードの有無で区別）。
+    confused_with:
+      - with: halfwave_rect_001
+        difference: 半波は D=1・rectifier_smoothing=false・has_parallel=false。全波は D=2・rectifier_smoothing=true・has_parallel=true。D 数が最も信頼できる決め手。
+      - with: bridge_rect_001
+        difference: ブリッジは D=4・anode_to_gnd=true・diode.shunt=true・loop_count=2。全波は D=2・anode_to_gnd=false・shunt=false・loop_count=0。D 数とシャントダイオードの有無が決め手。
+    pitfalls: センタータップは回路トポロジー上「2 経路並列」として現れる（has_parallel=true）。同じく has_parallel=true を持つ回路（ブリッジ整流など）とは D 数で区別する。
+
+  bridge_rect_001:
+    name: ブリッジ整流回路
+    role: 4 本のダイオードによる全波整流ブリッジ（センタータップ不要）。
+    decisive:
+      - ダイオード 4 本（comp.normalized_counts.D=4）。整流族中で唯一 D=4 であり、この一点で他と区別できる。
+      - anode_to_gnd=true かつ diode.shunt=true（シャントダイオードが GND 側にある）。topology.shunt_to_gnd に D と R の両方が含まれる。
+      - loop_count=2（ブリッジの 2 ループ構造）。
+    confused_with:
+      - with: fullwave_ct_rect_001
+        difference: 全波は D=2・shunt=false・loop_count=0。ブリッジは D=4・shunt=true・loop_count=2。D 数とループ数が決め手。
+      - with: voltage_doubler_001
+        difference: 電圧逓倍は D=2・C=2・first_series=C（コンデンサ先頭）。ブリッジは D=4・first_series=D。D 数と先頭直列部品で区別。
+    pitfalls: ブリッジはシャントダイオード（anode_to_gnd=true）を持つ唯一の整流族。D=4 という部品数が最も信頼できる決め手。
+
+  rectifier_cap_stage_001:
+    name: 整流・平滑段（D＋C）
+    role: ダイオード 1 本と平滑コンデンサで構成される最小の整流平滑ブロック。
+    decisive:
+      - comp.types=['C','D'] のみ（抵抗なし）。shunt_to_gnd=['C']（コンデンサが GND 並列）。
+      - D=1・C=1・R=0。diode.rectifier_smoothing=true・anode_at_input=true・series=true。
+    confused_with:
+      - with: halfwave_rect_001
+        difference: 半波整流は R=1・C=0・rectifier_smoothing=false。整流平滑段は R=0・C=1・rectifier_smoothing=true。R の有無と C の有無が入れ替わる形で対比する。
+      - with: fullwave_ct_rect_001
+        difference: 全波は D=2・has_parallel=true。整流平滑段は D=1・has_parallel=false。D 数が決め手。
+    pitfalls: R=0（負荷抵抗なし）は DB 内の他の整流族と異なる特徴。sw_l_order がある回路はスイッチング系（boost 系）なので除外。
+
+  voltage_doubler_001:
+    name: 倍電圧整流回路（グライナッヘル）
+    role: コンデンサとダイオードを段重ねして入力電圧の 2 倍の DC を得る整流回路。
+    decisive:
+      - first_series=C（先頭直列部品がコンデンサ）。他の整流族（halfwave/fullwave/bridge）は先頭が D または R。
+      - D=2・C=2（同数）。diode.anode_at_input=false（アノードが入力端に直接ない）。
+      - loop_count=1・shunt_to_gnd に D と C の両方が含まれる。
+    confused_with:
+      - with: bridge_rect_001
+        difference: ブリッジは D=4・first_series=D・C=1。電圧逓倍は D=2・C=2・first_series=C。先頭部品と D/C 比が決め手。
+      - with: rectifier_cap_stage_001
+        difference: 整流平滑段は D=1・C=1・R=0。電圧逓倍は D=2・C=2（部品 2 倍）かつ anode_at_input=false（整流平滑段は true）。
+    pitfalls: 先頭直列部品が C という点が整流族中で唯一。anode_at_input=false も固有の特徴。この 2 点がなければ誤マッチしやすい。
+
+  opamp_noninverting_001:
+    name: 非反転増幅回路（OpAmp）
+    role: OpAmp の非反転入力に信号を入れ、帰還抵抗で利得を設定する線形増幅回路。
+    decisive:
+      - active.opamp_config=non_inverting・has_feedback=true・is_inverting=false・is_follower=false。
+      - コンデンサなし（comp.types=['OPAMP','R'] のみ）・R=2・first_series=OPAMP・loop_count=1。
+      - 発振器族と異なり C が一切存在しない点が最重要決め手（comp.normalized_counts に C なし）。
+    confused_with:
+      - with: phase_shift_osc_001
+        difference: 移相発振器は C=3・R=4・first_series=C・shunt_to_gnd=['R']・loop_count=5。非反転増幅は C=0・R=2・first_series=OPAMP・loop=1。C の有無と loop 数が決定的。実験 A で opamp-headphone クエリが移相発振器に誤マッチ（距離計量起因）。
+      - with: wien_bridge_osc_001
+        difference: ウィーンブリッジ発振器は C=2・R=4・has_parallel=true・loop=3・shunt_to_gnd=['C']。非反転増幅は C=0・has_parallel=false・loop=1。C 有無とループ数が決め手。
+      - with: opamp_buffer_001
+        difference: バッファは is_follower=true・opamp_config=buffer・R=0（comp.types=['OPAMP'] のみ）。非反転増幅は R=2・opamp_config=non_inverting・is_follower=false。R の有無と opamp_config が決め手。
+    pitfalls: opamp-headphone クエリは C=1・R=4 を持ち（DB エントリより多い）、loop=2 と出る。DB の非反転増幅（C=0・loop=1）と完全一致しないが、発振器（C≥2・loop≥3）よりは近い。クエリに C が含まれても発振条件（C≥2 かつ loop≥3）を満たさなければ非反転増幅を優先して判断する。
+
+  opamp_buffer_001:
+    name: ボルテージフォロワ（OpAmp）
+    role: 入力電圧をそのまま出力するインピーダンス変換器（利得=1）。
+    decisive:
+      - is_follower=true・opamp_config=buffer・comp.types=['OPAMP'] のみ（R も C も存在しない）。
+      - R=0（帰還抵抗なし）・loop_count=0（直結帰還）。
+    confused_with:
+      - with: opamp_noninverting_001
+        difference: 非反転増幅は R=2・opamp_config=non_inverting・is_follower=false・loop=1。バッファは R=0・opamp_config=buffer・is_follower=true・loop=0。R の有無が最も確実な決め手。
+    pitfalls: comp.types に R が存在すれば非反転増幅またはその亜種。バッファは抵抗ゼロが唯一の識別手段。
+
+  opamp_inverting_001:
+    name: 反転増幅回路（OpAmp）
+    role: OpAmp の反転入力に信号と帰還を接続し、位相を 180 度反転して増幅する線形回路。
+    decisive:
+      - active.opamp_config=inverting・is_inverting=true。
+      - first_series=R（先頭直列部品が R）・series_sequence=['R','R']・R=2・C=0。
+      - loop_count=1。
+    confused_with:
+      - with: opamp_summing_001
+        difference: 加算増幅器は R=4（入力抵抗複数）。反転増幅は R=2。どちらも opamp_config=inverting・is_inverting=true・first_series=R だが、R 数が決め手（comp.normalized_counts.R を確認）。
+      - with: mfb_bpf_001
+        difference: MFB BPF は C=2・R=3・opamp_config=non_inverting（IR 実観察値）・loop=3。反転増幅は C=0・R=2・opamp_config=inverting・loop=1。C 有無と opamp_config が決め手。
+    pitfalls: opamp_summing_001 とは opamp_config・is_inverting・first_series=R が同一。R 数（normalized_counts.R）だけが差なので必ず確認する。
+
+  phase_shift_osc_001:
+    name: 位相シフト発振器（OpAmp）
+    role: 3 段の RC 移相網でループ位相を 360 度確保し、OpAmp で発振を維持する回路。
+    decisive:
+      - C=3（3 個のコンデンサ）・R=4・first_series=C・shunt_to_gnd=['R']・loop_count=5。
+      - opamp_config=non_inverting（IR 実観察値）・has_feedback=true。
+      - C≥3 かつ loop≥5 が増幅器族との決定的差。
+    confused_with:
+      - with: opamp_noninverting_001
+        difference: 非反転増幅は C=0・R=2・first_series=OPAMP・loop=1。移相発振は C=3・R=4・first_series=C・loop=5。C とR の絶対数と loop 数が決め手。
+      - with: wien_bridge_osc_001
+        difference: ウィーンブリッジは C=2（3 でない）・has_parallel=true・shunt_to_gnd=['C']・loop=3。移相発振は C=3・has_parallel=false・shunt_to_gnd=['R']・loop=5。C 数と shunt 素子種が差。
+    pitfalls: opamp_config=non_inverting は非反転増幅と同値のため opamp_config だけでは区別できない。C の絶対数・loop 数・first_series の組み合わせで判断する。
+
+  wien_bridge_osc_001:
+    name: ウィーンブリッジ発振器（OpAmp）
+    role: ウィーンブリッジ網を RC 正帰還に使い OpAmp で発振を維持する回路。
+    decisive:
+      - C=2・R=4・has_parallel=true・first_series=C・shunt_to_gnd=['C']（コンデンサが GND 並列）。
+      - loop_count=3・opamp_config=non_inverting・has_feedback=true。
+    confused_with:
+      - with: phase_shift_osc_001
+        difference: 移相発振は C=3（2 でない）・has_parallel=false・shunt_to_gnd=['R']・loop=5。ウィーンブリッジは C=2・has_parallel=true・shunt=['C']・loop=3。C 数と has_parallel・shunt 素子種が差。
+      - with: opamp_noninverting_001
+        difference: 非反転増幅は C=0・R=2・first_series=OPAMP・loop=1。ウィーンブリッジは C=2・R=4・first_series=C・loop=3・has_parallel=true。C 有無が決定的。
+    pitfalls: has_parallel=true は整流族にも現れる（fullwave_ct_rect, bridge_rect 等）。能動素子（OpAmp）が存在し、かつ C が存在する場合のみ発振器族を検討する。
+
+  mfb_bpf_001:
+    name: 多重帰還バンドパスフィルタ（OpAmp）
+    role: 多重帰還型（Multiple Feedback）トポロジーによる 2 次アクティブ BPF。
+    decisive:
+      - C=2・R=3・first_series=R・series_sequence=['R','C']・shunt_to_gnd=['R']・loop_count=3。
+      - active.opamp_config=non_inverting（IR 実観察値）・has_feedback=true。
+      - C と R の混在（C=2・R=3）かつ first_series=R の組み合わせが決め手。
+    confused_with:
+      - with: opamp_inverting_001
+        difference: 反転増幅は C=0・R=2・opamp_config=inverting・loop=1。MFB BPF は C=2・R=3・opamp_config=non_inverting（IR 値）・loop=3。C 有無と R 数・loop 数が決め手。
+    pitfalls: IR の opamp_config が non_inverting と出るが、これは知覚層の検出方式によるもの。opamp_inverting_001 との混同は C=0 vs C=2 で確実に区別できる。
+
+  rlc_bandpass_001:
+    name: RLCバンドパスフィルタ
+    role: R・L・C の直列共振を利用した受動バンドパスフィルタ。
+    decisive:
+      - first_series=L・series_sequence=['L','C']（L と C が両方直列経路に含まれる）・shunt_to_gnd=['R']。
+      - R=1・L=1・C=1（各 1 個）・能動素子なし・diode=None。
+    confused_with:
+      - with: rlc_notch_001
+        difference: RLC ノッチは first_series=R・series=['R']・shunt_to_gnd=[]（空）。BPF は first_series=L・series=['L','C']・shunt=['R']。先頭部品と shunt の有無が決め手。rlc_notch では L と C が IR の系列・シャントに現れない（並列タンクが未分解）。
+      - with: lc_highpass_001
+        difference: LC ハイパスは R=0・first_series=C・shunt=['L']。BPF は R=1・first_series=L・series=['L','C']・shunt=['R']。R の有無と先頭部品が差。
+      - with: lc_lowpass_001
+        difference: LC ローパスは R=0・first_series=L・shunt=['C']・series=['L']（C が直列に無い）。BPF は R=1・series=['L','C']（C も直列）・shunt=['R']。
+    pitfalls: 実験 A で lc-parallell-resonance クエリが rlc_notch に誤マッチした既知事例。rlc_bandpass は BPF クエリの最優先候補だが、series 列に L と C の両方が存在することを確認する。
+
+  rlc_notch_001:
+    name: RLCノッチフィルタ
+    role: 特定周波数を阻止する RLC バンドストップフィルタ。
+    decisive:
+      - first_series=R・series_sequence=['R']（直列列には R のみ）・shunt_to_gnd=[]（シャントなし）。
+      - R=1・L=1・C=1 だが、L と C は series/shunt どちらにも明示的に現れない（並列 LC タンクが IR で未分解）。
+    confused_with:
+      - with: rlc_bandpass_001
+        difference: BPF は first_series=L・series=['L','C']・shunt=['R']。ノッチは first_series=R・series=['R']・shunt=[]。先頭部品と shunt_to_gnd の有無が逆転している点が決め手。実験 A で lc-parallell-resonance クエリが本回路に誤マッチした。
+    pitfalls: L と C が IR 上の series/shunt に現れない特殊な回路。部品種には L・C が存在するが、topo.series_sequence・shunt_to_gnd を見ると隠れている。この「見えない並列 LC」が BPF との誤マッチを引き起こす。
+
+  lc_highpass_001:
+    name: LCハイパスフィルタ
+    role: 直列コンデンサ・シャントインダクタによる受動ハイパスフィルタ。
+    decisive:
+      - first_series=C（コンデンサが先頭直列）・shunt_to_gnd=['L']（インダクタが GND 並列）。
+      - R=0（抵抗なし）・comp.types=['C','L'] のみ・loop=0・能動素子なし。
+    confused_with:
+      - with: lc_lowpass_001
+        difference: LC ローパスは first_series=L・shunt=['C']（直列とシャントが逆）。HPF は first_series=C・shunt=['L']。先頭直列部品とシャント部品が互いに逆になる。
+      - with: rlc_bandpass_001
+        difference: BPF は R=1・first_series=L・series=['L','C']・shunt=['R']。HPF は R=0・first_series=C・shunt=['L']・series=['C']。R の有無と先頭部品が差。
+    pitfalls: LC の配置（直列/シャント）だけが差。first_series と shunt_to_gnd の素子種を確認する。
+
+  lc_lowpass_001:
+    name: LCローパスフィルタ
+    role: 直列インダクタ・シャントコンデンサによる受動ローパスフィルタ。
+    decisive:
+      - first_series=L（インダクタが先頭直列）・shunt_to_gnd=['C']（コンデンサが GND 並列）。
+      - R=0（抵抗なし）・comp.types=['C','L'] のみ・series_sequence=['L']（C は直列に無い）・loop=0。
+    confused_with:
+      - with: lc_highpass_001
+        difference: LC ハイパスは first_series=C・shunt=['L']（直列 C・シャント L）。ローパスは first_series=L・shunt=['C']（直列 L・シャント C）。先頭部品とシャット部品が逆。
+      - with: lc_pi_filter_001
+        difference: π フィルタは C=2（コンデンサ 2 個）・shunt=['C','C']（両端シャント C）・loop=1。LC ローパスは C=1・shunt=['C']・loop=0。C 数と loop 数が差。
+    pitfalls: π フィルタとは C 数（1 vs 2）で分離できる。first_series=L という点は共通なので C 数を確認する。
