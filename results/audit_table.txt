@@ -1,0 +1,47 @@
+query_id                             topo    θ   ②top1               ③final              strict  ②ok ③ok  変化
+----------------------------------------------------------------------------------------------------------------------------------
+amplifier-ac                         0.7457  棄  two_stage_ce_001      None                  two_stage_ce_001      ✓  θ棄却     ゲート喪失
+buck_conv                            0.7884  棄  buck_001              None                  buck_001              ✓  θ棄却     ゲート喪失
+lc-series-resonance                  0.8297  棄  lc_highpass_001       None                  lc_highpass_001       ✓  θ棄却     ゲート喪失
+nmos-amplifier-cs                    0.9517  受  cs_amp_nmos_001       cs_amp_nmos_001       cs_amp_nmos_001       ✓  ✓       不変
+npn-amplifier-ce                     0.9517  受  ce_amp_npn_001        cascode_npn_001       ce_amp_npn_001        ✓  ✗       破壊
+opamp-inverting                      1.0000  受  opamp_inverting_001   opamp_inverting_001   opamp_inverting_001   ✓  ✓       不変
+opamp-noninverting                   1.0000  受  opamp_noninverting_001  opamp_noninverting_001  opamp_noninverting_001  ✓  ✓       不変
+opamp-voltage-follower               1.0000  受  opamp_buffer_001      opamp_buffer_001      opamp_buffer_001      ✓  ✓       不変
+rc-bandpass                          0.9572  受  rc_highpass_001       rc_highpass_001       rlc_bandpass_001      ✗  ✗       miss両方
+rc-highpass                          1.0000  受  rc_highpass_001       rc_highpass_001       rc_highpass_001       ✓  ✓       不変
+rc-lowpass                           1.0000  受  rc_lowpass_001        rc_lowpass_001        rc_lowpass_001        ✓  ✓       不変
+rectifier-1d                         0.9001  受  fullwave_ct_rect_001  halfwave_rect_001     halfwave_rect_001     ✗  ✓       回復
+rectifier                            0.7828  棄  fullwave_ct_rect_001  None                  halfwave_rect_001     ✗  θ棄却     miss両方
+sallen_key                           1.0000  受  sallen_key_lpf_001    sallen_key_lpf_001    sallen_key_lpf_001    ✓  ✓       不変
+smps-com                             0.6721  棄  boost_001             None                  boost_001             ✓  θ棄却     ゲート喪失
+lc-parallell-resonance               0.8595  棄  rlc_bandpass_001      None                  rlc_bandpass_001      ✓  θ棄却     ゲート喪失
+rc-charge                            1.0000  受  rc_lowpass_001        rc_lowpass_001        rc_lowpass_001        ✓  ✓       不変
+rc-discharge                         1.0000  受  rc_lowpass_001        rc_lowpass_001        rc_lowpass_001        ✓  ✓       不変
+rc-voltage-current                   1.0000  受  rc_lowpass_001        rc_lowpass_001        rc_lowpass_001        ✓  ✓       不変
+simulation-ac-sweep                  1.0000  受  rc_lowpass_001        rc_lowpass_001        rc_lowpass_001        ✓  ✓       不変
+simulation-transient-pulse           1.0000  受  rc_lowpass_001        rc_lowpass_001        rc_lowpass_001        ✓  ✓       不変
+simulation-transient-sine            1.0000  受  rc_lowpass_001        rc_lowpass_001        rc_lowpass_001        ✓  ✓       不変
+rectifier-2d                         0.9656  受  fullwave_ct_rect_001  rectifier_cap_stage_001  fullwave_ct_rect_001  ✓  ✗       破壊
+rectifier-4d                         0.9625  受  bridge_rect_001       bridge_rect_001       bridge_rect_001       ✓  ✓       不変
+rectifier-6d                         0.9492  受  bridge_rect_001       bridge_rect_001       bridge_rect_001       ✓  ✓       不変
+rectifier-4d-regulator               0.7705  棄  bridge_rect_001       None                  bridge_rect_001       ✓  θ棄却     ゲート喪失
+opamp-adding                         0.9579  受  opamp_summing_001     opamp_inverting_001   opamp_summing_001     ✓  ✗       破壊
+opamp-headphone                      0.9041  受  phase_shift_osc_001   opamp_noninverting_001  opamp_noninverting_001  ✗  ✓       回復
+
+θ受理: 21  棄却: 7
+② strict正解(全28): 24  ③ strict正解(全28): 17
+変化内訳: 不変=15  回復=2  破壊=3  ゲート喪失=6  miss両方=2
+等式検証: 24 - 6 - 3 + 2 = 17  (③実績=17)
+
+=== θ通過21件限定比較 ===
+② strict: 18/21 = 85.7% [65.4-95.0%]
+③ strict: 17/21 = 81.0% [60.0-92.3%]
+
+=== ゲート喪失クエリ（② strict正解だが ③ θ棄却） ===
+  amplifier-ac                         topo=0.7457  ②top1=two_stage_ce_001  strict=two_stage_ce_001
+  buck_conv                            topo=0.7884  ②top1=buck_001  strict=buck_001
+  lc-series-resonance                  topo=0.8297  ②top1=lc_highpass_001  strict=lc_highpass_001
+  smps-com                             topo=0.6721  ②top1=boost_001  strict=boost_001
+  lc-parallell-resonance               topo=0.8595  ②top1=rlc_bandpass_001  strict=rlc_bandpass_001
+  rectifier-4d-regulator               topo=0.7705  ②top1=bridge_rect_001  strict=bridge_rect_001
