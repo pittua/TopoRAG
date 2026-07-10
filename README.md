@@ -96,8 +96,11 @@
 
 ```
 TopoRAG/
+│ ── 知覚層・検索・認識器（コアパイプライン）─────────────────────────
+├── circuit_graph.py         グラフ基盤プリミティブ（回路dict→networkx。最下層・依存なし）
 ├── feature_extractor.py     特徴量抽出（グラフ解析）→ features_db.json を生成
 ├── block_decomposer.py      ブロック分解（T分岐点分割）
+├── topo_kernel.py           WLサブツリーカーネルによる構造類似度
 ├── circuit_ir.py            知覚層: 特徴量 → 構造IR（render_ir で描画。契約: docs/IR_SPEC.md）
 ├── knowledge_cards.py       知識カードの読み込み・描画（load_cards / render_card）
 ├── knowledge_cards.yaml     弁別カード本体（識別の決め手・近縁との差分。契約: docs/CARD_SPEC.md）
@@ -105,11 +108,29 @@ TopoRAG/
 ├── circuit_simulator.py     ngspice/PySpice によるAC解析（フィルタ特性の定量化・任意）
 ├── circuit_rag.py           ベクトル化・類似検索・LLM認識器（IR+カード照合）のメインスクリプト
 ├── kicad_sch_to_toporag.py  KiCad .kicad_sch → TopoRAG 形式コンバータ
+│ ── 評価 ─────────────────────────────────────────────────────
 ├── evaluate.py              評価スクリプト（自己検索/alpha/摂動/閾値/LLM/シミュレーション）
-├── eval_expected.yaml       シミュレーション期待値（evaluate.py --sim が参照）
+├── ablation.py              特徴グループの寄与分析（順次ゼロ化して寄与を定量化）
+├── validate_real.py         実機回路コーパスによる汎化検証（Phase 0-A）
+├── reject_eval.py           棄却シグナルの分離性能評価（Phase 0-B）
+├── check_scope.py           スコープ定義の整合性検証
+│ ── データ ───────────────────────────────────────────────────
 ├── sample_netlists.json     DB登録済み回路のネットリスト定義（47回路）
 ├── features_db.json         抽出済み特徴量DB（RAGの検索対象）
-└── query_netlists.json      判定したい回路のネットリスト（入力ファイル）
+├── query_netlists.json      判定したい回路のネットリスト（入力ファイル）
+├── real_corpus.json         実機回路コーパス（汎化検証用）／ real_expected.yaml 期待値
+├── scope_taxonomy.yaml      スコープ分類定義
+├── eval_expected.yaml       シミュレーション期待値（evaluate.py --sim が参照）
+│ ── 実験ハーネス（experiment A/B・単体で実行）───────────────────────
+├── ir_repr_eval.py          回路表現の「LLM 読解可能性」A/B/C 比較（+ ir_repr_eval_scale.py）
+├── netlist_comprehension_eval.py  LLM のネットリスト読解能力測定ハーネス
+├── run_baseline_direct.py   実験A: LLM直読みベースラインの実行（+ score_baseline_direct.py 採点）
+├── run_experiment_b.py      実験B: 条件③（k=6 カード裁定）評価
+├── ollama_client.py         ローカル Ollama を叩く最小クライアント
+│ ── ディレクトリ ─────────────────────────────────────────────
+├── docs/                    仕様・設計ドキュメント（IR_SPEC / CARD_SPEC / EXPERIMENT_A_DESIGN 等）
+├── results/                 実験レポート（RESULTS_* / AUDIT_*）と生成物（*.jsonl）
+└── tests/                   テスト
 ```
 
 ---
