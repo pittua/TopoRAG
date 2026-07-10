@@ -48,6 +48,12 @@ score = alpha × topo_score + (1 - alpha) × tag_score
 
 LLMはブラックボックスのため、Stage 1の品質を先に確立することが前提。
 
+> **方針転換（2026-06 再定義・未実装）**：Stage 2 の「正解名の文字列一致」は脆い指標であり、
+> プロジェクト目的の再定義（LLM に回路認識能力を与える。`docs/IR_SPEC.md` / `docs/CARD_SPEC.md`）に
+> 伴い、**3アーム ablation（LLM 単独 / +構造IR / +IR+知識カード）** に置換する予定。LLM 認識器が
+> IR・カードの寄与でどれだけ裁定精度を上げるかを分離測定するのが学内発表の実験章の背骨になる。
+> 実装は未着手（`evaluate.py` の `judge` 呼び・`MockLLMClient`・`ablation.py` の枠組みを流用予定）。
+
 ---
 
 ## 3. 各評価ステップの詳細

@@ -19,5 +19,8 @@ dist/
 # Local test fixtures (not part of the repo)
 kicad_real_test/
 
+# Debug dumps (results/*.txt は一時的な確認用ダンプ。結果は .jsonl / .md のみコミット)
+results/*.txt
+
 # Claude Code ローカル設定（スキルはコミットする）
 .claude/settings.local.json

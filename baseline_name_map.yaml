@@ -1,0 +1,47 @@
+# baseline_name_map.yaml — 実験A P2（自由記述）採点用のキーワード→family写像表
+#
+# 【凍結物】本番実行前に確定し、実行後は変更しない（EXPERIMENT_A_DESIGN.md §6.3）。
+# family は scope_taxonomy.yaml の id と一致させる。
+# 判定手順: 回答文に keywords のいずれかが含まれれば当該 family に写像。
+# 複数 family にマッチ / どれにもマッチしない場合のみ人手判定し、理由をログに残す。
+#
+# unknown_markers: これらを含む回答は「不明」と判定（family写像より優先）。
+
+unknown_markers:
+  - 不明
+  - わかりません
+  - 判別できません
+  - 特定できません
+  - unknown
+
+families:
+  filter_passive:
+    keywords: [ローパス, ハイパス, バンドパス, ノッチ, フィルタ, lowpass, highpass,
+               bandpass, notch, filter, LPF, HPF, BPF, 共振]
+    note: 能動素子を含む旨の記述があれば filter_active を優先
+  filter_active:
+    keywords: [アクティブフィルタ, 能動フィルタ, active filter, サレンキー, Sallen-Key,
+               多重帰還フィルタ, MFB]
+  rectifier:
+    keywords: [整流, 半波, 全波, ブリッジ, rectifier, クリッパ, clipper, クランプ,
+               リミッタ, 波形整形, 平滑]
+  amp_single_stage:
+    keywords: [エミッタ接地, ソース接地, ベース接地, ゲート接地, エミッタフォロワ,
+               ソースフォロワ, コレクタ接地, ドレイン接地, CE増幅, CS増幅,
+               common emitter, common source, common collector, follower,
+               トランジスタ増幅, 一段増幅]
+  amp_multi_stage:
+    keywords: [多段増幅, 2段増幅, 二段増幅, カスケード増幅, 段間結合, multi-stage,
+               two-stage, カレントミラー, current mirror, 差動対, 差動増幅,
+               differential pair, ロングテール]
+  opamp_linear:
+    keywords: [反転増幅, 非反転増幅, ボルテージフォロワ, バッファ, オペアンプ増幅,
+               inverting amplifier, non-inverting, voltage follower, unity gain]
+    note: 発振器・コンパレータの記述があれば family 外（out）扱いを検討し人手判定
+  smps_converter:
+    keywords: [降圧, 昇圧, buck, boost, チョッパ, DC-DCコンバータ, コンバータ,
+               スイッチング電源, converter, SMPS]
+
+# out回路のP2採点（正同定/誤同定/不明）で「正同定」の根拠にする正解記述は
+# real_expected.yaml の note を用いる。判定に迷う場合の記録テンプレート:
+#   query_id / 回答文 / 判定(正同定|誤同定|不明) / 理由(1文)
